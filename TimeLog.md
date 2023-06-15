@@ -8,4 +8,4 @@
 | 2023/06/12 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | D2: Buddy Proposal Review |
 | 2023/06/12 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | Architecture Brainstorm Meeting |
 | 2023/06/13 | -- | -- | -- | -- | 1.5 | 1.5 | 1.5 | D2: Buddy proposal document |
-| 2023/06/14 | -- | -- | -- | -- | -- | 0.75 | -- | D2: Buddy proposal document |
+| 2023/06/14 | -- | 1.5 | -- | -- | -- | 0.75 | -- | D2: Buddy proposal document |
