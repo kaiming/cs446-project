@@ -1,3 +1,16 @@
 package com.example.travelbook.navigation.models
 
-data class EventItem()
+import java.util.Date
+
+data class EventItem(
+    var name: String,
+    var Date: Date?,
+    var startTime: Date?,
+    var location: String
+    ) {
+    constructor() : this("", null, null, "")
+}
+
+data class EventResponse(
+    var event: EventItem
+)
