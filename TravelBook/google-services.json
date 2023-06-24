@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "107211359371",
+    "project_id": "cs446-8d4f1",
+    "storage_bucket": "cs446-8d4f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107211359371:android:ae3329e8a6d24c0805008e",
+        "android_client_info": {
+          "package_name": "com.cs446.travelbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv1IMgYaveyvDVq2veaa8--y7b_ymMT1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
