@@ -1,5 +1,5 @@
-| Date | Alex | Brayden | Coal | Jameson | Kaiming | Kian | Toluwa | Task|
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Date | Alex | Brayden | Cole | Jameson | Kaiming | Kian | Toluwa | Task|
+| --- | --- | --- |---| --- | --- | --- | --- | --- |
 | 2023/05/15 | -- | -- | -- | 8 | -- | -- | -- | Learning Kotlin / Jetpack Compose |
 | 2023/05/26 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | Project brainstorming meeting |
 | 2023/05/28 | 0.75 | 1.5 | 2 | 2 | 1 | 1 | 1 | Project proposal presentation |
