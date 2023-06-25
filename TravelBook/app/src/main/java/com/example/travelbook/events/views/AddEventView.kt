@@ -1,5 +1,6 @@
 package com.example.travelbook.events.views
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.travelbook.ui.theme.Padding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +47,12 @@ fun AddEventView(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("Add Event")
+            Text(
+                text = "Add Event",
+                fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
+                fontSize = 32.sp,
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
             TextField(
                 value = eventName,
                 onValueChange = {
@@ -51,6 +60,7 @@ fun AddEventView(
                 },
                 label = { Text(text = "Event Name") },
                 placeholder = { Text(text = "Name of the Event") },
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
@@ -60,6 +70,7 @@ fun AddEventView(
                 },
                 label = { Text(text = "Event Location") },
                 placeholder = { Text(text = "Location of the Event") },
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
@@ -69,6 +80,7 @@ fun AddEventView(
                 },
                 label = { Text(text = "Event Start Time") },
                 placeholder = { Text(text = "Start Time of the Event") },
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
@@ -78,6 +90,7 @@ fun AddEventView(
                 },
                 label = { Text(text = "Event End Time") },
                 placeholder = { Text(text = "End Time of the Event") },
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
@@ -87,17 +100,20 @@ fun AddEventView(
                 },
                 label = { Text(text = "Event Cost") },
                 placeholder = { Text(text = "Cost of the Event") },
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            Row(
-                modifier = Modifier
-                    .weight(1f)
+            Spacer(modifier = Modifier.weight(1f))
+            Button(
+                onClick = { /*TODO add view model*/ },
+                modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
-                Button(
-                    onClick = { /*TODO*/ }
-                ) {
-                    Text(text = "Add Event")
-                }
+                Text(
+                    text = "Save",
+                    fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(Padding.PaddingSmall.size)
+                )
             }
         }
     }
