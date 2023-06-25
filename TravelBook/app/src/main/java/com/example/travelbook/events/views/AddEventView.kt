@@ -26,16 +26,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.travelbook.events.models.EventItem
+import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.ui.theme.Padding
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
 fun AddEventView(
+    viewModel: AddEventViewModel,
     modifier: Modifier = Modifier
 ) {
     var eventName by remember { mutableStateOf(TextFieldValue("")) }
     var eventLocation by remember { mutableStateOf(TextFieldValue("")) }
+    var eventDate by remember { mutableStateOf(TextFieldValue("")) }
     var eventStartTime by remember { mutableStateOf(TextFieldValue("")) }
     var eventEndTime by remember { mutableStateOf(TextFieldValue("")) }
     var eventCost by remember { mutableStateOf(TextFieldValue("")) }
@@ -74,6 +78,16 @@ fun AddEventView(
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
+                value = eventDate,
+                onValueChange = {
+                    eventDate = it
+                },
+                label = { Text(text = "Event Date") },
+                placeholder = { Text(text = "Date of the Event") },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
+            TextField(
                 value = eventStartTime,
                 onValueChange = {
                     eventStartTime = it
@@ -105,7 +119,17 @@ fun AddEventView(
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                onClick = { /*TODO add view model*/ },
+                onClick = { viewModel.addEvent(
+                    EventItem(
+                        UUID.randomUUID().toString(),
+                        eventName.text,
+                        eventLocation.text,
+                        eventDate.text,
+                        eventStartTime.text,
+                        eventEndTime.text,
+                        eventCost.text
+                    )
+                ) },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(

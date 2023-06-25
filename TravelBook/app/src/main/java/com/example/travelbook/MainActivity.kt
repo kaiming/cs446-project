@@ -8,18 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
-import com.example.travelbook.map.views.MapView
+import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.navigation.views.NavigationView
 import com.example.travelbook.signIn.viewModels.SignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModelFactory
-import com.example.travelbook.navigation.views.NavigationView
-import com.example.travelbook.trips.models.EventItem
-import com.example.travelbook.trips.models.EventRepository
 import com.example.travelbook.trips.models.TripRepository
-import com.example.travelbook.trips.models.createTrip
 import com.example.travelbook.trips.viewModels.AddEventViewModel
 import com.example.travelbook.trips.viewModels.AddEventViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
@@ -54,10 +49,10 @@ class MainActivity : ComponentActivity() {
             }
 
             val addTripViewModelFactory = AddTripViewModelFactory(TripRepository())
-            val addTripViewModel = ViewModelProvider(this, addTripViewModelFactory).get(AddTripViewModel::class.java)
+            val addTripViewModel = ViewModelProvider(this, addTripViewModelFactory)[AddTripViewModel::class.java]
 
             val addEventViewModelFactory = AddEventViewModelFactory(EventRepository())
-            val addEventViewMode = ViewModelProvider(this, addEventViewModelFactory).get(AddEventViewModel::class.java)
+            val addEventViewModel = ViewModelProvider(this, addEventViewModelFactory)[AddEventViewModel::class.java]
 
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme

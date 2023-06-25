@@ -3,8 +3,8 @@ package com.example.travelbook.trips.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.travelbook.trips.models.EventItem
-import com.example.travelbook.trips.models.EventRepository
+import com.example.travelbook.events.models.EventItem
+import com.example.travelbook.events.models.EventRepository
 import kotlinx.coroutines.launch
 
 class AddEventViewModel(private val repository: EventRepository): ViewModel() {
