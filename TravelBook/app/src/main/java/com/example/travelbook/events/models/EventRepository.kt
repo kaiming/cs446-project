@@ -1,4 +1,4 @@
-package com.example.travelbook.trips.models
+package com.example.travelbook.events.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
