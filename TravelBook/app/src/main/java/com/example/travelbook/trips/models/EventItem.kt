@@ -1,5 +1,7 @@
 package com.example.travelbook.trips.models
 
+import com.google.firebase.firestore.DocumentId
+
 
 data class EventItem(
     @DocumentId
