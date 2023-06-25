@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
         // TEMP MODEL TESTING
         val tripRepo = TripRepository()
+        // val tripRepo = TripRepository()
         // val eventRepo = EventRepository()
         // Add trip
         // tripRepo.addTrip(trip)
