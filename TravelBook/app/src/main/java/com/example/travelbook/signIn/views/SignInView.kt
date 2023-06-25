@@ -1,4 +1,4 @@
-package com.example.travelbook.signup.views
+package com.example.travelbook.signIn.views
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -8,16 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +26,12 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.travelbook.R
+import com.example.travelbook.signIn.model.SignInState
+import com.example.travelbook.signIn.viewModels.SignInViewModel
 
 @Composable
-fun SignUpView(
+fun SignInView(
+    viewModel: SignInViewModel,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -75,7 +74,7 @@ fun SignUpView(
                         .fillMaxWidth()
                 ) {
                     OutlinedButton(
-                        onClick = { /* TODO: Nav to home page*/},
+                        onClick = { viewModel.updateSignInState(SignInState(true))},
                         border = BorderStroke(1.dp, Color.Black),
                         shape = RoundedCornerShape(47.dp),
                     ) {
