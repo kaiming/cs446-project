@@ -52,11 +52,13 @@ class MainActivity : ComponentActivity() {
                 SignInViewModelFactory(navigationController)
             }
 
-            val addTripViewModelFactory = AddTripViewModelFactory(TripRepository())
-            val addTripViewModel = ViewModelProvider(this, addTripViewModelFactory).get(AddTripViewModel::class.java)
+            val addTripViewModel: AddTripViewModel by viewModels {
+                AddTripViewModelFactory(TripRepository())
+            }
 
-            val addEventViewModelFactory = AddEventViewModelFactory(EventRepository())
-            val addEventViewMode = ViewModelProvider(this, addEventViewModelFactory).get(AddEventViewModel::class.java)
+            val addEventViewModel: AddEventViewModel by viewModels {
+                AddEventViewModelFactory(EventRepository())
+            }
 
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme
