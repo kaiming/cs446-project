@@ -12,9 +12,7 @@ class SignInViewModel(
     private val navigationController: NavHostController
 ): ViewModel() {
     fun onSignInClicked() {
-        viewModelScope.launch {
-            navigationController.navigate(NavigationItem.Map.route)
-        }
+        navigationController.navigate(NavigationItem.Map.route)
     }
 }
 

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material3.Button
@@ -72,6 +73,7 @@ fun SignInView(
                 onClick = { viewModel.onSignInClicked() },
                 border = BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(47.dp),
+                modifier = Modifier.width(230.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -98,6 +100,7 @@ fun SignInView(
                 onClick = { viewModel.onSignInClicked()  },
                 border = BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(47.dp),
+                modifier = Modifier.width(230.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -111,7 +114,7 @@ fun SignInView(
                         modifier = Modifier.size(8.dp)
                     )
                     Text(
-                        text = "Sign in with Google",
+                        text = "Sign in with Email",
                         modifier = Modifier.padding(4.dp)
                     )
                 }
