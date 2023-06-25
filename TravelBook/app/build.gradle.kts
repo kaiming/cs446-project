@@ -67,6 +67,9 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.6.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.4.1")
 
+    // async
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+
     val room_version = "2.5.1"
     implementation("androidx.room:room-common:$room_version")
     implementation("androidx.room:room-runtime:$room_version")
