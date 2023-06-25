@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
         // Add event
         // eventRepo.addEvent("wyj79g8Ye5ILpHVuqr7i", EventItem("Event 1", "2021-10-01", "2021-10-02", "123 f u. . st"))
 
-
         setContent {
 
             val navigationController = rememberNavController()
