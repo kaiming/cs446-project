@@ -1,15 +1,17 @@
-package com.example.travelbook.trips.viewModels
+package com.example.travelbook.events.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.travelbook.trips.models.EventItem
-import com.example.travelbook.trips.models.EventRepository
+import com.example.travelbook.events.models.EventItem
+import com.example.travelbook.events.models.EventRepository
 import kotlinx.coroutines.launch
 
 class AddEventViewModel(private val repository: EventRepository): ViewModel() {
 
-    fun addEventItem(tripId: String, newEventItem: EventItem) = viewModelScope.launch {
+    private val tripId: String = "wyj79g8Ye5ILpHVuqr7i"
+
+    fun addEventItem(newEventItem: EventItem) = viewModelScope.launch {
         repository.addEvent(tripId, newEventItem)
     }
 }
