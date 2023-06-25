@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.example.travelbook.events.models.EventRepository
+import com.example.travelbook.events.viewModels.AddEventViewModel
+import com.example.travelbook.events.viewModels.AddEventViewModelFactory
 import com.example.travelbook.navigation.views.NavigationView
 import com.example.travelbook.signIn.viewModels.SignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModelFactory
 import com.example.travelbook.trips.models.TripRepository
-import com.example.travelbook.trips.viewModels.AddEventViewModel
-import com.example.travelbook.trips.viewModels.AddEventViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
@@ -49,10 +49,14 @@ class MainActivity : ComponentActivity() {
             }
 
             val addTripViewModelFactory = AddTripViewModelFactory(TripRepository())
-            val addTripViewModel = ViewModelProvider(this, addTripViewModelFactory)[AddTripViewModel::class.java]
+            val addTripViewModel: AddTripViewModel by viewModels {
+                addTripViewModelFactory
+            }
 
             val addEventViewModelFactory = AddEventViewModelFactory(EventRepository())
-            val addEventViewModel = ViewModelProvider(this, addEventViewModelFactory)[AddEventViewModel::class.java]
+            val addEventViewModel: AddEventViewModel by viewModels {
+                addEventViewModelFactory
+            }
 
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme
