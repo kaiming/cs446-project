@@ -42,10 +42,6 @@ class TripRepository {
 
     // Add trip
     fun addTrip(trip: Trip) {
-<<<<<<< HEAD
-=======
-        println("Hello!")
->>>>>>> 7dc44f2... Trip and event models w/ repository
         database.collection("trips")
             .add(trip)
             .addOnSuccessListener { documentReference ->
