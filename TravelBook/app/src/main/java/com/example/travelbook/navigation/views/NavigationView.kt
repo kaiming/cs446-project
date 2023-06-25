@@ -30,6 +30,8 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,17 +44,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.travelbook.R
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
+import com.example.travelbook.signIn.viewModels.SignInViewModel
+import com.example.travelbook.signIn.views.SignInView
 import com.example.travelbook.ui.theme.Padding
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationView(
+    navController: NavHostController,
+    signInViewModel: SignInViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
@@ -60,57 +67,45 @@ fun NavigationView(
         NavigationItem.Trip,
         NavigationItem.Profile
     )
-    val navController = rememberNavController()
     val selectedItem = remember { mutableStateOf(navigationItems[0]) }
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val shouldShowNavBar = navigationItems.any {
+        it.route == (navBackStackEntry?.destination?.route ?: false)
+    }
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(
-                backgroundColor = MaterialTheme.colorScheme.background
-            ) {
-                navigationItems.forEach { item ->
-                    BottomNavigationItem(
-                        icon = {
-                            Icon(
-                                ImageVector.vectorResource(id = item.icon),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        label = { Text(item.name) },
-                        selected = item == selectedItem.value,
-                        onClick = {
-                            selectedItem.value = item
-                            navController.navigate(item.route)
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
+            if (shouldShowNavBar) {
+                BottomNavigation(
+                    backgroundColor = MaterialTheme.colorScheme.background
+                ) {
+                    navigationItems.forEach { item ->
+                        BottomNavigationItem(
+                            icon = {
+                                Icon(
+                                    ImageVector.vectorResource(id = item.icon),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            label = { Text(item.name) },
+                            selected = item == selectedItem.value,
+                            onClick = {
+                                selectedItem.value = item
+                                navController.navigate(item.route)
+                            },
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
+                    }
                 }
             }
         },
-        // TODO: Add top bar back in if needed
-//        topBar = {
-//            CenterAlignedTopAppBar(
-//                title = {
-//                    Row(
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Text(
-//                            text = UIText.ResourceString(R.string.app_name).getString(),
-//                            style = MaterialTheme.typography.titleLarge,
-//                            color = MaterialTheme.colorScheme.primary
-//                        )
-//                    }
-//                },
-//                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-//                    containerColor = Color.Transparent
-//                )
-//            )
-//        }
     ) {
         NavigationGraph(
             navController = navController,
+            signInViewModel = signInViewModel,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -121,9 +116,10 @@ fun NavigationView(
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
+    signInViewModel: SignInViewModel,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController, startDestination = NavigationItem.Map.route) {
+    NavHost(navController, startDestination = NavigationItem.SignIn.route) {
         composable(NavigationItem.Map.route) {
             MapView(
                 modifier = modifier
@@ -138,6 +134,9 @@ fun NavigationGraph(
             MapView(
                 modifier = modifier
             )
+        }
+        composable(NavigationItem.SignIn.route) {
+            SignInView(signInViewModel)
         }
     }
 }

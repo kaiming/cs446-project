@@ -3,10 +3,17 @@ package com.example.travelbook
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.travelbook.map.views.MapView
+import com.example.travelbook.navigation.views.NavigationView
+import com.example.travelbook.signIn.viewModels.SignInViewModel
+import com.example.travelbook.signIn.viewModels.SignInViewModelFactory
 import com.example.travelbook.navigation.views.NavigationView
 import com.example.travelbook.trips.models.EventItem
 import com.example.travelbook.trips.models.EventRepository
@@ -34,13 +41,22 @@ class MainActivity : ComponentActivity() {
         // tripRepo.addUserToTrip("wyj79g8Ye5ILpHVuqr7i", "user2")
 
         setContent {
+
+            val navigationController = rememberNavController()
+            val signInViewModel: SignInViewModel by viewModels {
+                SignInViewModelFactory(navigationController)
+            }
+
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationView()
+                    NavigationView(
+                        navigationController,
+                        signInViewModel
+                    )
                 }
             }
         }
