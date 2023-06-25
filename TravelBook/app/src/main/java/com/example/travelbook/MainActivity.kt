@@ -25,12 +25,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // TEMP MODEL TESTING
-        // val tripRepo = TripRepository()
+        val tripRepo = TripRepository()
         // val eventRepo = EventRepository()
         // Add trip
         // tripRepo.addTrip(trip)
         // Add event
         // eventRepo.addEvent("wyj79g8Ye5ILpHVuqr7i", EventItem("Event 1", "2021-10-01", "2021-10-02", "123 f u. . st"))
+        // tripRepo.addUserToTrip("wyj79g8Ye5ILpHVuqr7i", "user2")
 
         setContent {
             TravelBookTheme {
