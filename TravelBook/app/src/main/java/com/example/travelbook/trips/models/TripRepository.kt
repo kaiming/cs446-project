@@ -42,7 +42,6 @@ class TripRepository {
 
     // Add trip
     fun addTrip(trip: Trip) {
-        println("Hello!")
         database.collection("trips")
             .add(trip)
             .addOnSuccessListener { documentReference ->
