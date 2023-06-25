@@ -1,4 +1,4 @@
-package com.example.travelbook.navigation.models
+package com.example.travelbook.trips.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -11,11 +11,9 @@ class EventRepository {
 
     private val database = Firebase.firestore
 
-    fun addEvent(userId: String, tripId: Long, event: EventItem) {
-        database.collection("users")
-            .document(userId)
-            .collection("trips")
-            .document(tripId.toString())
+    fun addEvent(tripId: String, event: EventItem) {
+        database.collection("trips")
+            .document(tripId)
             .collection("events")
             .add(event)
             .addOnSuccessListener { documentReference ->
@@ -26,10 +24,8 @@ class EventRepository {
             }
     }
 
-    fun deleteEvent(userId: String, tripId: String, eventId: String) {
-        database.collection("users")
-            .document(userId)
-            .collection("trips")
+    fun deleteEvent(tripId: String, eventId: String) {
+        database.collection("trips")
             .document(tripId)
             .collection("events")
             .document(eventId)
@@ -43,9 +39,7 @@ class EventRepository {
     }
 
     fun editEvent(userId: String, tripId: String, eventId: String, event: EventItem) {
-        database.collection("users")
-            .document(userId)
-            .collection("trips")
+        database.collection("trips")
             .document(tripId)
             .collection("events")
             .document(eventId)
@@ -61,9 +55,7 @@ class EventRepository {
     suspend fun getAllEventsByTripId(userId: String, tripId: String): List<EventResponse> {
         val eventList = mutableListOf<EventResponse>()
 
-        val snapshot = database.collection("users")
-            .document(userId)
-            .collection("trips")
+        val snapshot = database.collection("trips")
             .document(tripId)
             .collection("events")
             .get()
