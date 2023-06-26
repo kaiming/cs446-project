@@ -118,10 +118,10 @@ fun AddEventView(
                     EventItem(
                         UUID.randomUUID().toString(),
                         eventName.text,
-                        eventLocation.text,
                         eventDate.text,
                         eventStartTime.text,
                         eventEndTime.text,
+                        eventLocation.text,
                         eventCost.text
                     )
                 ) },

@@ -1,10 +1,9 @@
-package com.example.travelbook.trips.views
+package com.example.travelbook.events.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,50 +13,44 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.travelbook.trips.models.Trip
-import com.example.travelbook.trips.viewModels.TripViewModel
+import com.example.travelbook.events.models.EventItem
+import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.ui.theme.Padding
 
 @Composable
-fun TripView(
-    viewModel: TripViewModel,
+fun EventView(
+    viewModel: EventViewModel,
     modifier: Modifier = Modifier
 ) {
-    val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val events = viewModel.eventsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Trips",
+                text = "Itinerary",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             LazyColumn(Modifier.weight(6f)) {
-                items(items = trips.value, itemContent = { trip ->
-                    TextButton(onClick = { viewModel.onTripClicked() }) {
-                        TripCard(trip)
-                    }
+                items(items = events.value, itemContent = { event ->
+                    EventCard(event)
                 })
             }
             Box(
-                modifier = Modifier
-                    .weight(1f)
+                modifier = Modifier.weight(1f)
                     .fillMaxSize()
                     .padding(Padding.PaddingMedium.size)
                     .background(
@@ -67,14 +60,14 @@ fun TripView(
             ) {
                 IconButton(
                     onClick = {
-                        viewModel.onAddTripClicked()
+                        viewModel.onAddEventClicked()
                     },
                     modifier = Modifier.size(64.dp)
                 ) {
                     Icon(
                         Icons.Rounded.AddCircle,
                         tint =  MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Add Trip Button",
+                        contentDescription = "Add Event Button",
                         modifier = Modifier.size(64.dp)
                     )
                 }
@@ -85,8 +78,8 @@ fun TripView(
 
 
 @Composable
-private fun TripCard(
-    trip: Trip
+private fun EventCard(
+    event: EventItem
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
@@ -95,22 +88,26 @@ private fun TripCard(
         Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = trip.tripName,
+                    text = event.name,
                 )
                 Text(
-                    text = trip.startDate,
+                    text = event.location,
                 )
                 Text(
-                    text = trip.endDate,
+                    text = event.date,
                 )
                 Text(
-                    text = trip.participants.toString(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    text = event.startTime,
+                )
+                Text(
+                    text = event.endTime,
+                )
+                Text(
+                    text = event.cost,
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
-                // space for image/trip logo... don't think the model supports this yet.
+                // space for image/event logo... don't think the model supports this yet.
             }
         }
     }

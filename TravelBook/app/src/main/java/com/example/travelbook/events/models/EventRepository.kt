@@ -2,14 +2,34 @@ package com.example.travelbook.events.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class EventRepository {
 
     private val database = Firebase.firestore
+
+    fun getAllEventsByTripIdFlow(tripId: String): Flow<List<EventItem>> = flow {
+        val querySnapshot = database.collection("trips")
+                .document(tripId)
+                .collection("events")
+                .get()
+                .await()
+        val events = querySnapshot.documents.mapNotNull { documentSnapshot ->
+            documentSnapshot.toObject<EventItem>()
+        }
+        emit(events)
+    }
 
     fun addEvent(tripId: String, event: EventItem) {
         database.collection("trips")
@@ -52,8 +72,8 @@ class EventRepository {
             }
     }
 
-    suspend fun getAllEventsByTripId(userId: String, tripId: String): List<EventResponse> {
-        val eventList = mutableListOf<EventResponse>()
+    suspend fun getAllEventsByTripId(tripId: String): List<EventItem> {
+        val eventList = mutableListOf<EventItem>()
 
         val snapshot = database.collection("trips")
             .document(tripId)
@@ -63,7 +83,7 @@ class EventRepository {
 
         for (document in snapshot.documents) {
             document.toObject(EventItem::class.java)?.let { event ->
-                eventList.add(EventResponse(event))
+                eventList.add(event)
             }
         }
         return eventList

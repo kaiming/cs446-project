@@ -24,6 +24,6 @@ data class EventItem(
     )
 }
 
-data class EventResponse(
-    var event: EventItem
-)
+//data class EventResponse(
+//    var events: EventItem
+//)
