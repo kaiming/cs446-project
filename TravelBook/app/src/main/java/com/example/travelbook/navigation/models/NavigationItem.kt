@@ -9,7 +9,7 @@ sealed class NavigationItem(
 ) {
     object Map : NavigationItem("Map", R.drawable.baseline_map_24,"map")
     object Trip : NavigationItem("Trip", R.drawable.baseline_airplanemode_active_24, "trip")
-    object Event : NavigationItem("Event", R.drawable.baseline_event_24, "event")
+    object Event : NavigationItem("Event", R.drawable.logo, "event")
     object Profile : NavigationItem("Profile", R.drawable.baseline_account_circle_24, "profile")
     object SignIn : NavigationItem("Sign In", R.drawable.logo, "signIn")
     object AddTrip : NavigationItem("Add Trip", R.drawable.logo, "addTrip")

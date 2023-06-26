@@ -19,20 +19,6 @@ class TripRepository {
 
     private val database = Firebase.firestore
 
-    private fun Query.snapshotFlow(): Flow<QuerySnapshot> = callbackFlow {
-        val listenerRegistration = addSnapshotListener { value, error ->
-            if (error != null) {
-                close()
-                return@addSnapshotListener
-            }
-            if (value != null)
-                trySend(value)
-        }
-        awaitClose {
-            listenerRegistration.remove()
-        }
-    }
-
     fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
         val querySnapshot = database
             .collection("trips")

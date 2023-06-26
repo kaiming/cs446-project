@@ -14,10 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +50,14 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    TripCard(trip)
+                    TextButton(onClick = { viewModel.onTripClicked() }) {
+                        TripCard(trip)
+                    }
                 })
             }
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .fillMaxSize()
                     .padding(Padding.PaddingMedium.size)
                     .background(

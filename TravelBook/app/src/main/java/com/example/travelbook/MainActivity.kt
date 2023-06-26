@@ -16,6 +16,8 @@ import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.trips.models.TripRepository
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
+import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.events.viewModels.EventViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
@@ -58,8 +60,12 @@ class MainActivity : ComponentActivity() {
                 AddTripViewModelFactory(tripRepository, navigationController)
             }
 
+            val eventViewModel: EventViewModel by viewModels {
+                EventViewModelFactory(EventRepository(), navigationController)
+            }
+
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository())
+                AddEventViewModelFactory(EventRepository(), navigationController)
             }
 
             TravelBookTheme {
@@ -72,7 +78,9 @@ class MainActivity : ComponentActivity() {
                         navController = navigationController,
                         signInViewModel = signInViewModel,
                         tripViewModel = tripViewModel,
-                        addTripViewModel = addTripViewModel
+                        addTripViewModel = addTripViewModel,
+                        eventViewModel = eventViewModel,
+                        addEventViewModel = addEventViewModel
                     )
                 }
             }

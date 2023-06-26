@@ -47,7 +47,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.travelbook.R
+import com.example.travelbook.events.viewModels.AddEventViewModel
+import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.events.views.AddEventView
 import com.example.travelbook.events.views.AddTripView
+import com.example.travelbook.events.views.EventView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
@@ -66,6 +70,8 @@ fun NavigationView(
     signInViewModel: SignInViewModel,
     tripViewModel: TripViewModel,
     addTripViewModel: AddTripViewModel,
+    eventViewModel: EventViewModel,
+    addEventViewModel: AddEventViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
@@ -114,6 +120,8 @@ fun NavigationView(
             signInViewModel = signInViewModel,
             tripViewModel = tripViewModel,
             addTripViewModel = addTripViewModel,
+            eventViewModel = eventViewModel,
+            addEventViewModel = addEventViewModel,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -127,6 +135,8 @@ fun NavigationGraph(
     signInViewModel: SignInViewModel,
     tripViewModel: TripViewModel,
     addTripViewModel: AddTripViewModel,
+    eventViewModel: EventViewModel,
+    addEventViewModel: AddEventViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController, startDestination = NavigationItem.SignIn.route) {
@@ -144,6 +154,18 @@ fun NavigationGraph(
         composable(NavigationItem.AddTrip.route) {
             AddTripView(
                 viewModel = addTripViewModel,
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.Event.route) {
+            EventView(
+                viewModel = eventViewModel,
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.AddEvent.route) {
+            AddEventView(
+                viewModel = addEventViewModel,
                 modifier = modifier
             )
         }

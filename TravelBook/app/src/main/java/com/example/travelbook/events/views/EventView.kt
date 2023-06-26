@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.travelbook.events.models.EventItem
+import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.ui.theme.Padding
 
 @Composable
@@ -43,8 +45,8 @@ fun EventView(
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             LazyColumn(Modifier.weight(6f)) {
-                items(items = Events.value, itemContent = { event ->
-                    EventCard(event)
+                items(items = events.value, itemContent = { event ->
+                    EventCard(event.event)
                 })
             }
             Box(
@@ -77,7 +79,7 @@ fun EventView(
 
 @Composable
 private fun EventCard(
-    event: Event
+    event: EventItem
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
@@ -86,7 +88,13 @@ private fun EventCard(
         Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = event.eventName,
+                    text = event.name,
+                )
+                Text(
+                    text = event.location,
+                )
+                Text(
+                    text = event.date,
                 )
                 Text(
                     text = event.startTime,

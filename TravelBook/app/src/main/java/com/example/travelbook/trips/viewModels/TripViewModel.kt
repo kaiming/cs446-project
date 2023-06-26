@@ -20,6 +20,10 @@ class TripViewModel(
     fun onAddTripClicked() {
         navigationController.navigate(NavigationItem.AddTrip.route)
     }
+
+    fun onTripClicked() {
+        navigationController.navigate(NavigationItem.Event.route)
+    }
 }
 
 class TripViewModelFactory(
