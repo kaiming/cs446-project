@@ -18,6 +18,8 @@ import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
+import com.example.travelbook.trips.viewModels.TripViewModel
+import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
 
 // val trip = createTrip(
@@ -42,12 +44,18 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val navigationController = rememberNavController()
+
             val signInViewModel: SignInViewModel by viewModels {
                 SignInViewModelFactory(navigationController)
             }
 
+            val tripRepository = TripRepository()
+            val tripViewModel: TripViewModel by viewModels {
+                TripViewModelFactory(tripRepository, navigationController)
+            }
+
             val addTripViewModel: AddTripViewModel by viewModels {
-                AddTripViewModelFactory(TripRepository())
+                AddTripViewModelFactory(tripRepository, navigationController)
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
@@ -61,8 +69,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NavigationView(
-                        navigationController,
-                        signInViewModel
+                        navController = navigationController,
+                        signInViewModel = signInViewModel,
+                        tripViewModel = tripViewModel,
+                        addTripViewModel = addTripViewModel
                     )
                 }
             }

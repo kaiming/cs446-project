@@ -47,11 +47,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.travelbook.R
+import com.example.travelbook.events.views.AddTripView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
 import com.example.travelbook.signIn.viewModels.SignInViewModel
 import com.example.travelbook.signIn.views.SignInView
+import com.example.travelbook.trips.viewModels.AddTripViewModel
+import com.example.travelbook.trips.viewModels.TripViewModel
+import com.example.travelbook.trips.views.TripView
 import com.example.travelbook.ui.theme.Padding
 import kotlinx.coroutines.launch
 
@@ -60,6 +64,8 @@ import kotlinx.coroutines.launch
 fun NavigationView(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    tripViewModel: TripViewModel,
+    addTripViewModel: AddTripViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
@@ -106,6 +112,8 @@ fun NavigationView(
         NavigationGraph(
             navController = navController,
             signInViewModel = signInViewModel,
+            tripViewModel = tripViewModel,
+            addTripViewModel = addTripViewModel,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -117,6 +125,8 @@ fun NavigationView(
 fun NavigationGraph(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    tripViewModel: TripViewModel,
+    addTripViewModel: AddTripViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController, startDestination = NavigationItem.SignIn.route) {
@@ -126,7 +136,14 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.Trip.route) {
-            MapView(
+            TripView(
+                viewModel = tripViewModel,
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.AddTrip.route) {
+            AddTripView(
+                viewModel = addTripViewModel,
                 modifier = modifier
             )
         }
