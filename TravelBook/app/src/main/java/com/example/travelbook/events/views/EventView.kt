@@ -1,10 +1,9 @@
-package com.example.travelbook.trips.views
+package com.example.travelbook.events.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,34 +20,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.travelbook.trips.models.Trip
-import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.ui.theme.Padding
 
 @Composable
-fun TripView(
-    viewModel: TripViewModel,
+fun EventView(
+    viewModel: EventViewModel,
     modifier: Modifier = Modifier
 ) {
-    val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val events = viewModel.eventsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Trips",
+                text = "Itinerary",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             LazyColumn(Modifier.weight(6f)) {
-                items(items = trips.value, itemContent = { trip ->
-                    TripCard(trip)
+                items(items = Events.value, itemContent = { event ->
+                    EventCard(event)
                 })
             }
             Box(
@@ -62,14 +58,14 @@ fun TripView(
             ) {
                 IconButton(
                     onClick = {
-                        viewModel.onAddTripClicked()
+                        viewModel.onAddEventClicked()
                     },
                     modifier = Modifier.size(64.dp)
                 ) {
                     Icon(
                         Icons.Rounded.AddCircle,
                         tint =  MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Add Trip Button",
+                        contentDescription = "Add Event Button",
                         modifier = Modifier.size(64.dp)
                     )
                 }
@@ -80,8 +76,8 @@ fun TripView(
 
 
 @Composable
-private fun TripCard(
-    trip: Trip
+private fun EventCard(
+    event: Event
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
@@ -90,22 +86,20 @@ private fun TripCard(
         Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = trip.tripName,
+                    text = event.eventName,
                 )
                 Text(
-                    text = trip.startDate,
+                    text = event.startTime,
                 )
                 Text(
-                    text = trip.endDate,
+                    text = event.endTime,
                 )
                 Text(
-                    text = trip.participants.toString(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    text = event.cost,
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
-                // space for image/trip logo... don't think the model supports this yet.
+                // space for image/event logo... don't think the model supports this yet.
             }
         }
     }
