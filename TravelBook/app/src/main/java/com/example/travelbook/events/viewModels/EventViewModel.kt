@@ -12,7 +12,7 @@ class EventViewModel(
         private val repository: EventRepository,
         private val navigationController: NavHostController
 ): ViewModel() {
-    private val uripId = "user1"
+    private val uripId = "user1" // don't think we need userId
     private val tripId = "trip1"
 
     val events: List<EventItem> = repository.getAllEventsByTripId(userId, tripId)
