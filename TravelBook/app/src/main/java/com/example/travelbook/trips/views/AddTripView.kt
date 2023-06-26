@@ -26,12 +26,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.travelbook.trips.models.Trip
+import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.ui.theme.Padding
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
 fun AddTripView(
+    viewModel: AddTripViewModel,
     modifier: Modifier = Modifier
 ) {
     var tripName by remember { mutableStateOf(TextFieldValue("")) }
@@ -67,8 +70,8 @@ fun AddTripView(
                 onValueChange = {
                     tripLocation = it
                 },
-                label = { Text(text = "Event Location") },
-                placeholder = { Text(text = "Location of the Event") },
+                label = { Text(text = "Trip Location") },
+                placeholder = { Text(text = "Location of the Trip") },
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
@@ -94,7 +97,15 @@ fun AddTripView(
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                onClick = { /*TODO add view model*/ },
+                onClick = { viewModel.addTripItem(
+                    Trip(
+                        UUID.randomUUID().toString(),
+                        tripName.text,
+                        tripLocation.text,
+                        tripStartDate.text,
+                        tripEndDate.text,
+                        listOf("user1","user2"))
+                ) },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(

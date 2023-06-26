@@ -11,5 +11,6 @@ sealed class NavigationItem(
     object Trip : NavigationItem("Trip", R.drawable.baseline_airplanemode_active_24, "trip")
     object Profile : NavigationItem("Profile", R.drawable.baseline_account_circle_24, "profile")
     object SignIn : NavigationItem("Sign In", R.drawable.logo, "signIn")
+    object AddTrip : NavigationItem("Add Trip", R.drawable.logo, "addTrip")
     // TODO: Add other nav paths here
 }

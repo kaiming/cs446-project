@@ -3,22 +3,31 @@ package com.example.travelbook.trips.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.models.TripRepository
 import kotlinx.coroutines.launch
 
-class AddTripViewModel(private val repository: TripRepository): ViewModel() {
+class AddTripViewModel(
+    private val repository: TripRepository,
+    private val navigationController: NavHostController
+): ViewModel() {
 
     fun addTripItem(newTripItem: Trip) = viewModelScope.launch {
         repository.addTrip(newTripItem)
+        navigationController.navigate(NavigationItem.Trip.route)
     }
 }
 
 
-class AddTripViewModelFactory(private val repository: TripRepository) : ViewModelProvider.Factory {
+class AddTripViewModelFactory(
+    private val repository: TripRepository,
+    private val navigationController: NavHostController
+): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TripRepository::class.java)) {
-            return AddTripViewModel(repository) as T
+        if (modelClass.isAssignableFrom(AddTripViewModel::class.java)) {
+            return AddTripViewModel(repository, navigationController) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
