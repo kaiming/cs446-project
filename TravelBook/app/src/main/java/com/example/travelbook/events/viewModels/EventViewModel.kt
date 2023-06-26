@@ -15,8 +15,8 @@ class EventViewModel(
     private val uripId = "user1"
     private val tripId = "trip1"
 
-    val events: List<Event> = repository.getAllEventsByTripId(userId, tripId)
-    val eventsFlow: Flow<List<Event>> = repository.getAllEventsByTripIdFlow(userId, tripId)
+    val events: List<EventItem> = repository.getAllEventsByTripId(userId, tripId)
+    val eventsFlow: Flow<List<EventItem>> = repository.getAllEventsByTripIdFlow(userId, tripId)
 
     fun onAddEventClicked() {
         navigationController.navigate(NavigationItem.AddEvent.route)
