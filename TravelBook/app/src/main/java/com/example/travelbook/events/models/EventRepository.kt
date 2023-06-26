@@ -19,14 +19,14 @@ class EventRepository {
 
     private val database = Firebase.firestore
 
-    fun getAllEventsByTripIdFlow(tripId: String): Flow<List<EventResponse>> = flow {
+    fun getAllEventsByTripIdFlow(tripId: String): Flow<List<EventItem>> = flow {
         val querySnapshot = database.collection("trips")
                 .document(tripId)
                 .collection("events")
                 .get()
                 .await()
         val events = querySnapshot.documents.mapNotNull { documentSnapshot ->
-            documentSnapshot.toObject<EventResponse>()
+            documentSnapshot.toObject<EventItem>()
         }
         emit(events)
     }
@@ -72,8 +72,8 @@ class EventRepository {
             }
     }
 
-    suspend fun getAllEventsByTripId(tripId: String): List<EventResponse> {
-        val eventList = mutableListOf<EventResponse>()
+    suspend fun getAllEventsByTripId(tripId: String): List<EventItem> {
+        val eventList = mutableListOf<EventItem>()
 
         val snapshot = database.collection("trips")
             .document(tripId)
@@ -83,7 +83,7 @@ class EventRepository {
 
         for (document in snapshot.documents) {
             document.toObject(EventItem::class.java)?.let { event ->
-                eventList.add(EventResponse(event))
+                eventList.add(event)
             }
         }
         return eventList

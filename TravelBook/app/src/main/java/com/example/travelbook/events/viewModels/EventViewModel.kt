@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
-import com.example.travelbook.events.models.EventResponse
 import kotlinx.coroutines.flow.Flow
 
 class EventViewModel(
@@ -14,7 +13,7 @@ class EventViewModel(
         private val navigationController: NavHostController
 ): ViewModel() {
     private val uripId = "user1" // don't think we need userId
-    private val tripId = "trip1"
+    private val tripId = "pDzQFXKFajXwy3OIAuD2"
 
     val eventsFlow = repository.getAllEventsByTripIdFlow(tripId)
 

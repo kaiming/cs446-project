@@ -14,7 +14,7 @@ class AddEventViewModel(
     private val navigationController: NavHostController
 ): ViewModel() {
 
-    private val tripId: String = "wyj79g8Ye5ILpHVuqr7i"
+    private val tripId: String = "pDzQFXKFajXwy3OIAuD2"
 
     fun addEventItem(newEventItem: EventItem) = viewModelScope.launch {
         repository.addEvent(tripId, newEventItem)

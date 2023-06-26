@@ -46,7 +46,7 @@ fun EventView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
-                    EventCard(event.event)
+                    EventCard(event)
                 })
             }
             Box(
