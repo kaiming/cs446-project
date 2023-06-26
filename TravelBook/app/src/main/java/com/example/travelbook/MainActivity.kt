@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // TEMP MODEL TESTING
+        // test
         val tripRepo = TripRepository()
         // val eventRepo = EventRepository()
         // Add trip
