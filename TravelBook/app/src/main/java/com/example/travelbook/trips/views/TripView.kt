@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -45,13 +46,13 @@ fun TripView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            LazyColumn {
+            LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
                     TripCard(trip)
                 })
             }
             Box(
-                modifier = Modifier
+                modifier = Modifier.weight(1f)
                     .fillMaxSize()
                     .padding(Padding.PaddingMedium.size)
                     .background(
