@@ -42,10 +42,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.travelbook.R
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.EventViewModel
@@ -148,6 +150,12 @@ fun NavigationGraph(
         composable(NavigationItem.Trip.route) {
             TripView(
                 viewModel = tripViewModel,
+                onNavigateToAddTrip = {
+                    navController.navigate(NavigationItem.AddTrip.route)
+                },
+                onNavigateToEvents = {
+                    navController.navigate("${NavigationItem.Event.route}/$it")
+                },
                 modifier = modifier
             )
         }
@@ -157,15 +165,39 @@ fun NavigationGraph(
                 modifier = modifier
             )
         }
-        composable(NavigationItem.Event.route) {
+        composable(
+            route = "${NavigationItem.Event.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val tripId = it.arguments?.getString("trip_id") ?: ""
             EventView(
                 viewModel = eventViewModel,
+                tripId = tripId,
+                onNavigateToAddEvent = {
+                    navController.navigate("${NavigationItem.AddEvent.route}/$it")
+                },
                 modifier = modifier
             )
         }
-        composable(NavigationItem.AddEvent.route) {
+        composable(
+            route = "${NavigationItem.AddEvent.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val tripId = it.arguments?.getString("trip_id") ?: ""
             AddEventView(
                 viewModel = addEventViewModel,
+                tripId = tripId,
+                onNavigateToEvents = {
+                    navController.navigate("${NavigationItem.Event.route}/$it")
+                },
                 modifier = modifier
             )
         }

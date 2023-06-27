@@ -9,30 +9,20 @@ import com.example.travelbook.trips.models.TripRepository
 import kotlinx.coroutines.flow.Flow
 
 class TripViewModel(
-    private val repository: TripRepository,
-    private val navigationController: NavHostController
+    repository: TripRepository,
 ): ViewModel() {
     private val userId = "user1"
 
     val trips: List<Trip> = repository.getAllTripsByUserID(userId)
     val tripsFlow: Flow<List<Trip>> = repository.getAllTripsByUserIDFlow(userId)
-
-    fun onAddTripClicked() {
-        navigationController.navigate(NavigationItem.AddTrip.route)
-    }
-
-    fun onTripClicked() {
-        navigationController.navigate(NavigationItem.Event.route)
-    }
 }
 
 class TripViewModelFactory(
-    private val repository: TripRepository,
-    private val navigationController: NavHostController
+    private val repository: TripRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TripViewModel::class.java)) {
-            return TripViewModel(repository, navigationController) as T
+            return TripViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

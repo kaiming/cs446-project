@@ -30,9 +30,11 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun EventView(
     viewModel: EventViewModel,
+    tripId: String,
+    onNavigateToAddEvent: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val events = viewModel.eventsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,7 +52,8 @@ fun EventView(
                 })
             }
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .fillMaxSize()
                     .padding(Padding.PaddingMedium.size)
                     .background(
@@ -60,7 +63,7 @@ fun EventView(
             ) {
                 IconButton(
                     onClick = {
-                        viewModel.onAddEventClicked()
+                        onNavigateToAddEvent(tripId)
                     },
                     modifier = Modifier.size(64.dp)
                 ) {

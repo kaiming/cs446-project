@@ -34,6 +34,8 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun TripView(
     viewModel: TripViewModel,
+    onNavigateToEvents: (String) -> Unit,
+    onNavigateToAddTrip: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -50,7 +52,7 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    TextButton(onClick = { viewModel.onTripClicked() }) {
+                    TextButton(onClick = { onNavigateToEvents(trip.tripId) }) {
                         TripCard(trip)
                     }
                 })
@@ -67,7 +69,7 @@ fun TripView(
             ) {
                 IconButton(
                     onClick = {
-                        viewModel.onAddTripClicked()
+                        onNavigateToAddTrip()
                     },
                     modifier = Modifier.size(64.dp)
                 ) {
@@ -82,7 +84,6 @@ fun TripView(
         }
     }
 }
-
 
 @Composable
 private fun TripCard(

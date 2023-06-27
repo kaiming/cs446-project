@@ -30,6 +30,8 @@ import java.util.UUID
 @Composable
 fun AddEventView(
     viewModel: AddEventViewModel,
+    onNavigateToEvents: (String) -> Unit,
+    tripId: String,
     modifier: Modifier = Modifier
 ) {
     var eventName by remember { mutableStateOf(TextFieldValue("")) }
@@ -114,17 +116,21 @@ fun AddEventView(
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                onClick = { viewModel.addEventItem(
-                    EventItem(
-                        UUID.randomUUID().toString(),
-                        eventName.text,
-                        eventDate.text,
-                        eventStartTime.text,
-                        eventEndTime.text,
-                        eventLocation.text,
-                        eventCost.text
+                onClick = {
+                    viewModel.addEventItem(
+                        EventItem(
+                            UUID.randomUUID().toString(),
+                            eventName.text,
+                            eventDate.text,
+                            eventStartTime.text,
+                            eventEndTime.text,
+                            eventLocation.text,
+                            eventCost.text
+                        ),
+                        tripId = tripId
                     )
-                ) },
+                    onNavigateToEvents(tripId)
+              },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(

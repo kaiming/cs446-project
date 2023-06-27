@@ -51,21 +51,20 @@ class MainActivity : ComponentActivity() {
                 SignInViewModelFactory(navigationController)
             }
 
-            val tripRepository = TripRepository()
             val tripViewModel: TripViewModel by viewModels {
-                TripViewModelFactory(tripRepository, navigationController)
+                TripViewModelFactory(TripRepository())
             }
 
             val addTripViewModel: AddTripViewModel by viewModels {
-                AddTripViewModelFactory(tripRepository, navigationController)
+                AddTripViewModelFactory(TripRepository())
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), navigationController)
+                EventViewModelFactory(EventRepository())
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository(), navigationController)
+                AddEventViewModelFactory(EventRepository())
             }
 
             TravelBookTheme {

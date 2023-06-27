@@ -10,24 +10,19 @@ import com.example.travelbook.trips.models.TripRepository
 import kotlinx.coroutines.launch
 
 class AddTripViewModel(
-    private val repository: TripRepository,
-    private val navigationController: NavHostController
+    private val repository: TripRepository
 ): ViewModel() {
-
     fun addTripItem(newTripItem: Trip) = viewModelScope.launch {
         repository.addTrip(newTripItem)
-        navigationController.navigate(NavigationItem.Trip.route)
     }
 }
 
-
 class AddTripViewModelFactory(
-    private val repository: TripRepository,
-    private val navigationController: NavHostController
+    private val repository: TripRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddTripViewModel::class.java)) {
-            return AddTripViewModel(repository, navigationController) as T
+            return AddTripViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

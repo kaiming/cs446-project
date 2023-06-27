@@ -10,25 +10,19 @@ import com.example.travelbook.navigation.models.NavigationItem
 import kotlinx.coroutines.launch
 
 class AddEventViewModel(
-    private val repository: EventRepository,
-    private val navigationController: NavHostController
+    private val repository: EventRepository
 ): ViewModel() {
-
-    private val tripId: String = "pDzQFXKFajXwy3OIAuD2"
-
-    fun addEventItem(newEventItem: EventItem) = viewModelScope.launch {
+    fun addEventItem(newEventItem: EventItem, tripId: String) = viewModelScope.launch {
         repository.addEvent(tripId, newEventItem)
-        navigationController.navigate(NavigationItem.Event.route)
     }
 }
 
 class AddEventViewModelFactory(
-    private val repository: EventRepository,
-    private val navigationController: NavHostController
+    private val repository: EventRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddEventViewModel::class.java)) {
-            return AddEventViewModel(repository, navigationController) as T
+            return AddEventViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
