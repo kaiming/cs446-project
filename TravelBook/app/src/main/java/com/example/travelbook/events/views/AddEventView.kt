@@ -31,9 +31,11 @@ import java.util.UUID
 fun AddEventView(
     viewModel: AddEventViewModel,
     onNavigateToEvents: (String) -> Unit,
-    tripId: String,
+    tripId: String?,
     modifier: Modifier = Modifier
 ) {
+    if (tripId !is String) return
+
     var eventName by remember { mutableStateOf(TextFieldValue("")) }
     var eventLocation by remember { mutableStateOf(TextFieldValue("")) }
     var eventDate by remember { mutableStateOf(TextFieldValue("")) }

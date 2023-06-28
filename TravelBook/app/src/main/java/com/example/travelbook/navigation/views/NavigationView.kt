@@ -173,10 +173,9 @@ fun NavigationGraph(
                 }
             )
         ) {
-            val tripId = it.arguments?.getString("trip_id") ?: ""
             EventView(
                 viewModel = eventViewModel,
-                tripId = tripId,
+                tripId = it.arguments?.getString("trip_id"),
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },
@@ -191,10 +190,9 @@ fun NavigationGraph(
                 }
             )
         ) {
-            val tripId = it.arguments?.getString("trip_id") ?: ""
             AddEventView(
                 viewModel = addEventViewModel,
-                tripId = tripId,
+                tripId = it.arguments?.getString("trip_id"),
                 onNavigateToEvents = {
                     navController.navigate("${NavigationItem.Event.route}/$it")
                 },

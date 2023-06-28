@@ -30,10 +30,12 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun EventView(
     viewModel: EventViewModel,
-    tripId: String,
+    tripId: String?,
     onNavigateToAddEvent: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (tripId !is String) return
+
     val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(
