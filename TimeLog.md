@@ -10,4 +10,5 @@
 | 2023/06/13 | -- | -- | -- | -- | 2 | 1.5 | 1.5 | D2: Buddy proposal document |
 | 2023/06/14 | -- | 1.5 | -- | -- | 0.5 | 0.75 | -- | D2: Buddy proposal document |
 | 2023/06/24 | 6 | -- | 8.5 | 8.5 | -- | -- | -- | D3: Demo feature work|
-| 2023/06/25 | -- | -- | -- | -- | -- | -- | -- | D3: Demo feature work|
+| 2023/06/25 | -- | -- | -- | 8 | -- | -- | -- | D3: Demo feature work|
+| 2023/06/25 | -- | -- | -- | 2 | -- | -- | -- | Passing data between views and improving nav |
