@@ -25,7 +25,6 @@ import com.example.travelbook.events.viewModels.ModifyEventViewModel
 import com.example.travelbook.ui.theme.Padding
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun ModifyEventView(
     viewModel: ModifyEventViewModel,
