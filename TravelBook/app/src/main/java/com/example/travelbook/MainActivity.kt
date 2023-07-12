@@ -18,6 +18,7 @@ import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
+import com.example.travelbook.signIn.SignInRepo
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
             val navigationController = rememberNavController()
 
             val signInViewModel: SignInViewModel by viewModels {
-                SignInViewModelFactory(navigationController)
+                SignInViewModelFactory(navigationController, SignInRepo())
             }
 
             val tripViewModel: TripViewModel by viewModels {

@@ -1,47 +1,60 @@
 package com.example.travelbook.signIn.viewModels
 
-import android.content.Intent
-import androidx.compose.runtime.LaunchedEffect
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.travelbook.navigation.models.NavigationItem
-import com.example.travelbook.signIn.signInRepository
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.example.travelbook.signIn.SignInRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignInViewModel(
-    private val navigationController: NavHostController, private val repository: signInRepository
+    private val navigationController: NavHostController, private val repository: SignInRepo
 ): ViewModel() {
     fun onSignInClicked() {
         navigationController.navigate(NavigationItem.Map.route)
     }
 
-//    fun checkUserSignedIn() {
-//        repository.getFirebaseAuth().addAuthStateListener { firebaseAuth ->
-//            val user = firebaseAuth.currentUser
-//            if (user != null) {
-//                // User is signed in
-//                prefs.signedInUser = user.uid
-//            } else {
-//                // User is signed out
-//                prefs.signedInUser = null
-//            }
-//        }
-//    }
+    fun firebaseAuthWithEmailAndPassword(email: String, password: String, context: Context) {
+        viewModelScope.launch {
+            val authResult = repository.signInWithEmailAndPassword(email, password)
+            if (authResult.isSuccessful) {
 
-    fun firebaseAuthWithEmailAndPassword(email: String, password: String) {
-        repository.signInWithEmailAndPassword(email, password)
+                val user = authResult.result.user
+
+                // should never hit
+                if (user == null) {
+                    // error state
+                }
+
+                val sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                withContext(Dispatchers.IO) {
+                    user?.let {
+                        sharedPreferences.edit {
+                            putString("USER_ID", it.uid)
+                            putString("USER_NAME", it.displayName)
+                            putString("USER_EMAIL", it.email)
+                        }
+                    }
+                }
+
+                navigationController.navigate(NavigationItem.Map.route)
+            }
+        }
     }
 
+    // incomplete
     fun firebaseAuthWithGoogle(idToken: String?) {
         repository.firebaseAuthWithGoogle(idToken)
     }
 }
 
 class SignInViewModelFactory(
-    private val navigationController: NavHostController, private val signInRepository: signInRepository
+    private val navigationController: NavHostController, private val signInRepository: SignInRepo
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(SignInViewModel::class.java))
