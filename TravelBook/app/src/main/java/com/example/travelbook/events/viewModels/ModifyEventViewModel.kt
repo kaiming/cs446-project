@@ -5,13 +5,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class ModifyEventViewModel(
     private val repository: EventRepository
 ) : ViewModel() {
+    fun getEventById(eventId: String): Flow<EventItem?> {
+        return repository.getEventByIdFlow(eventId)
+    }
+
     fun modifyEventItem(eventItem: EventItem) = viewModelScope.launch {
-        repository.modifyEvent(eventItem)
+        repository.editEvent(eventItem.tripId, eventItem.eventId, eventItem)
     }
 }
 
