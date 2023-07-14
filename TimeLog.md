@@ -14,5 +14,5 @@
 | 2023/06/25 | -- | -- | -- | 2 | -- | -- | -- | Passing data between views and improving nav |
 | 2023/06/29 | 1 | -- | -- | -- | 3 | 3 | 3 | D3: Prototype document work |
 | 2023/07/03 | -- | -- | -- | 1.5 | -- | -- | -- | Changing input types |
-| 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | modifiable events |
+| 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | working on authentication layer |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
