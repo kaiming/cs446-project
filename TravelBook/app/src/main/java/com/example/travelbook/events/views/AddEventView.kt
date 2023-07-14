@@ -45,7 +45,7 @@ import java.util.UUID
 @Composable
 fun AddEventView(
     viewModel: AddEventViewModel,
-    onNavigateToEvents: (String) -> Unit,
+    onNavigateToEvents: () -> Unit,
     tripId: String?,
     modifier: Modifier = Modifier
 ) {
@@ -202,20 +202,24 @@ fun AddEventView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
-                    viewModel.addEventItem(
-                        EventItem(
-                            eventId =  UUID.randomUUID().toString(),
-                            name = eventName.text,
-                            location = eventLocation.text,
-                            startDate = eventStartDate.toString(),
-                            endDate = eventEndDate.toString(),
-                            startTime = eventStartTime.toString(),
-                            endTime = eventEndTime.toString(),
-                            cost = eventCost.text
-                        ),
-                        tripId = tripId
-                    )
-                    onNavigateToEvents(tripId)
+                    if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventCost.text.isNotBlank()) {
+                        viewModel.addEventItem(
+                            EventItem(
+                                eventId =  UUID.randomUUID().toString(),
+                                name = eventName.text,
+                                location = eventLocation.text,
+                                startDate = eventStartDate.toString(),
+                                endDate = eventEndDate.toString(),
+                                startTime = eventStartTime.toString(),
+                                endTime = eventEndTime.toString(),
+                                cost = eventCost.text
+                            ),
+                            tripId = tripId
+                        )
+                        onNavigateToEvents()
+                    } else {
+                        // TODO: ERROR modal
+                    }
               },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
