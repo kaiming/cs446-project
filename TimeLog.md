@@ -16,4 +16,5 @@
 | 2023/07/03 | -- | -- | -- | 1.5 | -- | -- | -- | Changing input types |
 | 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | working on authentication layer |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
+| 2023/07/13 | -- | -- | 6 | -- | -- | -- | -- | modifiable events |
 | 2023/07/14 | -- | 3 | -- | -- | -- | -- | -- | D4: Architectural Styles
