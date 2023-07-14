@@ -12,12 +12,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travelbook.events.models.EventItem
@@ -28,16 +30,19 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun ModifyEventView(
     viewModel: ModifyEventViewModel,
-    eventItem: EventItem,
+    eventId: String?,
     onNavigateToEvents: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var eventName by remember { mutableStateOf(TextFieldValue(eventItem.name)) }
-    var eventLocation by remember { mutableStateOf(TextFieldValue(eventItem.location)) }
-    var eventDate by remember { mutableStateOf(TextFieldValue(eventItem.date)) }
-    var eventStartTime by remember { mutableStateOf(TextFieldValue(eventItem.startTime)) }
-    var eventEndTime by remember { mutableStateOf(TextFieldValue(eventItem.endTime)) }
-    var eventCost by remember { mutableStateOf(TextFieldValue(eventItem.cost)) }
+    if (eventId == null) return
+    val event = viewModel.getEventById(eventId).collectAsState(null).value ?: return
+
+    var eventName by remember { mutableStateOf(TextFieldValue(event.name)) }
+    var eventLocation by remember { mutableStateOf(TextFieldValue(event.location)) }
+    var eventDate by remember { mutableStateOf(TextFieldValue(event.date)) }
+    var eventStartTime by remember { mutableStateOf(TextFieldValue(event.startTime)) }
+    var eventEndTime by remember { mutableStateOf(TextFieldValue(event.endTime)) }
+    var eventCost by remember { mutableStateOf(TextFieldValue(event.cost)) }
 
     Box(
         modifier = modifier
@@ -117,7 +122,8 @@ fun ModifyEventView(
                 onClick = {
                     viewModel.modifyEventItem(
                         EventItem(
-                            eventItem.id,
+                            event.eventId,
+                            event.tripId,
                             eventName.text,
                             eventDate.text,
                             eventStartTime.text,
@@ -140,3 +146,4 @@ fun ModifyEventView(
         }
     }
 }
+
