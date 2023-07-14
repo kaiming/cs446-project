@@ -12,7 +12,7 @@
 | 2023/06/24 | 6 | -- | 8.5 | 8.5 | 8 | -- | -- | D3: Demo feature work|
 | 2023/06/25 | 2.5 | -- | -- | 8 | -- | 4 | -- | D3: Demo feature work|
 | 2023/06/25 | -- | -- | -- | 2 | -- | -- | -- | Passing data between views and improving nav |
-| 2023/06/29 | -- | -- | -- | -- | 3 | 3 | 3 | D3: Prototype document work|
+| 2023/06/29 | 1 | -- | -- | -- | 3 | 3 | 3 | D3: Prototype document work|
 | 2023/07/03 | -- | -- | -- | 1.5 | -- | -- | -- | Changing input types |
 | 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | modifiable events |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
