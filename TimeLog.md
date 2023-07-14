@@ -18,5 +18,5 @@
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
 | 2023/07/13 | -- | -- | 6 | -- | -- | -- | -- | modifiable events |
 | 2023/07/14 | -- | 3 | -- | 0.5 | -- | 3 | -- | D4: Architectural Styles
-| 2023/07/14 | -- | -- | -- | 2.5 | -- | -- | -- | Adding Places API
+| 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs
