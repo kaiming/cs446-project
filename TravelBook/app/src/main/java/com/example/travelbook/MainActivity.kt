@@ -23,25 +23,17 @@ import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
-
-// val trip = createTrip(
-//     "Trip with friends", "2021-10-01", "2021-10-10", List(1){"user1"}
-// )
-
-private const val TAG = "MainActivity"
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TEMP MODEL TESTING
-        val tripRepo = TripRepository()
-        // val eventRepo = EventRepository()
-        // Add trip
-        // tripRepo.addTrip(trip)
-        // Add event
-        // eventRepo.addEvent("wyj79g8Ye5ILpHVuqr7i", EventItem("Event 1", "2021-10-01", "2021-10-02", "123 f u. . st"))
-        // tripRepo.addUserToTrip("wyj79g8Ye5ILpHVuqr7i", "user2")
+        // Initialize the SDK
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
+
+        // Create a new PlacesClient instance
+        val placesClient = Places.createClient(this)
 
         setContent {
 
