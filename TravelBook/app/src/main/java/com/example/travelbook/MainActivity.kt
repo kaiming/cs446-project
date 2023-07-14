@@ -16,6 +16,8 @@ import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.trips.models.TripRepository
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
@@ -59,6 +61,10 @@ class MainActivity : ComponentActivity() {
                 AddEventViewModelFactory(EventRepository())
             }
 
+            val modifyEventViewModel: ModifyEventViewModel by viewModels {
+                ModifyEventViewModelFactory(EventRepository())
+            }
+
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -71,7 +77,8 @@ class MainActivity : ComponentActivity() {
                         tripViewModel = tripViewModel,
                         addTripViewModel = addTripViewModel,
                         eventViewModel = eventViewModel,
-                        addEventViewModel = addEventViewModel
+                        addEventViewModel = addEventViewModel,
+                        modifyEventViewModel = modifyEventViewModel
                     )
                 }
             }
