@@ -102,7 +102,7 @@ private fun EventCard(
                     text = "From: ${event.startDate} at ${event.startTime}",
                 )
                 Text(
-                    text = "To: ${event.endDate} at ${event.endDate}",
+                    text = "To: ${event.endDate} at ${event.endTime}",
                 )
                 Text(
                     text = event.cost,

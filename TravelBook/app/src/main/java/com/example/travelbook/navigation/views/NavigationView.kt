@@ -162,6 +162,9 @@ fun NavigationGraph(
         composable(NavigationItem.AddTrip.route) {
             AddTripView(
                 viewModel = addTripViewModel,
+                onNavigateToTrip = {
+                    navController.popBackStack()
+                },
                 modifier = modifier
             )
         }
@@ -194,7 +197,7 @@ fun NavigationGraph(
                 viewModel = addEventViewModel,
                 tripId = it.arguments?.getString("trip_id"),
                 onNavigateToEvents = {
-                    navController.navigate("${NavigationItem.Event.route}/$it")
+                    navController.popBackStack()
                 },
                 modifier = modifier
             )

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.ui.theme.Padding
@@ -42,6 +43,7 @@ import java.util.UUID
 @Composable
 fun AddTripView(
     viewModel: AddTripViewModel,
+    onNavigateToTrip: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -143,15 +145,23 @@ fun AddTripView(
             }
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                onClick = { viewModel.addTripItem(
-                    Trip(
-                        UUID.randomUUID().toString(),
-                        tripName.text,
-                        tripLocation.text,
-                        tripStartDate.toString(),
-                        tripEndDate.toString(),
-                        listOf("user1","user2"))
-                ) },
+                onClick = {
+                    if(tripName.text.isNotBlank() && tripLocation.text.isNotBlank() && tripName.text.isNotBlank()) {
+                        viewModel.addTripItem(
+                            Trip(
+                                UUID.randomUUID().toString(),
+                                tripName.text,
+                                tripLocation.text,
+                                tripStartDate.toString(),
+                                tripEndDate.toString(),
+                                listOf("user1","user2"))
+                        )
+                        onNavigateToTrip()
+                    }
+                    else {
+                        // TODO: Show error
+                    }
+                },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(
