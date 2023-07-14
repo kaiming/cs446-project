@@ -14,6 +14,7 @@ sealed class NavigationItem(
     object SignIn : NavigationItem("Sign In", R.drawable.logo, "signIn")
     object AddTrip : NavigationItem("Add Trip", R.drawable.logo, "addTrip")
     object AddEvent : NavigationItem("Add Event", R.drawable.logo, "addEvent")
+    object SignUp : NavigationItem("Sign Up", R.drawable.logo, "signUp")
     // TODO: Add other nav paths here
 
 }

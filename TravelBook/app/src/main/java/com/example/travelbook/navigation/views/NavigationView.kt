@@ -57,8 +57,12 @@ import com.example.travelbook.events.views.EventView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
+import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModel
+import com.example.travelbook.signIn.viewModels.SignUpViewModel
+import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
+import com.example.travelbook.signIn.views.SignUpView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.views.TripView
@@ -74,6 +78,8 @@ fun NavigationView(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    newSignInViewModel: NewSignInViewModel,
+    signUpViewModel: SignUpViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
@@ -124,6 +130,8 @@ fun NavigationView(
             addTripViewModel = addTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
+            newSignInViewModel = newSignInViewModel,
+            signUpViewModel = signUpViewModel,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -139,6 +147,8 @@ fun NavigationGraph(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    newSignInViewModel: NewSignInViewModel,
+    signUpViewModel: SignUpViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController, startDestination = NavigationItem.SignIn.route) {
@@ -205,7 +215,10 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.SignIn.route) {
-            SignInView(signInViewModel)
+            NewSignInView(newSignInViewModel)
+        }
+        composable(NavigationItem.SignUp.route) {
+            SignUpView(signUpViewModel)
         }
     }
 }
