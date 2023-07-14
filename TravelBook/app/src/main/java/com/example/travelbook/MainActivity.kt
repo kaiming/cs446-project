@@ -18,23 +18,16 @@ import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
+import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
-import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize the SDK
-        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
-
-        // Create a new PlacesClient instance
-        val placesClient = Places.createClient(this)
-
         setContent {
 
             val navigationController = rememberNavController()
@@ -56,7 +49,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository())
+                AddEventViewModelFactory(EventRepository(), GooglePredictionRepository())
             }
 
             TravelBookTheme {

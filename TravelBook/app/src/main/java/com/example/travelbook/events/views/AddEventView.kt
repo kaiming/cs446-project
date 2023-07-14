@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -31,8 +33,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.AddEventViewModel
+import com.example.travelbook.googlePrediction.models.GooglePrediction
+import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
+import com.example.travelbook.googlePrediction.models.emptyGooglePredictionResponse
 import com.example.travelbook.ui.theme.Padding
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -126,6 +132,11 @@ fun AddEventView(
         false
     )
 
+
+    val googlePredictionResponseResource: GooglePredictionResponse by viewModel.getPredictions(
+        input = eventLocation.text
+    ).collectAsStateWithLifecycle(initialValue = emptyGooglePredictionResponse)
+
     Box(
         modifier = modifier
     ) {
@@ -199,6 +210,11 @@ fun AddEventView(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
+            LazyColumn {
+                items(items = googlePredictionResponseResource.predictions, itemContent = { predictions ->
+                    Text(text = predictions.description)
+                })
+            }
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
