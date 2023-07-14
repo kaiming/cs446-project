@@ -114,4 +114,12 @@ dependencies {
 
     // Google Places
     implementation("com.google.android.libraries.places:places:3.2.0")
+
+    // moshi
+    val moshi_version = "1.14.0"
+    val retrofit_version = "2.9.0"
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofit_version")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
 }
