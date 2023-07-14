@@ -31,6 +31,27 @@ class EventRepository {
         emit(events)
     }
 
+    fun getEventByIdFlow(eventId: String): Flow<EventItem?> = callbackFlow {
+        val eventDocument = database.collectionGroup("events")
+            .whereEqualTo("id", eventId)
+            .limit(1)
+            .addSnapshotListener { querySnapshot, exception ->
+                if (exception != null) {
+                    close(exception)
+                    return@addSnapshotListener
+                }
+
+                if (querySnapshot != null && !querySnapshot.isEmpty) {
+                    val event = querySnapshot.documents[0].toObject<EventItem>()
+                    trySend(event).isSuccess
+                } else {
+                    trySend(null).isSuccess
+                }
+            }
+
+        awaitClose { eventDocument.remove() }
+    }
+
     fun addEvent(tripId: String, event: EventItem) {
         database.collection("trips")
             .document(tripId)
@@ -58,7 +79,7 @@ class EventRepository {
             }
     }
 
-    fun editEvent(userId: String, tripId: String, eventId: String, event: EventItem) {
+    fun editEvent(tripId: String, eventId: String, event: EventItem) {
         database.collection("trips")
             .document(tripId)
             .collection("events")

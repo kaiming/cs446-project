@@ -51,9 +51,11 @@ import androidx.navigation.navArgument
 import com.example.travelbook.R
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
 import com.example.travelbook.events.views.AddEventView
 import com.example.travelbook.events.views.AddTripView
 import com.example.travelbook.events.views.EventView
+import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
@@ -74,6 +76,7 @@ fun NavigationView(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    modifyEventViewModel: ModifyEventViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
@@ -124,6 +127,7 @@ fun NavigationView(
             addTripViewModel = addTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
+            modifyEventViewModel = modifyEventViewModel,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -139,6 +143,7 @@ fun NavigationGraph(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    modifyEventViewModel: ModifyEventViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController, startDestination = NavigationItem.SignIn.route) {
@@ -182,6 +187,9 @@ fun NavigationGraph(
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },
+                onNavigateToModifyEvent = {
+                    navController.navigate("${NavigationItem.ModifyEvent.route}/$it")
+                },
                 modifier = modifier
             )
         }
@@ -198,6 +206,23 @@ fun NavigationGraph(
                 tripId = it.arguments?.getString("trip_id"),
                 onNavigateToEvents = {
                     navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.ModifyEvent.route}/{event_id}",
+            arguments = listOf(
+                navArgument("event_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ModifyEventView(
+                viewModel = modifyEventViewModel,
+                eventId = it.arguments?.getString("trip_id"),
+                onNavigateToEvents = {
+                    navController.navigate("${NavigationItem.Event.route}/$it")
                 },
                 modifier = modifier
             )
