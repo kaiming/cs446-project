@@ -122,6 +122,7 @@ fun AddEventView(
                     viewModel.addEventItem(
                         EventItem(
                             UUID.randomUUID().toString(),
+                            tripId,
                             eventName.text,
                             eventDate.text,
                             eventStartTime.text,

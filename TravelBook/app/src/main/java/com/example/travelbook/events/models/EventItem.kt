@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentId
 data class EventItem(
     @DocumentId
     var eventId: String,
+    var tripId: String,
     var name: String,
     var date: String,
     var startTime: String,
@@ -15,6 +16,7 @@ data class EventItem(
 ) {
     constructor() : this(
         eventId = "",
+        tripId = "",
         name = "",
         date = "",
         startTime = "",
