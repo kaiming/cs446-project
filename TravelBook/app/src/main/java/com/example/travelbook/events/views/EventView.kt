@@ -1,6 +1,7 @@
 package com.example.travelbook.events.views
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,12 +27,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.ui.theme.Padding
+import com.google.common.collect.UnmodifiableListIterator
 
 @Composable
 fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
     onNavigateToAddEvent: (String) -> Unit,
+    onNavigateToModifyEvent: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
@@ -50,7 +53,9 @@ fun EventView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
-                    EventCard(event)
+                    EventCard(event) {
+                        onNavigateToModifyEvent(event.eventId)
+                    }
                 })
             }
             Box(
@@ -84,11 +89,13 @@ fun EventView(
 
 @Composable
 private fun EventCard(
-    event: EventItem
+    event: EventItem,
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier.padding(Padding.PaddingMedium.size)
+            .clickable { onClick() }
     ) {
         Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
             Column(modifier = Modifier.weight(1f)) {

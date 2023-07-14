@@ -12,36 +12,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travelbook.events.models.EventItem
-import com.example.travelbook.events.viewModels.AddEventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
 import com.example.travelbook.ui.theme.Padding
-import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEventView(
-    viewModel: AddEventViewModel,
-    onNavigateToEvents: (String) -> Unit,
-    tripId: String?,
+fun ModifyEventView(
+    viewModel: ModifyEventViewModel,
+    eventId: String?,
+    onNavigateToEvents: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (tripId !is String) return
+    if (eventId == null) return
+    val event = viewModel.getEventById(eventId).collectAsState(null).value ?: return
 
-    var eventName by remember { mutableStateOf(TextFieldValue("")) }
-    var eventLocation by remember { mutableStateOf(TextFieldValue("")) }
-    var eventDate by remember { mutableStateOf(TextFieldValue("")) }
-    var eventStartTime by remember { mutableStateOf(TextFieldValue("")) }
-    var eventEndTime by remember { mutableStateOf(TextFieldValue("")) }
-    var eventCost by remember { mutableStateOf(TextFieldValue("")) }
+    var eventName by remember { mutableStateOf(TextFieldValue(event.name)) }
+    var eventLocation by remember { mutableStateOf(TextFieldValue(event.location)) }
+    var eventDate by remember { mutableStateOf(TextFieldValue(event.date)) }
+    var eventStartTime by remember { mutableStateOf(TextFieldValue(event.startTime)) }
+    var eventEndTime by remember { mutableStateOf(TextFieldValue(event.endTime)) }
+    var eventCost by remember { mutableStateOf(TextFieldValue(event.cost)) }
 
     Box(
         modifier = modifier
@@ -51,7 +52,7 @@ fun AddEventView(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Add Event",
+                text = "Modify Event",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -119,21 +120,20 @@ fun AddEventView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
-                    viewModel.addEventItem(
+                    viewModel.modifyEventItem(
                         EventItem(
-                            UUID.randomUUID().toString(),
-                            tripId,
+                            event.eventId,
+                            event.tripId,
                             eventName.text,
                             eventDate.text,
                             eventStartTime.text,
                             eventEndTime.text,
                             eventLocation.text,
                             eventCost.text
-                        ),
-                        tripId = tripId
+                        )
                     )
-                    onNavigateToEvents(tripId)
-              },
+                    onNavigateToEvents()
+                },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(
@@ -146,3 +146,4 @@ fun AddEventView(
         }
     }
 }
+
