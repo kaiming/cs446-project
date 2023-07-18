@@ -20,6 +20,9 @@
 | 2023/07/14 | 3 | 3 | -- | 0.5 | 1.5 | 3 | -- | D4: Architectural Styles |
 | 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
+| 2023/07/14 | -- | -- | 2 | 2 | -- | -- | -- | upcoming maps feature designing and planning |
 | 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
+| 2023/07/16 | -- | -- | 2 | -- | -- | -- | -- | modifiable events debugging |
 | 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
 | 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
+| 2023/07/17 | -- | -- | 6 | 4 | -- | -- | -- | modifiable events debugging |
