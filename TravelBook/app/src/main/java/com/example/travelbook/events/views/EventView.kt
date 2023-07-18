@@ -20,12 +20,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -38,6 +42,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,8 +66,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 @OptIn(ExperimentalPermissionsApi::class)
 
 // State variables for popup
-val showAddUserPopup = remember { mutableStateOf(false) }
-val usernameTextFieldValue = remember { mutableStateOf(TextFieldValue()) }
 
 @Composable
 fun EventView(
@@ -85,6 +98,8 @@ fun EventView(
         android.Manifest.permission.READ_MEDIA_IMAGES
     )
 
+    val showAddUserPopup = remember { mutableStateOf(false) }
+    val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -191,8 +206,8 @@ fun EventView(
                 AddUserPopup(
                     onClosePopup = { showAddUserPopup.value = false },
                     onAddUser = { userId ->
-                        viewModel.addUserToTrip(tripId, userId)
-                        showAddUserPopup.value = false
+                            viewModel.addUserToTrip(tripId, userId)
+                            showAddUserPopup.value = false
                     }
                 )
             }
@@ -236,6 +251,7 @@ private fun EventCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
     val progress = (currentBudget / totalBudget)
@@ -277,15 +293,17 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
 }
 private fun AddUserPopup(
     onClosePopup: () -> Unit,
-    onAddUser: (String) -> Unit
+    onAddUser: (String) -> Unit,
 ) {
+    val usernameTextFieldValue = remember { mutableStateOf(TextFieldValue()) }
     AlertDialog(
         onDismissRequest = onClosePopup,
         title = { Text(text = "Add User") },
         text = {
             TextField(
-                value = usernameTextFieldValue,
+                value = usernameTextFieldValue.value,
                 onValueChange = { usernameTextFieldValue.value = it },
+                label = { Text(text = "UserId") },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done
@@ -293,9 +311,10 @@ private fun AddUserPopup(
                 keyboardActions = KeyboardActions(
                     onDone = { onAddUser(usernameTextFieldValue.value.text) }
                 )
-        ) },
+            )
+        },
         confirmButton = {
-            Button(onClick = onAddUser(usernameTextFieldValue.value.text)) {
+            OutlinedButton(onClick = { onAddUser(usernameTextFieldValue.value.text) }) {
                 Text(text = "Add")
             }
         },
