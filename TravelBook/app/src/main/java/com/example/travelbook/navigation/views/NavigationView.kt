@@ -80,8 +80,11 @@ fun NavigationView(
     addEventViewModel: AddEventViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
+
+    val startDestination = if (isLoggedIn) NavigationItem.Map.route else NavigationItem.SignIn.route
     val navigationItems = listOf(
         NavigationItem.Map,
         NavigationItem.Trip,
@@ -132,6 +135,7 @@ fun NavigationView(
             addEventViewModel = addEventViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
+            startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -149,9 +153,10 @@ fun NavigationGraph(
     addEventViewModel: AddEventViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    startDestination: String,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController, startDestination = NavigationItem.SignIn.route) {
+    NavHost(navController, startDestination = startDestination) {
         composable(NavigationItem.Map.route) {
             MapView(
                 modifier = modifier

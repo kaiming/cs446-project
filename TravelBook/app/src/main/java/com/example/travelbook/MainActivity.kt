@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.travelbook.navigation.views.NavigationView
@@ -19,6 +20,7 @@ import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
+import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.signIn.AuthRepo
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.NewSignInViewModelFactory
@@ -80,6 +82,10 @@ class MainActivity : ComponentActivity() {
                 AddEventViewModelFactory(EventRepository())
             }
 
+            val userDataSource = SharedPreferencesUserDataSource(this)
+            val user = userDataSource.getUser()
+            val isLoggedIn = user != null
+
             TravelBookTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -94,7 +100,8 @@ class MainActivity : ComponentActivity() {
                         eventViewModel = eventViewModel,
                         addEventViewModel = addEventViewModel,
                         newSignInViewModel = newSignInViewModel,
-                        signUpViewModel = signUpViewModel
+                        signUpViewModel = signUpViewModel,
+                        isLoggedIn = isLoggedIn
                     )
                 }
             }
