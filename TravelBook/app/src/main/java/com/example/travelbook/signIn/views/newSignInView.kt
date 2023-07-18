@@ -80,13 +80,13 @@ fun NewSignInView(viewModel: NewSignInViewModel) {
         ) {
             Text(text = "Sign In")
         }
-        TextButton(
-            onClick = {
-                viewModel.onSignUpClicked()
-            }
-        ) {
-            Text(text = "Don't have an account? Sign up")
-        }
+//        TextButton(
+//            onClick = {
+//                viewModel.onSignUpClicked()
+//            }
+//        ) {
+//            Text(text = "Don't have an account? Sign up")
+//        }
     }
 
     val loadingState by viewModel.loadingState.collectAsState()
