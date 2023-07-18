@@ -16,6 +16,9 @@ class EventViewModel(
     fun getEventsFlowByTripId(tripId: String): Flow<List<EventItem>> {
         return repository.getAllEventsByTripIdFlow(tripId)
     }
+    fun addUserToTrip(tripId: String, userId: String) {
+        repository.addUserToTrip(tripId, userId)
+    }
 }
 
 class EventViewModelFactory(
