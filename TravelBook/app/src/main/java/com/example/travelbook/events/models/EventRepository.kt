@@ -2,6 +2,7 @@ package com.example.travelbook.events.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
