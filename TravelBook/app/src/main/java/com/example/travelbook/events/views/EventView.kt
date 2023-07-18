@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,6 +49,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 @OptIn(ExperimentalPermissionsApi::class)
+
+// State variables for popup
+val showAddUserPopup = remember { mutableStateOf(false) }
+val usernameTextFieldValue = remember { mutableStateOf(TextFieldValue()) }
+
 @Composable
 fun EventView(
     viewModel: EventViewModel,
@@ -175,10 +181,24 @@ fun EventView(
                     }
                 }
             }
+            Button(
+                onClick = { showAddUserPopup.value = true },
+                modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp)
+            ) {
+                Text(text = "Add User")
+            }
+            if (showAddUserPopup.value) {
+                AddUserPopup(
+                    onClosePopup = { showAddUserPopup.value = false },
+                    onAddUser = { userId ->
+                        viewModel.addUserToTrip(tripId, userId)
+                        showAddUserPopup.value = false
+                    }
+                )
+            }
         }
     }
 }
-
 
 @Composable
 private fun EventCard(
@@ -254,4 +274,35 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
             )
         }
     }
+}
+private fun AddUserPopup(
+    onClosePopup: () -> Unit,
+    onAddUser: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClosePopup,
+        title = { Text(text = "Add User") },
+        text = {
+            TextField(
+                value = usernameTextFieldValue,
+                onValueChange = { usernameTextFieldValue.value = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onAddUser(usernameTextFieldValue.value.text) }
+                )
+        ) },
+        confirmButton = {
+            Button(onClick = onAddUser(usernameTextFieldValue.value.text)) {
+                Text(text = "Add")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = onClosePopup) {
+                Text(text = "Cancel")
+            }
+        }
+    )
 }

@@ -44,6 +44,9 @@ class EventViewModel(
             Log.d("UPLOAD_ERROR", "Failed to upload image.")
         }
     }
+    fun addUserToTrip(tripId: String, userId: String) {
+        repository.addUserToTrip(tripId, userId)
+    }
 }
 
 class EventViewModelFactory(
