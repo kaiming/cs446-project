@@ -21,5 +21,5 @@
 | 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
 | 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
-| 2023/07/17 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | Group meeting |
+| 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
 
