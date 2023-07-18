@@ -22,4 +22,4 @@
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
 | 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
 | 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
-
+| 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
