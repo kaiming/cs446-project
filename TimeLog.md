@@ -19,6 +19,7 @@
 | 2023/07/13 | -- | -- | 6 | -- | -- | -- | -- | modifiable events |
 | 2023/07/14 | 3 | 3 | -- | 0.5 | -- | 3 | -- | D4: Architectural Styles |
 | 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
-| 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs | 
-| 2023/07/14 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | Group meeting |
+| 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
+| 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
+| 2023/07/17 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | 1.5 | Group meeting |
 
