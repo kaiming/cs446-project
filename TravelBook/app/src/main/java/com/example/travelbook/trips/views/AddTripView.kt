@@ -50,7 +50,6 @@ fun AddTripView(
     val calendar = Calendar.getInstance()
 
     var tripName by remember { mutableStateOf(TextFieldValue("")) }
-    var tripLocation by remember { mutableStateOf(TextFieldValue("")) }
     var tripStartDate by remember { mutableStateOf(
         LocalDate.of(
             calendar.get(Calendar.YEAR),
@@ -112,17 +111,6 @@ fun AddTripView(
                 singleLine = true,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            TextField(
-                value = tripLocation,
-                onValueChange = {
-                    tripLocation = it
-                },
-                label = { Text(text = "Trip Location") },
-                placeholder = { Text(text = "Location of the Trip") },
-                shape = RoundedCornerShape(10.dp),
-                singleLine = true,
-                modifier = Modifier.padding(Padding.PaddingSmall.size)
-            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -146,12 +134,11 @@ fun AddTripView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
-                    if(tripName.text.isNotBlank() && tripLocation.text.isNotBlank() && tripName.text.isNotBlank()) {
+                    if(tripName.text.isNotBlank() && tripName.text.isNotBlank()) {
                         viewModel.addTripItem(
                             Trip(
                                 UUID.randomUUID().toString(),
                                 tripName.text,
-                                tripLocation.text,
                                 tripStartDate.toString(),
                                 tripEndDate.toString(),
                                 listOf("user1","user2"))
