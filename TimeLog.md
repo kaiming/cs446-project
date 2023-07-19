@@ -32,3 +32,4 @@
 | 2023/07/18 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
 | 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
 | 2023/07/19 | -- | -- | 2 | -- | -- | -- | -- | Add trip details to itinerary page |
+| 2023/07/19 | -- | -- | -- | -- | 3 | 3 | -- | D5: Design Patterns Examples |
