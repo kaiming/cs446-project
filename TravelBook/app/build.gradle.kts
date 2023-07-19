@@ -72,6 +72,19 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.6.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.4.1")
 
+    // auth
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
+
     // async
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
 

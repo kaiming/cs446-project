@@ -59,8 +59,12 @@ import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
+import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModel
+import com.example.travelbook.signIn.viewModels.SignUpViewModel
+import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
+import com.example.travelbook.signIn.views.SignUpView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.views.TripView
@@ -77,8 +81,13 @@ fun NavigationView(
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    newSignInViewModel: NewSignInViewModel,
+    signUpViewModel: SignUpViewModel,
+    isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
+
+    val startDestination = if (isLoggedIn) NavigationItem.Map.route else NavigationItem.SignIn.route
     val navigationItems = listOf(
         NavigationItem.Map,
         NavigationItem.Trip,
@@ -128,6 +137,9 @@ fun NavigationView(
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
             modifyEventViewModel = modifyEventViewModel,
+            newSignInViewModel = newSignInViewModel,
+            signUpViewModel = signUpViewModel,
+            startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -144,9 +156,12 @@ fun NavigationGraph(
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    newSignInViewModel: NewSignInViewModel,
+    signUpViewModel: SignUpViewModel,
+    startDestination: String,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController, startDestination = NavigationItem.SignIn.route) {
+    NavHost(navController, startDestination = startDestination) {
         composable(NavigationItem.Map.route) {
             MapView(
                 modifier = modifier
@@ -237,7 +252,10 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.SignIn.route) {
-            SignInView(signInViewModel)
+            NewSignInView(newSignInViewModel)
+        }
+        composable(NavigationItem.SignUp.route) {
+            SignUpView(signUpViewModel)
         }
     }
 }
