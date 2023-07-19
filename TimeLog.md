@@ -27,3 +27,5 @@
 | 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
 | 2023/07/17 | -- | -- | 6 | 4 | -- | -- | -- | modifiable events debugging |
 | 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
+| 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
+| 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
