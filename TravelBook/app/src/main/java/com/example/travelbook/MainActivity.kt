@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val modifyEventViewModel: ModifyEventViewModel by viewModels {
-                ModifyEventViewModelFactory(EventRepository())
+                ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository())
             }
 
             TravelBookTheme {

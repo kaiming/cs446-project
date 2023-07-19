@@ -146,7 +146,6 @@ fun AddEventView(
         false
     )
 
-
     val googlePredictionResponseResource: GooglePredictionResponse by viewModel.getPredictions(
         input = eventLocation.text
     ).collectAsStateWithLifecycle(initialValue = emptyGooglePredictionResponse)
