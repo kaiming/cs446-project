@@ -29,4 +29,5 @@
 | 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
 | 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
 | 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
-| 2023/07/17 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
+| 2023/07/18 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
+| 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
