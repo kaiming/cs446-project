@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.util.Log
 import android.widget.DatePicker
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,24 +12,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -41,10 +38,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
-import com.example.travelbook.events.viewModels.AddEventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
 import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
 import com.example.travelbook.googlePrediction.models.emptyGooglePredictionResponse
 import com.example.travelbook.ui.theme.Padding
@@ -53,56 +49,44 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
-import com.google.android.libraries.places.api.net.PlacesClient
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEventView(
-    viewModel: AddEventViewModel,
-    onNavigateToEvents: () -> Unit,
+fun ModifyEventView(
+    viewModel: ModifyEventViewModel,
     tripId: String?,
+    eventId: String?,
+    onNavigateToEvents: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (tripId !is String) return
+    if (tripId == null || eventId == null) return
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
+    val event = viewModel.getEventById(tripId, eventId).collectAsState(null).value ?: return
 
-    var eventName by remember { mutableStateOf(TextFieldValue("")) }
-    var eventLocation by remember { mutableStateOf(TextFieldValue("")) }
-    var eventLocationCoordinates by remember { mutableStateOf("") }
+    var eventName by remember { mutableStateOf(TextFieldValue(event.name)) }
+    var eventLocation by remember { mutableStateOf(TextFieldValue(event.location)) }
+    var eventLocationCoordinates by remember { mutableStateOf(event.locationCoordinates) }
     var eventStartDate by remember { mutableStateOf(
-        LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
+        LocalDate.parse(event.startDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
     var eventEndDate by remember { mutableStateOf(
-        LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
+        LocalDate.parse(event.endDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
     var eventStartTime by remember { mutableStateOf(
-        LocalTime.of(
-            calendar.get(Calendar.HOUR),
-            calendar.get(Calendar.MINUTE)
-        )
+        LocalTime.parse(event.startTime, DateTimeFormatter.ISO_LOCAL_TIME)
     ) }
     var eventEndTime by remember { mutableStateOf(
-        LocalTime.of(
-            calendar.get(Calendar.HOUR),
-            calendar.get(Calendar.MINUTE)
-        )
+        LocalTime.parse(event.endTime, DateTimeFormatter.ISO_LOCAL_TIME)
     ) }
-    var eventCost by remember { mutableStateOf(TextFieldValue("")) }
+    var eventCost by remember { mutableStateOf(TextFieldValue(event.cost)) }
 
     val startDatePicker = DatePickerDialog(
         context,
@@ -160,7 +144,7 @@ fun AddEventView(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Add Event",
+                text = "Modify Event",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -279,8 +263,27 @@ fun AddEventView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
+                    viewModel.deleteEventItem(
+                        tripId,
+                        eventId
+                    )
+                    onNavigateToEvents()
+                },
+                modifier = Modifier.padding(Padding.PaddingMedium.size)
+            ) {
+                Text(
+                    text = "Delete",
+                    fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(Padding.PaddingSmall.size)
+                )
+            }
+            Button(
+                onClick = {
                     if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventCost.text.isNotBlank()) {
-                        viewModel.addEventItem(
+                        viewModel.modifyEventItem(
+                            tripId,
+                            eventId,
                             EventItem(
                                 eventId =  UUID.randomUUID().toString(),
                                 name = eventName.text,
@@ -291,14 +294,13 @@ fun AddEventView(
                                 startTime = eventStartTime.toString(),
                                 endTime = eventEndTime.toString(),
                                 cost = eventCost.text
-                            ),
-                            tripId = tripId
+                            )
                         )
                         onNavigateToEvents()
                     } else {
                         // TODO: ERROR modal
                     }
-              },
+                },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
             ) {
                 Text(
@@ -311,3 +313,4 @@ fun AddEventView(
         }
     }
 }
+

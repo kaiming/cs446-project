@@ -7,19 +7,23 @@ data class EventItem(
     @DocumentId
     var eventId: String,
     var name: String,
-    var date: String,
+    var location: String,
+    var locationCoordinates: String,
+    var startDate: String,
+    var endDate: String,
     var startTime: String,
     var endTime: String,
-    var location: String,
     var cost: String
 ) {
     constructor() : this(
         eventId = "",
         name = "",
-        date = "",
+        location = "",
+        locationCoordinates = "",
+        startDate = "",
+        endDate = "",
         startTime = "",
         endTime = "",
-        location = "",
         cost = ""
     )
 }

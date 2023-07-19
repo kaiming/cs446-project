@@ -18,8 +18,11 @@ import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.trips.models.TripRepository
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.AddEventViewModelFactory
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
+import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.signIn.AuthRepo
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
@@ -30,12 +33,7 @@ import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
-
-// val trip = createTrip(
-//     "Trip with friends", "2021-10-01", "2021-10-10", List(1){"user1"}
-// )
-
-private const val TAG = "MainActivity"
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +49,8 @@ class MainActivity : ComponentActivity() {
         // tripRepo.addUserToTrip("wyj79g8Ye5ILpHVuqr7i", "user2")
 
         setContent {
+
+            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
 
             val navigationController = rememberNavController()
 
@@ -79,7 +79,11 @@ class MainActivity : ComponentActivity() {
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository())
+                AddEventViewModelFactory(EventRepository(), GooglePredictionRepository())
+            }
+
+            val modifyEventViewModel: ModifyEventViewModel by viewModels {
+                ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository())
             }
 
             val userDataSource = SharedPreferencesUserDataSource(this)
@@ -99,6 +103,7 @@ class MainActivity : ComponentActivity() {
                         addTripViewModel = addTripViewModel,
                         eventViewModel = eventViewModel,
                         addEventViewModel = addEventViewModel,
+                        modifyEventViewModel = modifyEventViewModel,
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
                         isLoggedIn = isLoggedIn

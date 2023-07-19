@@ -51,9 +51,11 @@ import androidx.navigation.navArgument
 import com.example.travelbook.R
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.events.viewModels.ModifyEventViewModel
 import com.example.travelbook.events.views.AddEventView
 import com.example.travelbook.events.views.AddTripView
 import com.example.travelbook.events.views.EventView
+import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
@@ -78,6 +80,7 @@ fun NavigationView(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    modifyEventViewModel: ModifyEventViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     isLoggedIn: Boolean,
@@ -133,6 +136,7 @@ fun NavigationView(
             addTripViewModel = addTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
+            modifyEventViewModel = modifyEventViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
             startDestination = startDestination,
@@ -151,6 +155,7 @@ fun NavigationGraph(
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
+    modifyEventViewModel: ModifyEventViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     startDestination: String,
@@ -177,6 +182,9 @@ fun NavigationGraph(
         composable(NavigationItem.AddTrip.route) {
             AddTripView(
                 viewModel = addTripViewModel,
+                onNavigateToTrip = {
+                    navController.popBackStack()
+                },
                 modifier = modifier
             )
         }
@@ -194,6 +202,9 @@ fun NavigationGraph(
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },
+                onNavigateToModifyEvent = { tripId, eventId ->
+                    navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
+                },
                 modifier = modifier
             )
         }
@@ -209,7 +220,28 @@ fun NavigationGraph(
                 viewModel = addEventViewModel,
                 tripId = it.arguments?.getString("trip_id"),
                 onNavigateToEvents = {
-                    navController.navigate("${NavigationItem.Event.route}/$it")
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.ModifyEvent.route}/{trip_id}/{event_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                },
+                navArgument("event_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ModifyEventView(
+                viewModel = modifyEventViewModel,
+                tripId = it.arguments?.getString("trip_id"),
+                eventId = it.arguments?.getString("event_id"),
+                onNavigateToEvents = {
+                    navController.popBackStack()
                 },
                 modifier = modifier
             )

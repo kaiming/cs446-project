@@ -3,21 +3,27 @@ package com.example.travelbook.events.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
-import com.example.travelbook.navigation.models.NavigationItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class AddEventViewModel(
+class ModifyEventViewModel(
     private val repository: EventRepository,
     private val googlePredictionRepository: GooglePredictionRepository
-): ViewModel() {
-    fun addEventItem(newEventItem: EventItem, tripId: String) = viewModelScope.launch {
-        repository.addEvent(tripId, newEventItem)
+) : ViewModel() {
+    fun getEventById(tripId: String, eventId: String): Flow<EventItem?> {
+        return repository.getEventByIdFlow(tripId, eventId)
+    }
+
+    fun modifyEventItem(tripId: String, eventId: String, eventItem: EventItem) = viewModelScope.launch {
+        repository.editEvent(tripId, eventId, eventItem)
+    }
+
+    fun deleteEventItem(tripId: String, eventId: String) = viewModelScope.launch {
+        repository.deleteEvent(tripId, eventId)
     }
 
     fun getPredictions(
@@ -27,13 +33,13 @@ class AddEventViewModel(
     }
 }
 
-class AddEventViewModelFactory(
+class ModifyEventViewModelFactory(
     private val repository: EventRepository,
     private val googlePredictionRepository: GooglePredictionRepository
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AddEventViewModel::class.java)) {
-            return AddEventViewModel(repository, googlePredictionRepository) as T
+        if (modelClass.isAssignableFrom(ModifyEventViewModel::class.java)) {
+            return ModifyEventViewModel(repository, googlePredictionRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
