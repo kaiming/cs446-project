@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 class ModifyEventViewModel(
     private val repository: EventRepository
 ) : ViewModel() {
-    fun getEventById(eventId: String): Flow<EventItem?> {
-        return repository.getEventByIdFlow(eventId)
+    fun getEventById(tripId: String, eventId: String): Flow<EventItem?> {
+        return repository.getEventByIdFlow(tripId, eventId)
     }
 
     fun modifyEventItem(eventItem: EventItem) = viewModelScope.launch {

@@ -34,7 +34,7 @@ fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
     onNavigateToAddEvent: (String) -> Unit,
-    onNavigateToModifyEvent: (String) -> Unit,
+    onNavigateToModifyEvent: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
@@ -54,7 +54,7 @@ fun EventView(
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
-                        onNavigateToModifyEvent(event.eventId)
+                        onNavigateToModifyEvent(tripId, event.eventId)
                     }
                 })
             }

@@ -187,8 +187,8 @@ fun NavigationGraph(
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },
-                onNavigateToModifyEvent = {
-                    navController.navigate("${NavigationItem.ModifyEvent.route}/$it")
+                onNavigateToModifyEvent = { tripId, eventId ->
+                    navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
                 modifier = modifier
             )
@@ -211,16 +211,20 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${NavigationItem.ModifyEvent.route}/{event_id}",
+            route = "${NavigationItem.ModifyEvent.route}/{trip_id}/{event_id}",
             arguments = listOf(
-                navArgument("event_id") {
+                navArgument("trip_id") {
                     type = NavType.StringType
+                },
+                navArgument("event_id") {
+                    type = androidx.navigation.NavType.StringType
                 }
             )
         ) {
             ModifyEventView(
                 viewModel = modifyEventViewModel,
-                eventId = it.arguments?.getString("trip_id"),
+                tripId = it.arguments?.getString("trip_id"),
+                eventId = it.arguments?.getString("event_id"),
                 onNavigateToEvents = {
                     navController.navigate("${NavigationItem.Event.route}/$it")
                 },

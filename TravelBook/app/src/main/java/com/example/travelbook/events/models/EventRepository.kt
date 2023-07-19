@@ -31,23 +31,25 @@ class EventRepository {
         emit(events)
     }
 
-    fun getEventByIdFlow(eventId: String): Flow<EventItem?> = callbackFlow {
-        val eventDocument = database.collectionGroup("events")
-            .whereEqualTo("id", eventId)
-            .limit(1)
-            .addSnapshotListener { querySnapshot, exception ->
-                if (exception != null) {
-                    close(exception)
-                    return@addSnapshotListener
-                }
+    fun getEventByIdFlow(tripId: String, eventId: String): Flow<EventItem?> = callbackFlow {
+        val documentRef = database.collection("trips")
+            .document(tripId)
+            .collection("events")
+            .document(eventId)
 
-                if (querySnapshot != null && !querySnapshot.isEmpty) {
-                    val event = querySnapshot.documents[0].toObject<EventItem>()
-                    trySend(event).isSuccess
-                } else {
-                    trySend(null).isSuccess
-                }
+        val eventDocument = documentRef.addSnapshotListener { documentSnapshot, exception ->
+            if (exception != null) {
+                close(exception)
+                return@addSnapshotListener
             }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val event = documentSnapshot.toObject<EventItem>()
+                trySend(event).isSuccess
+            } else {
+                trySend(null).isSuccess
+            }
+        }
 
         awaitClose { eventDocument.remove() }
     }
@@ -84,7 +86,7 @@ class EventRepository {
             .document(tripId)
             .collection("events")
             .document(eventId)
-            .set(event, SetOptions.merge())
+            .set(event)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
