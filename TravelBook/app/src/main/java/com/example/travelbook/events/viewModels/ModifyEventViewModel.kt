@@ -15,8 +15,8 @@ class ModifyEventViewModel(
         return repository.getEventByIdFlow(tripId, eventId)
     }
 
-    fun modifyEventItem(eventItem: EventItem) = viewModelScope.launch {
-        repository.editEvent(eventItem.tripId, eventItem.eventId, eventItem)
+    fun modifyEventItem(tripId: String, eventId: String, eventItem: EventItem) = viewModelScope.launch {
+        repository.editEvent(tripId, eventId, eventItem)
     }
 }
 

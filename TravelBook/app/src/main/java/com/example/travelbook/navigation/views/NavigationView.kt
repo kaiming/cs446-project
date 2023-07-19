@@ -217,7 +217,7 @@ fun NavigationGraph(
                     type = NavType.StringType
                 },
                 navArgument("event_id") {
-                    type = androidx.navigation.NavType.StringType
+                    type = NavType.StringType
                 }
             )
         ) {
@@ -226,7 +226,7 @@ fun NavigationGraph(
                 tripId = it.arguments?.getString("trip_id"),
                 eventId = it.arguments?.getString("event_id"),
                 onNavigateToEvents = {
-                    navController.navigate("${NavigationItem.Event.route}/$it")
+                    navController.popBackStack()
                 },
                 modifier = modifier
             )

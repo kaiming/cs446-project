@@ -40,7 +40,8 @@ fun ModifyEventView(
 
     var eventName by remember { mutableStateOf(TextFieldValue(event.name)) }
     var eventLocation by remember { mutableStateOf(TextFieldValue(event.location)) }
-    var eventDate by remember { mutableStateOf(TextFieldValue(event.date)) }
+    var eventStartDate by remember { mutableStateOf(TextFieldValue(event.startDate)) }
+    var eventEndDate by remember { mutableStateOf(TextFieldValue(event.endDate)) }
     var eventStartTime by remember { mutableStateOf(TextFieldValue(event.startTime)) }
     var eventEndTime by remember { mutableStateOf(TextFieldValue(event.endTime)) }
     var eventCost by remember { mutableStateOf(TextFieldValue(event.cost)) }
@@ -79,11 +80,21 @@ fun ModifyEventView(
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             TextField(
-                value = eventDate,
+                value = eventStartDate,
                 onValueChange = {
-                    eventDate = it
+                    eventStartDate = it
                 },
-                label = { Text(text = "Event Date") },
+                label = { Text(text = "Event Start Date") },
+                placeholder = { Text(text = "Date of the Event") },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
+            TextField(
+                value = eventEndDate,
+                onValueChange = {
+                    eventEndDate = it
+                },
+                label = { Text(text = "Event End Date") },
                 placeholder = { Text(text = "Date of the Event") },
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -122,14 +133,16 @@ fun ModifyEventView(
             Button(
                 onClick = {
                     viewModel.modifyEventItem(
+                        tripId,
+                        eventId,
                         EventItem(
                             event.eventId,
-                            event.tripId,
                             eventName.text,
-                            eventDate.text,
+                            eventLocation.text,
+                            eventStartDate.text,
+                            eventEndDate.text,
                             eventStartTime.text,
                             eventEndTime.text,
-                            eventLocation.text,
                             eventCost.text
                         )
                     )
