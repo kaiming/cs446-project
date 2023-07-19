@@ -161,7 +161,7 @@ fun ThreeDotMenu(
 }
 
 @Composable
-private fun TripCard(
+public fun TripCard(
     trip: Trip
 ) {
     Card(

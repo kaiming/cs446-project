@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.trips.views.TripCard
 import com.example.travelbook.ui.theme.Padding
 import com.google.common.collect.UnmodifiableListIterator
 
@@ -49,6 +51,7 @@ fun EventView(
     if (tripId !is String) return
     if (tripBudget !is Float) return
 
+    val trip = viewModel.getTripByTripId(tripId)
     val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
 
     var totalCosts = 0f
@@ -94,6 +97,9 @@ fun EventView(
             }
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
+            TextButton(onClick = { onNavigateToAddEvent(tripId) }) {
+                TripCard(trip)
+            }
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {

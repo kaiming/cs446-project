@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository())
+                EventViewModelFactory(EventRepository(), TripRepository())
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
