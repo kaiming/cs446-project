@@ -132,6 +132,23 @@ fun ModifyEventView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
+                    viewModel.deleteEventItem(
+                        tripId,
+                        eventId
+                    )
+                    onNavigateToEvents()
+                },
+                modifier = Modifier.padding(Padding.PaddingMedium.size)
+            ) {
+                Text(
+                    text = "Delete",
+                    fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(Padding.PaddingSmall.size)
+                )
+            }
+            Button(
+                onClick = {
                     viewModel.modifyEventItem(
                         tripId,
                         eventId,

@@ -18,6 +18,10 @@ class ModifyEventViewModel(
     fun modifyEventItem(tripId: String, eventId: String, eventItem: EventItem) = viewModelScope.launch {
         repository.editEvent(tripId, eventId, eventItem)
     }
+
+    fun deleteEventItem(tripId: String, eventId: String) = viewModelScope.launch {
+        repository.deleteEvent(tripId, eventId)
+    }
 }
 
 class ModifyEventViewModelFactory(
