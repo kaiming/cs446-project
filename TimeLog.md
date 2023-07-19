@@ -26,3 +26,4 @@
 | 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
 | 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
 | 2023/07/17 | -- | -- | 6 | 4 | -- | -- | -- | modifiable events debugging |
+| 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
