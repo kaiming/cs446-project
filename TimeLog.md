@@ -17,6 +17,16 @@
 | 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | working on authentication layer |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
 | 2023/07/13 | -- | -- | 6 | -- | -- | -- | -- | modifiable events |
-| 2023/07/14 | -- | 3 | -- | 0.5 | -- | 3 | -- | D4: Architectural Styles
-| 2023/07/14 | -- | -- | -- | 2.5 | -- | -- | -- | Adding Places API
-| 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs
+| 2023/07/14 | 3 | 3 | -- | 0.5 | 1.5 | 3 | -- | D4: Architectural Styles |
+| 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
+| 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
+| 2023/07/14 | -- | -- | 2 | 2 | -- | -- | -- | upcoming maps feature designing and planning |
+| 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
+| 2023/07/16 | -- | -- | 2 | -- | -- | -- | -- | modifiable events debugging |
+| 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
+| 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
+| 2023/07/17 | -- | -- | 6 | 4 | -- | -- | -- | modifiable events debugging |
+| 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
+| 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
+| 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
+| 2023/07/17 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
