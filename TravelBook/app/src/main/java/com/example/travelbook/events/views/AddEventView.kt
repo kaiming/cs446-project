@@ -2,7 +2,9 @@ package com.example.travelbook.events.views
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.util.Log
 import android.widget.DatePicker
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +18,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,20 +33,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.AddEventViewModel
-import com.example.travelbook.googlePrediction.models.GooglePrediction
 import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
 import com.example.travelbook.googlePrediction.models.emptyGooglePredictionResponse
 import com.example.travelbook.ui.theme.Padding
+import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Calendar
@@ -62,6 +75,7 @@ fun AddEventView(
 
     var eventName by remember { mutableStateOf(TextFieldValue("")) }
     var eventLocation by remember { mutableStateOf(TextFieldValue("")) }
+    var eventLocationCoordinates by remember { mutableStateOf("") }
     var eventStartDate by remember { mutableStateOf(
         LocalDate.of(
             calendar.get(Calendar.YEAR),
@@ -137,6 +151,8 @@ fun AddEventView(
         input = eventLocation.text
     ).collectAsStateWithLifecycle(initialValue = emptyGooglePredictionResponse)
 
+    val placesClient = Places.createClient(LocalContext.current)
+
     Box(
         modifier = modifier
     ) {
@@ -161,17 +177,68 @@ fun AddEventView(
                 singleLine = true,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            TextField(
-                value = eventLocation,
-                onValueChange = {
-                    eventLocation = it
-                },
-                label = { Text(text = "Event Location") },
-                placeholder = { Text(text = "Location of the Event") },
-                shape = RoundedCornerShape(10.dp),
-                singleLine = true,
-                modifier = Modifier.padding(Padding.PaddingSmall.size)
-            )
+
+            var exp by remember { mutableStateOf(false) }
+            val focusRequester = remember { FocusRequester() }
+            ExposedDropdownMenuBox(expanded = exp, onExpandedChange = { exp = !exp }) {
+                TextField(
+                    value = eventLocation,
+                    onValueChange = {
+                        eventLocation = it
+                    },
+                    label = { Text(text = "Event Location") },
+                    placeholder = { Text(text = "Location of the Event") },
+                    shape = RoundedCornerShape(10.dp),
+                    singleLine = true,
+                    modifier = Modifier
+                        .padding(Padding.PaddingSmall.size)
+                        .menuAnchor()
+                        .focusRequester(focusRequester)
+                        .onFocusChanged {
+                            if (!it.isFocused) {
+                                exp = false
+                            }
+                        }
+                )
+                if (googlePredictionResponseResource.predictions.isNotEmpty()) {
+                    ExposedDropdownMenu(expanded = exp, onDismissRequest = { }) {
+                        googlePredictionResponseResource.predictions.forEach { prediction ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = prediction.description,
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                    )
+                                },
+                                onClick = {
+                                    val placeFields = listOf(Place.Field.LAT_LNG)
+                                    val request = FetchPlaceRequest.newInstance(
+                                        prediction.place_id,
+                                        placeFields
+                                    )
+
+                                    placesClient.fetchPlace(request)
+                                        .addOnSuccessListener { response: FetchPlaceResponse ->
+                                            eventLocationCoordinates =
+                                                "${response.place.latLng?.latitude},${response.place.latLng?.longitude}"
+                                            Log.d(
+                                                "AddEventView",
+                                                "Event location $eventLocationCoordinates"
+                                            )
+                                        }.addOnFailureListener { exception: Exception ->
+                                            if (exception is ApiException) {
+                                                Log.d("AddEventView", "Failed to get place latLng")
+                                            }
+                                        }
+                                    eventLocation = TextFieldValue(prediction.description)
+                                    exp = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -210,11 +277,6 @@ fun AddEventView(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            LazyColumn {
-                items(items = googlePredictionResponseResource.predictions, itemContent = { predictions ->
-                    Text(text = predictions.description)
-                })
-            }
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
@@ -224,6 +286,7 @@ fun AddEventView(
                                 eventId =  UUID.randomUUID().toString(),
                                 name = eventName.text,
                                 location = eventLocation.text,
+                                locationCoordinates = eventLocationCoordinates,
                                 startDate = eventStartDate.toString(),
                                 endDate = eventEndDate.toString(),
                                 startTime = eventStartTime.toString(),

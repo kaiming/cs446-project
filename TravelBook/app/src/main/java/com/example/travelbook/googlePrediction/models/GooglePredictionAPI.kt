@@ -14,12 +14,11 @@ interface GooglePredictionAPIService {
     @GET("maps/api/place/autocomplete/json")
     suspend fun getPredictions(
         @Query("key") key: String = BuildConfig.MAPS_API_KEY,
-        @Query("types") types: String = "address",
         @Query("input") input: String
     ): Response<GooglePredictionResponse>
 
     companion object {
-        private val BASE_URL = "https://maps.googleapis.com/"
+        private const val BASE_URL = "https://maps.googleapis.com/"
 
         private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 

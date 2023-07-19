@@ -24,11 +24,14 @@ import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
 
             val navigationController = rememberNavController()
 

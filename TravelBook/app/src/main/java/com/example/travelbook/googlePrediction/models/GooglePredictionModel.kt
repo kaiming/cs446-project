@@ -7,6 +7,7 @@ data class GooglePredictionTerm(
 
 data class GooglePrediction(
     val description: String,
+    val place_id: String,
     val terms: List<GooglePredictionTerm>
 )
 data class GooglePredictionResponse(
