@@ -38,3 +38,4 @@
 | 2023/07/19 | -- | -- | -- | -- | 7 | -- | -- | implementing budgeting feature on trip and event views |
 | 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | added profile page and sign out functionality |
 | 2023/07/20 | -- | -- | 2 | 5 | -- | -- | -- | Added lines from trips to map |
+| 2023/07/20 | -- | -- | -- | 0.25 | -- | -- | -- | Fixed date input |
