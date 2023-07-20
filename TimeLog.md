@@ -36,6 +36,7 @@
 | 2023/07/19 | -- | 1 | -- | 1 | 1 | 1 | -- | discussion on budget feature design |
 | 2023/07/19 | -- | -- | -- | -- | 2 | -- | -- | learn jetpack compose |
 | 2023/07/19 | -- | -- | -- | -- | 7 | -- | -- | implementing budgeting feature on trip and event views |
-| 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | added profile page and sign out functionality |
+| 2023/07/20 | -- | -- | -- | -- | 4 | -- | -- | added profile page and sign out functionality |
 | 2023/07/20 | -- | -- | 2 | 5 | -- | -- | -- | Added lines from trips to map |
 | 2023/07/20 | -- | -- | -- | 0.25 | -- | -- | -- | Fixed date input |
+| 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | added signout error checking with message popup for UI feedback and other misc changes related to auth and shared preferences |
