@@ -1,5 +1,7 @@
 package com.example.travelbook.profile.viewModels
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
@@ -14,10 +16,16 @@ class ProfileViewModel (
     private val userDataSource: UserDataSource,
     private val repository: AuthRepo
 ) : ViewModel() {
-    fun onSignOutClicked() {
+    fun onSignOutClicked(): Boolean {
         repository.signOut()
         userDataSource.deleteUser()
+
+        if (repository.getCurrentUser() != null || userDataSource.getUser() != null) {
+            return false
+        }
+
         navigationController.navigate(NavigationItem.SignIn.route)
+        return true
     }
 
     fun getUser(): User? {

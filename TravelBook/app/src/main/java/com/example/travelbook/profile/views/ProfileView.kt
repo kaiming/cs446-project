@@ -1,5 +1,6 @@
 package com.example.travelbook.profile.views
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travelbook.profile.viewModels.ProfileViewModel
@@ -24,6 +26,8 @@ fun ProfileView(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val context = LocalContext.current
+
         viewModel.getUser()?.name?.let {
             Text(
                 text = "Hi $it",
@@ -32,7 +36,12 @@ fun ProfileView(
         }
         Button(
             onClick = {
-                viewModel.onSignOutClicked()
+                val isSuccessful = viewModel.onSignOutClicked()
+                if (isSuccessful) {
+                    Toast.makeText(context, "Sign Out successful!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Sign Out failed!", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
