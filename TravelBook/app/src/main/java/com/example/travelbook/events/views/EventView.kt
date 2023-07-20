@@ -2,6 +2,7 @@ package com.example.travelbook.events.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,10 +23,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -137,22 +140,35 @@ private fun EventCard(
 
 @Composable
 fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
-    // Calculate the progress percentage
     val progress = (currentBudget / totalBudget).coerceIn(0f, 1f)
+    // Calculate the progress percentage
+    val percentageUsed = (progress * 100).toInt()
 
-    Box(modifier = Modifier.fillMaxWidth()) {
-        // LinearProgressIndicator to display the progress
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = Modifier.padding(Padding.PaddingMedium.size)
-        )
+    Surface(
+        color = MaterialTheme.colorScheme.secondary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp) // Add horizontal padding
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            LinearProgressIndicator(
+                progress = progress,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp) // Add vertical padding
+            )
 
-        // Spacer to fill the remaining space
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp) // Adjust the height of the progress bar
-                .background(Color.Transparent)
-        )
+            Text(
+                text = "$percentageUsed%",
+                color = Color.Black,
+                fontSize = 16.sp,
+                textAlign = TextAlign.End,
+                modifier = Modifier.padding(end = 16.dp) // Add padding to the right side
+            )
+        }
     }
 }
