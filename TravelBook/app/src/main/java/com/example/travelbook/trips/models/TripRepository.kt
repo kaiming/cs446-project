@@ -2,6 +2,7 @@ package com.example.travelbook.trips.models
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.travelbook.events.models.EventItem
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -57,6 +58,27 @@ class TripRepository {
         emit(trips)
     }
 
+    fun getTripByIdFlow(tripId: String): Flow<Trip?> = callbackFlow {
+        val documentRef = database.collection("trips")
+            .document(tripId)
+
+        val tripDocument = documentRef.addSnapshotListener { documentSnapshot, exception ->
+            if (exception != null) {
+                close(exception)
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val trip = documentSnapshot.toObject<Trip>()
+                trySend(trip).isSuccess
+            } else {
+                trySend(null).isSuccess
+            }
+        }
+
+        awaitClose { tripDocument.remove() }
+    }
+
     // Get trips based on user id, participants contains a list of user ids
     fun getAllTripsByUserID(userId: String): List<Trip> {
         val trips = mutableListOf<Trip>()
@@ -95,6 +117,30 @@ class TripRepository {
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding trip", e)
+            }
+    }
+
+    fun deleteTrip(tripId: String) {
+        database.collection("trips")
+            .document(tripId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error deleting document", e)
+            }
+    }
+
+    fun editTrip(tripId: String, trip: Trip) {
+        database.collection("trips")
+            .document(tripId)
+            .set(trip)
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error updating document", e)
             }
     }
 

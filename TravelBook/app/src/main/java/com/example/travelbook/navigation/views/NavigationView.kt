@@ -72,6 +72,8 @@ import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.views.ArchivedTripView
+import com.example.travelbook.trips.viewModels.ModifyTripViewModel
+import com.example.travelbook.trips.views.ModifyTripView
 import com.example.travelbook.trips.views.TripView
 import com.example.travelbook.ui.theme.Padding
 import kotlinx.coroutines.launch
@@ -85,6 +87,7 @@ fun NavigationView(
     tripViewModel: TripViewModel,
     archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
+    modifyTripViewModel: ModifyTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
@@ -144,6 +147,7 @@ fun NavigationView(
             tripViewModel = tripViewModel,
             archivedTripViewModel = archivedTripViewModel,
             addTripViewModel = addTripViewModel,
+            modifyTripViewModel = modifyTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
             modifyEventViewModel = modifyEventViewModel,
@@ -166,6 +170,7 @@ fun NavigationGraph(
     tripViewModel: TripViewModel,
     archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
+    modifyTripViewModel: ModifyTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
@@ -218,6 +223,27 @@ fun NavigationGraph(
             arguments = listOf(
                 navArgument("trip_id") {
                     type = NavType.StringType
+                }
+            )
+        ) {
+            ModifyTripView(
+                viewModel = modifyTripViewModel,
+                tripId = it.arguments?.getString("trip_id"),
+                onNavigateToEvents = {
+                    navController.popBackStack()
+                },
+                onNavigateToTrips = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.Event.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
                 },
                 navArgument("trip_budget") {
                     type = NavType.FloatType
@@ -233,6 +259,9 @@ fun NavigationGraph(
                 },
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
+                },
+                onNavigateToModifyTrip = {
+                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
                 },
                 modifier = modifier
             )

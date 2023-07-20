@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,13 +47,15 @@ fun EventView(
     tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
+    onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
     if (tripBudget !is Float) return
 
-    val trip = viewModel.getTripByTripId(tripId)
-    val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
+    val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
+    val events = viewModel.getEventsFlowByTripId(tripId)
+        .collectAsStateWithLifecycle(initialValue = emptyList())
 
     var totalCosts = 0f
     for (event in events.value) {
@@ -70,7 +73,6 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -98,37 +100,39 @@ fun EventView(
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
             TextButton(onClick = { onNavigateToAddEvent(tripId) }) {
-                TripCard(trip)
-            }
-            LazyColumn(Modifier.weight(6f)) {
-                items(items = events.value, itemContent = { event ->
-                    EventCard(event) {
-                        onNavigateToModifyEvent(tripId, event.eventId)
-                    }
-                })
-            }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(Padding.PaddingMedium.size)
-                    .background(
-                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
-                    ),
-                contentAlignment = Alignment.BottomEnd,
-            ) {
-                IconButton(
-                    onClick = {
-                        onNavigateToAddEvent(tripId)
-                    },
-                    modifier = Modifier.size(64.dp)
+                TextButton(onClick = { onNavigateToModifyTrip(tripId) }) {
+                    TripCard(trip)
+                }
+                LazyColumn(Modifier.weight(6f)) {
+                    items(items = events.value, itemContent = { event ->
+                        EventCard(event) {
+                            onNavigateToModifyEvent(tripId, event.eventId)
+                        }
+                    })
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize()
+                        .padding(Padding.PaddingMedium.size)
+                        .background(
+                            color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                        ),
+                    contentAlignment = Alignment.BottomEnd,
                 ) {
-                    Icon(
-                        Icons.Rounded.AddCircle,
-                        tint =  MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Add Event Button",
+                    IconButton(
+                        onClick = {
+                            onNavigateToAddEvent(tripId)
+                        },
                         modifier = Modifier.size(64.dp)
-                    )
+                    ) {
+                        Icon(
+                            Icons.Rounded.AddCircle,
+                            tint = MaterialTheme.colorScheme.secondary,
+                            contentDescription = "Add Event Button",
+                            modifier = Modifier.size(64.dp)
+                        )
+                    }
                 }
             }
         }
@@ -207,7 +211,6 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
                 modifier = Modifier.padding(start = 4.dp)
-//                modifier = Modifier.padding(end = 16.dp)
             )
         }
     }

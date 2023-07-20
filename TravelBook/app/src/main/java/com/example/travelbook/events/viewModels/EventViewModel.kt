@@ -20,8 +20,8 @@ class EventViewModel(
         return eventRepository.getAllEventsByTripIdFlow(tripId)
     }
 
-    fun getTripByTripId(tripId: String): Trip {
-        return tripRepository.getTripByTripID(tripId)
+    fun getTripByTripId(tripId: String): Flow<Trip?> {
+        return tripRepository.getTripByIdFlow(tripId)
     }
 }
 
