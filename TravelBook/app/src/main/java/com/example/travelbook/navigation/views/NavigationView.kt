@@ -59,6 +59,8 @@ import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.profile.viewModels.ProfileViewModel
+import com.example.travelbook.profile.views.ProfileView
 import com.example.travelbook.shared.UIText
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModel
@@ -83,6 +85,7 @@ fun NavigationView(
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     isLoggedIn: Boolean,
@@ -140,6 +143,7 @@ fun NavigationView(
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
             modifyEventViewModel = modifyEventViewModel,
+            profileViewModel = profileViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
             startDestination = startDestination,
@@ -160,6 +164,7 @@ fun NavigationGraph(
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     startDestination: String,
@@ -256,10 +261,7 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.Profile.route) {
-            MapView(
-                viewModel = mapViewModel,
-                modifier = modifier
-            )
+            ProfileView(profileViewModel)
         }
         composable(NavigationItem.SignIn.route) {
             NewSignInView(newSignInViewModel)
