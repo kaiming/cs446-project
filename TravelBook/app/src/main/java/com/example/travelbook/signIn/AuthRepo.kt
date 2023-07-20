@@ -27,4 +27,8 @@ class AuthRepo {
     fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.currentUser
     }
+
+    fun signOut() {
+        firebaseAuth.signOut()
+    }
 }
