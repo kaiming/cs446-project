@@ -144,8 +144,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
     // Calculate the progress percentage
     val percentageUsed = (progress * 100).toInt()
 
-    Surface(
-        color = MaterialTheme.colorScheme.secondary,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp) // Add horizontal padding
@@ -159,7 +158,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                 progress = progress,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp) // Add vertical padding
+                    .padding(vertical = 8.dp)
             )
 
             Text(
@@ -167,7 +166,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                 color = Color.Black,
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
-                modifier = Modifier.padding(end = 16.dp) // Add padding to the right side
+                modifier = Modifier.padding(end = 16.dp)
             )
         }
     }
