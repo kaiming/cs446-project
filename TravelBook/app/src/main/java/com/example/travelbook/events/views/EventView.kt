@@ -144,7 +144,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
         // LinearProgressIndicator to display the progress
         LinearProgressIndicator(
             progress = progress,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(Padding.PaddingMedium.size)
         )
 
         // Spacer to fill the remaining space
