@@ -219,6 +219,9 @@ fun NavigationGraph(
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
+                onNavigateToBudgetDetails = {
+                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+                },
                 modifier = modifier
             )
         }
@@ -255,6 +258,23 @@ fun NavigationGraph(
                 tripId = it.arguments?.getString("trip_id"),
                 eventId = it.arguments?.getString("event_id"),
                 onNavigateToEvents = {
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.BudgetDetail.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            AddEventView( // Replace with BudgetingView
+                viewModel = addEventViewModel, // Replace with BudgetingViewModel
+                tripId = it.arguments?.getString("trip_id"),
+                onNavigateToEvents = { // Replace with onNavigateToBudgetDetails (or whatever naming used)
                     navController.popBackStack()
                 },
                 modifier = modifier

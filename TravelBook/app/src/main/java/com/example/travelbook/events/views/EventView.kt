@@ -44,6 +44,7 @@ fun EventView(
     tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
+    onNavigateToBudgetDetails: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
@@ -93,7 +94,7 @@ fun EventView(
                 }
             }
 
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget, onClick = { onNavigateToBudgetDetails(tripId) })
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
@@ -167,7 +168,7 @@ private fun EventCard(
 }
 
 @Composable
-fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
+fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit ) {
     val progress = (currentBudget / totalBudget)
     val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
     // Calculate the progress percentage
@@ -177,6 +178,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp) // Add horizontal padding
+            .clickable { onClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
