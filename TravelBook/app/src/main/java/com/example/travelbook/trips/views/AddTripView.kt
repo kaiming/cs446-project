@@ -52,16 +52,16 @@ fun AddTripView(
     var tripName by remember { mutableStateOf(TextFieldValue("")) }
     var tripStartDate by remember { mutableStateOf(
         LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.DAY_OF_MONTH]
         )
     ) }
     var tripEndDate by remember { mutableStateOf(
         LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.DAY_OF_MONTH]
         )
     ) }
 

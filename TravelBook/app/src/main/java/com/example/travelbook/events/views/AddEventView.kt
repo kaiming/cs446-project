@@ -78,28 +78,28 @@ fun AddEventView(
     var eventLocationCoordinates by remember { mutableStateOf("") }
     var eventStartDate by remember { mutableStateOf(
         LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.DAY_OF_MONTH]
         )
     ) }
     var eventEndDate by remember { mutableStateOf(
         LocalDate.of(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH] + 1,
+            calendar[Calendar.DAY_OF_MONTH]
         )
     ) }
     var eventStartTime by remember { mutableStateOf(
         LocalTime.of(
-            calendar.get(Calendar.HOUR),
-            calendar.get(Calendar.MINUTE)
+            calendar[Calendar.HOUR],
+            calendar[Calendar.MINUTE]
         )
     ) }
     var eventEndTime by remember { mutableStateOf(
         LocalTime.of(
-            calendar.get(Calendar.HOUR),
-            calendar.get(Calendar.MINUTE)
+            calendar[Calendar.HOUR],
+            calendar[Calendar.MINUTE]
         )
     ) }
     var eventCost by remember { mutableStateOf(TextFieldValue("")) }
