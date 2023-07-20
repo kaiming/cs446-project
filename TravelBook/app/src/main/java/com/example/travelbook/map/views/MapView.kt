@@ -9,7 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.map.viewModels.MapViewModel
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Polyline
@@ -73,7 +75,10 @@ fun MapView(
                 Polyline(
                     points = points,
                     width = 20f,
-                    color = tripColor
+                    color = tripColor,
+                    jointType = JointType.ROUND,
+                    endCap = RoundCap(),
+                    startCap = RoundCap()
                 )
             }
 
