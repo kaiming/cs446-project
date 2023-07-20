@@ -205,6 +205,9 @@ fun NavigationGraph(
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
+                onNavigateToBudgetDetails = {
+                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+                },
                 modifier = modifier
             )
         }
