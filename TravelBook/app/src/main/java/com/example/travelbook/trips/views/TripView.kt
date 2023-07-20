@@ -34,7 +34,7 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun TripView(
     viewModel: TripViewModel,
-    onNavigateToEvents: (String) -> Unit,
+    onNavigateToEvents: (String, Float) -> Unit,
     onNavigateToAddTrip: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,7 +52,7 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    TextButton(onClick = { onNavigateToEvents(trip.tripId) }) {
+                    TextButton(onClick = { onNavigateToEvents(trip.tripId, trip.budget.substringAfter("text='").substringBefore("'").toFloat()) }) { // TODO: check why this is being so janky
                         TripCard(trip)
                     }
                 })

@@ -173,8 +173,8 @@ fun NavigationGraph(
                 onNavigateToAddTrip = {
                     navController.navigate(NavigationItem.AddTrip.route)
                 },
-                onNavigateToEvents = {
-                    navController.navigate("${NavigationItem.Event.route}/$it")
+                onNavigateToEvents = { eventString, eventFloat ->
+                    navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
                 },
                 modifier = modifier
             )
@@ -189,24 +189,25 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${NavigationItem.Event.route}/{trip_id}",
+            route = "${NavigationItem.Event.route}/{trip_id}/{trip_budget}",
             arguments = listOf(
                 navArgument("trip_id") {
                     type = NavType.StringType
+                },
+                navArgument("trip_budget") {
+                    type = NavType.FloatType
                 }
             )
         ) {
             EventView(
                 viewModel = eventViewModel,
                 tripId = it.arguments?.getString("trip_id"),
+                tripBudget = it.arguments?.getFloat("trip_budget"),
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
-                },
-                onNavigateToBudgetDetails = {
-                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
                 },
                 modifier = modifier
             )

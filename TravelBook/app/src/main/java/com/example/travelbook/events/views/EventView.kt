@@ -41,11 +41,13 @@ import com.google.common.collect.UnmodifiableListIterator
 fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
+    tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
+    if (tripBudget !is Float) return
 
     val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
 
@@ -65,13 +67,33 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            Text(
-                text = "Trip Budget:",
-                fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(Padding.PaddingSmall.size)
-            )
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = 1000f)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp) // Add horizontal padding
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Trip Budget:",
+                        fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(Padding.PaddingSmall.size)
+                    )
+                    Text(
+                        text = tripBudget.toString(),
+                        fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(Padding.PaddingSmall.size)
+                    )
+                }
+            }
+
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
