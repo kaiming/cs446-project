@@ -118,31 +118,6 @@ fun TripView(
                     }
                 }
             }
-
-//            Box(
-//                modifier = Modifier
-//                    .weight(1f)
-//                    .fillMaxSize()
-//                    .padding(Padding.PaddingMedium.size)
-//                    .background(
-//                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
-//                    ),
-//                contentAlignment = Alignment.BottomEnd,
-//            ) {
-//                IconButton(
-//                    onClick = {
-//                        onNavigateToAddTrip()
-//                    },
-//                    modifier = Modifier.size(64.dp)
-//                ) {
-//                    Icon(
-//                        Icons.Rounded.AddCircle,
-//                        tint =  MaterialTheme.colorScheme.secondary,
-//                        contentDescription = "Add Trip Button",
-//                        modifier = Modifier.size(64.dp)
-//                    )
-//                }
-//            }
         }
     }
 }
