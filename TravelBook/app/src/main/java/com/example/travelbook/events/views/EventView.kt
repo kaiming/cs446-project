@@ -2,10 +2,14 @@ package com.example.travelbook.events.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,10 +21,14 @@ import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,13 +41,21 @@ import com.google.common.collect.UnmodifiableListIterator
 fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
+    tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
+    if (tripBudget !is Float) return
 
     val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
+
+    var totalCosts = 0f
+    for (event in events.value) {
+        totalCosts += event.cost.toFloat()
+    }
+
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,6 +67,33 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp) // Add horizontal padding
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Trip Budget:",
+                        fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(Padding.PaddingSmall.size)
+                    )
+                    Text(
+                        text = tripBudget.toString(),
+                        fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(Padding.PaddingSmall.size)
+                    )
+                }
+            }
+
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
@@ -94,7 +137,8 @@ private fun EventCard(
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
-        modifier = Modifier.padding(Padding.PaddingMedium.size)
+        modifier = Modifier
+            .padding(Padding.PaddingMedium.size)
             .clickable { onClick() }
     ) {
         Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
@@ -118,6 +162,47 @@ private fun EventCard(
             Column(modifier = Modifier.weight(1f)) {
                 // space for image/event logo... don't think the model supports this yet.
             }
+        }
+    }
+}
+
+@Composable
+fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
+    val progress = (currentBudget / totalBudget)
+    val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
+    // Calculate the progress percentage
+    val percentageUsed = (progress * 100).toInt()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp) // Add horizontal padding
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            LinearProgressIndicator(
+                progress = restrictedProgress,
+                color = when {
+                    percentageUsed > 100 -> Color.Red
+                    else -> Color.Black
+                },
+                modifier = Modifier.weight(1f).height(8.dp).padding(end = 4.dp)
+            )
+
+            Text(
+                text = "$percentageUsed%",
+                color = when {
+                    percentageUsed > 100 -> Color.Red
+                    else -> Color.Black
+                },
+                fontSize = 16.sp,
+                textAlign = TextAlign.End,
+                modifier = Modifier.padding(start = 4.dp)
+//                modifier = Modifier.padding(end = 16.dp)
+            )
         }
     }
 }
