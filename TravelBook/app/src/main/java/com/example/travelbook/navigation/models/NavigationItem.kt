@@ -1,5 +1,6 @@
 package com.example.travelbook.navigation.models
 
+import androidx.navigation.Navigation
 import com.example.travelbook.R
 
 sealed class NavigationItem(
@@ -18,5 +19,6 @@ sealed class NavigationItem(
     object ModifyEvent : NavigationItem("Modify Event", R.drawable.logo, "modifyEvent")
     object BudgetDetail : NavigationItem("Budget Detail", R.drawable.logo, "budgetDetail")
     // TODO: Add other nav paths here
+    object Budgeting : NavigationItem("temp budgeting", R.drawable.logo, "budget temp")
 
 }
