@@ -1,16 +1,11 @@
-package com.example.travelbook.budgeting.views
+package com.example.travelbook.budgeting.viewModels
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.flow.launchIn
-import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
-import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.combine
-import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.models.TripRepository
 
 class BudgetingViewModel(

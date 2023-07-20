@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven( "https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
@@ -15,4 +16,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "TravelBook"
 include(":app")
- 
