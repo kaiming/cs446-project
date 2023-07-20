@@ -11,6 +11,7 @@ data class User(
 interface UserDataSource {
     fun saveUser(user: User)
     fun getUser(): User?
+    fun deleteUser()
 }
 
 class SharedPreferencesUserDataSource(private val context: Context) : UserDataSource {
@@ -30,5 +31,13 @@ class SharedPreferencesUserDataSource(private val context: Context) : UserDataSo
         val userName = sharedPreferences.getString("USER_NAME", null)
         val userEmail = sharedPreferences.getString("USER_EMAIL", null)
         return User(userId, userName, userEmail)
+    }
+
+    override fun deleteUser() {
+        val editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.remove("USER_NAME")
+        editor.remove("USER_EMAIL")
+        editor.apply()
     }
 }

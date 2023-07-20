@@ -16,6 +16,7 @@ class ProfileViewModel (
 ) : ViewModel() {
     fun onSignOutClicked() {
         repository.signOut()
+        userDataSource.deleteUser()
         navigationController.navigate(NavigationItem.SignIn.route)
     }
 
