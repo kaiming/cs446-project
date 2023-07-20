@@ -56,13 +56,14 @@ fun EventView(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = 1000f)
             Text(
                 text = "Itinerary",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
+            Spacer(modifier = Modifier.weight(1f))
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = 1000f)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
