@@ -33,6 +33,6 @@
 | 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
 | 2023/07/19 | -- | -- | 2 | -- | -- | -- | -- | Add trip details to itinerary page |
 | 2023/07/19 | -- | -- | -- | -- | 3 | 3 | -- | D5: Design Patterns Examples |
-| 2023/07/19 | -- | -- | -- | -- | 1 | 1 | -- | discussion on budget feature design |
+| 2023/07/19 | -- | 1 | -- | -- | 1 | 1 | -- | discussion on budget feature design |
 | 2023/07/19 | -- | -- | -- | -- | 2 | -- | -- | learn jetpack compose |
 | 2023/07/19 | -- | -- | -- | -- | 7.5 | -- | -- | implementing budgeting feature on trip and event views |
