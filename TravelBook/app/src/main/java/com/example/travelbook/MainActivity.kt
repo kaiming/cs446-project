@@ -23,6 +23,8 @@ import com.example.travelbook.events.viewModels.ModifyEventViewModelFactory
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.EventViewModelFactory
 import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
+import com.example.travelbook.map.viewModels.MapViewModel
+import com.example.travelbook.map.viewModels.MapViewModelFactory
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.signIn.AuthRepo
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
@@ -56,6 +58,10 @@ class MainActivity : ComponentActivity() {
 
             val signInViewModel: SignInViewModel by viewModels {
                 SignInViewModelFactory(navigationController, AuthRepo())
+            }
+
+            val mapViewModel: MapViewModel by viewModels {
+                MapViewModelFactory(TripRepository(), EventRepository())
             }
 
             val newSignInViewModel: NewSignInViewModel by viewModels {
@@ -99,6 +105,7 @@ class MainActivity : ComponentActivity() {
                     NavigationView(
                         navController = navigationController,
                         signInViewModel = signInViewModel,
+                        mapViewModel = mapViewModel,
                         tripViewModel = tripViewModel,
                         addTripViewModel = addTripViewModel,
                         eventViewModel = eventViewModel,
