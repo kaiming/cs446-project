@@ -65,6 +65,12 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
+            Text(
+                text = "Trip Budget:",
+                fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = 1000f)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
@@ -140,7 +146,8 @@ private fun EventCard(
 
 @Composable
 fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
-    val progress = (currentBudget / totalBudget).coerceIn(0f, 1f)
+    val progress = (currentBudget / totalBudget)
+    val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
     // Calculate the progress percentage
     val percentageUsed = (progress * 100).toInt()
 
@@ -155,18 +162,24 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
             modifier = Modifier.fillMaxWidth()
         ) {
             LinearProgressIndicator(
-                progress = progress,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                progress = restrictedProgress,
+                color = when {
+                    percentageUsed > 100 -> Color.Red
+                    else -> Color.Black
+                },
+                modifier = Modifier.weight(1f).height(8.dp).padding(end = 4.dp)
             )
 
             Text(
                 text = "$percentageUsed%",
-                color = Color.Black,
+                color = when {
+                    percentageUsed > 100 -> Color.Red
+                    else -> Color.Black
+                },
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(start = 4.dp)
+//                modifier = Modifier.padding(end = 16.dp)
             )
         }
     }
