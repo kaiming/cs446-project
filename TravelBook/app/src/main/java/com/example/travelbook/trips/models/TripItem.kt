@@ -8,15 +8,17 @@ data class Trip(
     val tripName: String,
     val startDate: String,
     val endDate: String,
+    val budget: String,
     val participants: List<String> = emptyList()
 ) {
-    constructor() : this("", "", "","")
+    constructor() : this("", "", "","", "")
 }
 
 fun createTrip(
     tripName: String,
     startDate: String,
     endDate: String,
+    budget: String,
     participants: List<String> = emptyList()
 ): Trip {
     return Trip(
@@ -24,6 +26,7 @@ fun createTrip(
         tripName = tripName,
         startDate = startDate,
         endDate = endDate,
+        budget = budget,
         participants = participants
     )
 }

@@ -87,6 +87,8 @@ fun AddTripView(
     )
     endDatePicker.datePicker.minDate = tripStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
+    var tripBudget by remember { mutableStateOf(TextFieldValue("")) }
+
     Box(
         modifier = modifier
     ) {
@@ -131,6 +133,16 @@ fun AddTripView(
                     Text(tripEndDate.toString())
                 }
             }
+            TextField(
+                value = tripBudget,
+                onValueChange = {
+                    tripBudget = it
+                },
+                label = { Text(text = "Trip Budget") },
+                shape = RoundedCornerShape(10.dp),
+                singleLine = true,
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
@@ -141,6 +153,7 @@ fun AddTripView(
                                 tripName.text,
                                 tripStartDate.toString(),
                                 tripEndDate.toString(),
+                                tripBudget.toString(),
                                 listOf("user1","user2"))
                         )
                         onNavigateToTrip()
