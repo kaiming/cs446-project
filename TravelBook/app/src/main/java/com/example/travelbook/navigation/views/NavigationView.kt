@@ -56,6 +56,7 @@ import com.example.travelbook.events.views.AddEventView
 import com.example.travelbook.events.views.AddTripView
 import com.example.travelbook.events.views.EventView
 import com.example.travelbook.events.views.ModifyEventView
+import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.shared.UIText
@@ -76,6 +77,7 @@ import kotlinx.coroutines.launch
 fun NavigationView(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
@@ -132,6 +134,7 @@ fun NavigationView(
         NavigationGraph(
             navController = navController,
             signInViewModel = signInViewModel,
+            mapViewModel = mapViewModel,
             tripViewModel = tripViewModel,
             addTripViewModel = addTripViewModel,
             eventViewModel = eventViewModel,
@@ -151,6 +154,7 @@ fun NavigationView(
 fun NavigationGraph(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
@@ -164,6 +168,7 @@ fun NavigationGraph(
     NavHost(navController, startDestination = startDestination) {
         composable(NavigationItem.Map.route) {
             MapView(
+                viewModel = mapViewModel,
                 modifier = modifier
             )
         }
@@ -248,6 +253,7 @@ fun NavigationGraph(
         }
         composable(NavigationItem.Profile.route) {
             MapView(
+                viewModel = mapViewModel,
                 modifier = modifier
             )
         }
