@@ -280,7 +280,7 @@ fun ModifyEventView(
             }
             Button(
                 onClick = {
-                    if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventCost.text.isNotBlank()) {
+                    if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventLocationCoordinates.isNotBlank() && eventCost.text.isNotBlank()) {
                         viewModel.modifyEventItem(
                             tripId,
                             eventId,

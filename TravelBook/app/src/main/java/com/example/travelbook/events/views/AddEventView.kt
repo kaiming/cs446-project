@@ -279,7 +279,7 @@ fun AddEventView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
-                    if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventCost.text.isNotBlank()) {
+                    if(eventName.text.isNotBlank() && eventLocation.text.isNotBlank() && eventLocationCoordinates.isNotBlank() && eventCost.text.isNotBlank()) {
                         viewModel.addEventItem(
                             EventItem(
                                 eventId =  UUID.randomUUID().toString(),
