@@ -94,7 +94,7 @@ fun ModifyEventView(
             eventStartDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDayOfMonth)
         },
         calendar[Calendar.YEAR],
-        calendar[Calendar.MONTH],
+        calendar[Calendar.MONTH] + 1,
         calendar[Calendar.DAY_OF_MONTH]
     )
     startDatePicker.datePicker.minDate = calendar.timeInMillis
@@ -105,7 +105,7 @@ fun ModifyEventView(
             eventEndDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDayOfMonth)
         },
         calendar[Calendar.YEAR],
-        calendar[Calendar.MONTH],
+        calendar[Calendar.MONTH] + 1,
         calendar[Calendar.DAY_OF_MONTH]
     )
     endDatePicker.datePicker.minDate = eventStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
