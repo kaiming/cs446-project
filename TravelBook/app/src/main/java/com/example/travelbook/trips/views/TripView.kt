@@ -46,7 +46,7 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun TripView(
     viewModel: TripViewModel,
-    onNavigateToEvents: (String, Float) -> Unit,
+    onNavigateToEvents: (String) -> Unit,
     onNavigateToArchivedTrip: () -> Unit,
     onNavigateToAddTrip: () -> Unit,
     onNavigateToModifyTrip: (String) -> Unit,

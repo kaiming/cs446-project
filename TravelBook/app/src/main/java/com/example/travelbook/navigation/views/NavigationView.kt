@@ -193,9 +193,12 @@ fun NavigationGraph(
                 onNavigateToAddTrip = {
                     navController.navigate(NavigationItem.AddTrip.route)
                 },
+                onNavigateToModifyTrip = {
+                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
+                },
                 onNavigateToArchivedTrip = {navController.navigate(NavigationItem.ArchivedTrip.route)},
-                onNavigateToEvents = { eventString, eventFloat ->
-                    navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
+                onNavigateToEvents = {
+                    navController.navigate("${NavigationItem.Event.route}/$it")
                 },
                 modifier = modifier
             )
@@ -205,9 +208,6 @@ fun NavigationGraph(
                 viewModel = archivedTripViewModel,
                 onNavigateToEvents = { eventString, eventFloat ->
                     navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
-                },
-                onNavigateToModifyTrip = {
-                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
                 },
                 modifier = modifier
             )
