@@ -1,5 +1,6 @@
 package com.example.travelbook.trips.models
 
+import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
@@ -18,6 +19,18 @@ private const val TAG = "TripRepository"
 class TripRepository {
 
     private val database = Firebase.firestore
+
+    fun archiveTrip(tripId: String) {
+        database.collection("trips")
+            .document(tripId)
+            .update("archived", true) // don't know why its saving as "archived" even though it's called "isArchived" in the model
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "Trip successfully archived")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error achiving trip", e)
+            }
+    }
 
     fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
         val querySnapshot = database

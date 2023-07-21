@@ -64,22 +64,24 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextButton(
-                            onClick = { onNavigateToEvents(trip.tripId, trip.budget.substringAfter("text='").substringBefore("'").toFloat()) },
-                            modifier = Modifier.weight(1f)
-                        ) { // TODO: check why this is being so janky
-                            TripCard(trip)
+                    if (!trip.isArchived) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TextButton(
+                                onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                TripCard(trip)
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            ThreeDotMenu(viewModel, {viewModel.archiveTrip(trip)})
                         }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        ThreeDotMenu()
                     }
                 })
             }
@@ -123,7 +125,10 @@ fun TripView(
 }
 
 @Composable
-fun ThreeDotMenu() {
+fun ThreeDotMenu(
+    viewModel: TripViewModel,
+    onArchiveClick: () -> Unit
+) {
     val context = LocalContext.current
     val expandedState = remember { mutableStateOf(false) }
 
@@ -138,7 +143,10 @@ fun ThreeDotMenu() {
             expanded = expandedState.value,
             onDismissRequest = { expandedState.value = false }
         ) {
-            DropdownMenuItem(onClick = { /* Handle archive click */ }) {
+            DropdownMenuItem(onClick = {
+                onArchiveClick()
+                expandedState.value = false
+            }) {
                 Text("Archive")
             }
             DropdownMenuItem(onClick = { /* Handle edit click */ }) {
