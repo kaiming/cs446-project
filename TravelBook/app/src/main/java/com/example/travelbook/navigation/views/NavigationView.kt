@@ -49,6 +49,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.travelbook.R
+import com.example.travelbook.budgeting.viewModels.BudgetingViewModel
 import com.example.travelbook.budgeting.views.BudgetingView
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.EventViewModel
@@ -182,7 +183,10 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.Budgeting.route) {
-            BudgetingView()
+            BudgetingView(
+//                viewModel = BudgetingViewModel,
+                modifier = modifier
+            )
         }
         composable(NavigationItem.AddTrip.route) {
             AddTripView(
