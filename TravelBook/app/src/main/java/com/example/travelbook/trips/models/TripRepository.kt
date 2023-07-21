@@ -44,23 +44,6 @@ class TripRepository {
         emit(trips)
     }
 
-    fun temp(userId: String) { // TEST
-        val querySnapshot = database
-            .collection("trips")
-            .whereArrayContains("participants", userId)
-            .whereEqualTo("archived", true)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                // Log the entire QuerySnapshot
-                Log.d("Firebase Query", "Total Documents: ${querySnapshot.size()}")
-                for (document in querySnapshot) {
-                    Log.d("Firebase Query", "Document ID: ${document.id}")
-                    val data = document.data
-                    Log.d("Firebase Query", "Data: $data")
-                }
-            }
-    }
-
     fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
         val querySnapshot = database
             .collection("trips")

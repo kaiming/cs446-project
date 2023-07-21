@@ -12,7 +12,6 @@ class ArchivedTripViewModel(
 ): ViewModel() {
     private val userId = "user1" // TODO: temp
 
-    val tempArchivedTrip = repository.temp(userId) // TEST to get logs of query
     val archivedTripsFlow: Flow<List<Trip>> = repository.getAllTripsByUserIdAndFilterForArchivedFlow(userId)
 }
 
