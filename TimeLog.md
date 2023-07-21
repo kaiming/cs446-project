@@ -43,3 +43,4 @@
 | 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | added signout error checking with message popup for UI feedback and other misc changes related to auth and shared preferences |
 | 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | adding dropdown menu and archive trips button to trips view |
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
+| 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
