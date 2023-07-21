@@ -206,6 +206,9 @@ fun NavigationGraph(
                 onNavigateToEvents = { eventString, eventFloat ->
                     navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
                 },
+                onNavigateToModifyTrip = {
+                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
+                },
                 modifier = modifier
             )
         }
@@ -232,10 +235,6 @@ fun NavigationGraph(
                 onNavigateToEvents = {
                     navController.popBackStack()
                 },
-                onNavigateToTrips = {
-                    navController.popBackStack()
-                    navController.popBackStack()
-                },
                 modifier = modifier
             )
         }
@@ -255,9 +254,6 @@ fun NavigationGraph(
                 },
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
-                },
-                onNavigateToModifyTrip = {
-                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
                 },
                 modifier = modifier
             )

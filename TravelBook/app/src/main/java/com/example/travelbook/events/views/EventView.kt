@@ -46,7 +46,6 @@ fun EventView(
     tripId: String?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
-    onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
@@ -97,9 +96,7 @@ fun EventView(
             }
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
-            TextButton(onClick = { onNavigateToModifyTrip(tripId) }) {
-                TripCard(trip)
-            }
+            TripCard(trip)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
