@@ -9,8 +9,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.map.viewModels.MapViewModel
+import com.google.android.gms.maps.model.Dot
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PatternItem
 import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
@@ -49,6 +51,11 @@ fun MapView(
                     200
                 )
 
+                val pattern = mutableListOf<PatternItem>()
+                if(LocalDate.parse(trip.endDate) > LocalDate.now()) {
+                    pattern.add(Dot())
+                }
+
                 val points = mutableListOf<LatLng>()
                 val eventComparator = Comparator { event1: EventItem, event2: EventItem ->
                     val event1StartDate = LocalDate.parse(event1.startDate)
@@ -78,7 +85,9 @@ fun MapView(
                     color = tripColor,
                     jointType = JointType.ROUND,
                     endCap = RoundCap(),
-                    startCap = RoundCap()
+                    startCap = RoundCap(),
+                    geodesic = true,
+                    pattern = pattern.ifEmpty { null }
                 )
             }
         }
