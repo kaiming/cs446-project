@@ -219,7 +219,7 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${NavigationItem.Event.route}/{trip_id}/{trip_budget}",
+            route = "${NavigationItem.ModifyTrip.route}/{trip_id}",
             arguments = listOf(
                 navArgument("trip_id") {
                     type = NavType.StringType
@@ -240,7 +240,7 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${NavigationItem.Event.route}/{trip_id}",
+            route = "${NavigationItem.Event.route}/{trip_id}/{trip_budget}",
             arguments = listOf(
                 navArgument("trip_id") {
                     type = NavType.StringType
