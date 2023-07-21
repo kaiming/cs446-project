@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "107211359371",
+    "firebase_url": "https://cs446-8d4f1-default-rtdb.firebaseio.com",
     "project_id": "cs446-8d4f1",
     "storage_bucket": "cs446-8d4f1.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+          "client_id": "107211359371-s2k4hkbcpcfq28a3ep3jb43gl0601dao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs446.travelbook",
+            "certificate_hash": "38d1fc0a17ebd0c1c18a2ab3729a6b4cdb2ca1e0"
+          }
+        },
+        {
+          "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,36 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+              "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107211359371:android:15170895acbaec0205008e",
+        "android_client_info": {
+          "package_name": "com.example.travelbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv1IMgYaveyvDVq2veaa8--y7b_ymMT1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
