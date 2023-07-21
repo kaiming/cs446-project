@@ -37,6 +37,9 @@
 | 2023/07/19 | -- | -- | -- | -- | 2 | -- | -- | learn jetpack compose |
 | 2023/07/19 | -- | -- | -- | -- | 7 | 7 | -- | implementing budgeting feature on trip and event views |
 | 2023/07/19 | -- | -- | -- | -- | -- | 2.5 | -- | added viewmodel for budget details view |
+| 2023/07/19 | -- | 4 | -- | -- | -- | -- | -- | UI research/design |
+| 2023/07/20 | -- | 1.5 | -- | -- | -- | -- | -- | configuring dummy nav routing for budgetView testing |
+| 2023/07/20 | -- | 5 | -- | -- | -- | -- | -- | integrating jitPack library for chart rendering |
 | 2023/07/20 | -- | -- | -- | -- | 4 | -- | -- | added profile page and sign out functionality |
 | 2023/07/20 | -- | -- | -- | -- | 1 | -- | -- | changes to authrepo and shared preferences |
 | 2023/07/20 | -- | -- | 2 | 5 | -- | -- | -- | Added lines from trips to map |
@@ -46,3 +49,4 @@
 | 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | adding dropdown menu and archive trips button to trips view |
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
 | 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
+| 2023/07/21 | -- | 7 | -- | -- | -- | -- | -- | implementation of budgetView page (status card, pie chart) |
