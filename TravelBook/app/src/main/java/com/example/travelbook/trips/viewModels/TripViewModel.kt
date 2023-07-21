@@ -16,8 +16,12 @@ class TripViewModel(
 //    val trips: List<Trip> = repository.getAllTripsByUserID(userId)
     val tripsFlow: Flow<List<Trip>> = repository.getAllTripsByUserIDFlow(userId)
 
-    fun archiveTrip(trip: Trip) {
-        repository.archiveTrip(trip.tripId)
+    fun archiveTrip(tripId: String) {
+        repository.archiveTrip(tripId)
+    }
+
+    fun deleteTrip(tripId: String) {
+        repository.deleteTrip(tripId)
     }
 }
 

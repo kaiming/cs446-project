@@ -46,9 +46,10 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun TripView(
     viewModel: TripViewModel,
-    onNavigateToEvents: (String, Float) -> Unit,
+    onNavigateToEvents: (String) -> Unit,
     onNavigateToArchivedTrip: () -> Unit,
     onNavigateToAddTrip: () -> Unit,
+    onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -73,7 +74,7 @@ fun TripView(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             TextButton(
-                                onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
+                                onClick = { onNavigateToEvents(trip.tripId) },
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TripCard(trip)
@@ -81,7 +82,12 @@ fun TripView(
 
                             Spacer(modifier = Modifier.width(8.dp))
 
-                            ThreeDotMenu(viewModel, {viewModel.archiveTrip(trip)})
+                            ThreeDotMenu(
+                                viewModel,
+                                { viewModel.archiveTrip(trip.tripId) },
+                                { onNavigateToModifyTrip(trip.tripId) },
+                                { viewModel.deleteTrip(trip.tripId) }
+                            )
                         }
                     }
                 })
@@ -128,7 +134,9 @@ fun TripView(
 @Composable
 fun ThreeDotMenu(
     viewModel: TripViewModel,
-    onArchiveClick: () -> Unit
+    onArchiveClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     val context = LocalContext.current
     val expandedState = remember { mutableStateOf(false) }
@@ -150,10 +158,10 @@ fun ThreeDotMenu(
             }) {
                 Text("Archive")
             }
-            DropdownMenuItem(onClick = { /* Handle edit click */ }) {
+            DropdownMenuItem(onClick = { onEditClick() }) {
                 Text("Edit")
             }
-            DropdownMenuItem(onClick = { /* Handle delete click */ }) {
+            DropdownMenuItem(onClick = { onDeleteClick() }) {
                 Text("Delete")
             }
         }
@@ -161,7 +169,7 @@ fun ThreeDotMenu(
 }
 
 @Composable
-private fun TripCard(
+fun TripCard(
     trip: Trip
 ) {
     Card(

@@ -24,7 +24,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.trips.views.TripCard
 import com.example.travelbook.ui.theme.Padding
 import com.google.common.collect.UnmodifiableListIterator
 
@@ -41,15 +44,15 @@ import com.google.common.collect.UnmodifiableListIterator
 fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
-    tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
-    if (tripBudget !is Float) return
 
-    val events = viewModel.getEventsFlowByTripId(tripId).collectAsStateWithLifecycle(initialValue = emptyList())
+    val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
+    val events = viewModel.getEventsFlowByTripId(tripId)
+        .collectAsStateWithLifecycle(initialValue = emptyList())
 
     var totalCosts = 0f
     for (event in events.value) {
@@ -67,7 +70,6 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,7 +87,7 @@ fun EventView(
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
                     )
                     Text(
-                        text = tripBudget.toString(),
+                        text = trip.budget,
                         fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -93,7 +95,8 @@ fun EventView(
                 }
             }
 
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
+            TripCard(trip)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
@@ -119,7 +122,7 @@ fun EventView(
                 ) {
                     Icon(
                         Icons.Rounded.AddCircle,
-                        tint =  MaterialTheme.colorScheme.secondary,
+                        tint = MaterialTheme.colorScheme.secondary,
                         contentDescription = "Add Event Button",
                         modifier = Modifier.size(64.dp)
                     )
@@ -128,7 +131,6 @@ fun EventView(
         }
     }
 }
-
 
 @Composable
 private fun EventCard(
@@ -201,7 +203,6 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
                 modifier = Modifier.padding(start = 4.dp)
-//                modifier = Modifier.padding(end = 16.dp)
             )
         }
     }

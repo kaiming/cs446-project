@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
+import com.example.travelbook.trips.views.TripCard
 import com.example.travelbook.ui.theme.Padding
 
 @Composable
@@ -61,39 +62,6 @@ fun ArchivedTripView(
                         }
                     }
                 })
-            }
-        }
-    }
-}
-
-
-@Composable
-private fun TripCard(
-    trip: Trip
-) {
-    Card(
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier.padding(Padding.PaddingMedium.size)
-    ) {
-        Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = trip.tripName,
-                )
-                Text(
-                    text = trip.startDate,
-                )
-                Text(
-                    text = trip.endDate,
-                )
-                Text(
-                    text = trip.participants.toString(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                // space for image/trip logo... don't think the model supports this yet.
             }
         }
     }
