@@ -34,6 +34,8 @@ import com.example.travelbook.signIn.viewModels.NewSignInViewModelFactory
 import com.example.travelbook.signIn.viewModels.SignUpViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
@@ -86,6 +88,10 @@ class MainActivity : ComponentActivity() {
                 TripViewModelFactory(TripRepository())
             }
 
+            val archivedTripViewModel: ArchivedTripViewModel by viewModels {
+                ArchivedTripViewModelFactory(TripRepository())
+            }
+
             val addTripViewModel: AddTripViewModel by viewModels {
                 AddTripViewModelFactory(TripRepository())
             }
@@ -117,6 +123,7 @@ class MainActivity : ComponentActivity() {
                         signInViewModel = signInViewModel,
                         mapViewModel = mapViewModel,
                         tripViewModel = tripViewModel,
+                        archivedTripViewModel = archivedTripViewModel,
                         addTripViewModel = addTripViewModel,
                         eventViewModel = eventViewModel,
                         addEventViewModel = addEventViewModel,

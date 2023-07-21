@@ -13,7 +13,7 @@ class TripViewModel(
 ): ViewModel() {
     private val userId = "user1"
 
-    val trips: List<Trip> = repository.getAllTripsByUserID(userId)
+//    val trips: List<Trip> = repository.getAllTripsByUserID(userId)
     val tripsFlow: Flow<List<Trip>> = repository.getAllTripsByUserIDFlow(userId)
 
     fun archiveTrip(trip: Trip) {

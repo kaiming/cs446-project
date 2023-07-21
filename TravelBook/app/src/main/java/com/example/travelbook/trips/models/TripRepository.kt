@@ -44,6 +44,19 @@ class TripRepository {
         emit(trips)
     }
 
+    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
+        val querySnapshot = database
+            .collection("trips")
+            .whereArrayContains("participants", userId)
+            .whereEqualTo("archived", true)
+            .get()
+            .await()
+        val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
+            documentSnapshot.toObject<Trip>()
+        }
+        emit(trips)
+    }
+
     // Get trips based on user id, participants contains a list of user ids
     fun getAllTripsByUserID(userId: String): List<Trip> {
         val trips = mutableListOf<Trip>()

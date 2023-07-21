@@ -47,6 +47,7 @@ import com.example.travelbook.ui.theme.Padding
 fun TripView(
     viewModel: TripViewModel,
     onNavigateToEvents: (String, Float) -> Unit,
+    onNavigateToArchivedTrip: () -> Unit,
     onNavigateToAddTrip: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -115,7 +116,7 @@ fun TripView(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomStart
                 ) {
-                    TextButton(onClick = { /* Handle TextButton click here */ }) {
+                    TextButton(onClick = { onNavigateToArchivedTrip() }) {
                         Text(text = "Archived Trips")
                     }
                 }
