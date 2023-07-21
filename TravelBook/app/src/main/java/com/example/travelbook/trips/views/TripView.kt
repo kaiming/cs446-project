@@ -4,26 +4,38 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,34 +64,88 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    TextButton(onClick = { onNavigateToEvents(trip.tripId, trip.budget.substringAfter("text='").substringBefore("'").toFloat()) }) { // TODO: check why this is being so janky
-                        TripCard(trip)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextButton(
+                            onClick = { onNavigateToEvents(trip.tripId, trip.budget.substringAfter("text='").substringBefore("'").toFloat()) },
+                            modifier = Modifier.weight(1f)
+                        ) { // TODO: check why this is being so janky
+                            TripCard(trip)
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        ThreeDotMenu()
                     }
                 })
             }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .padding(Padding.PaddingMedium.size)
-                    .background(
-                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
-                    ),
-                contentAlignment = Alignment.BottomEnd,
-            ) {
-                IconButton(
-                    onClick = {
-                        onNavigateToAddTrip()
-                    },
-                    modifier = Modifier.size(64.dp)
+
+            Box(modifier = Modifier.fillMaxSize().weight(1f)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(Padding.PaddingMedium.size)
+                        .background(
+                            color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                        ),
+                    contentAlignment = Alignment.BottomEnd
                 ) {
-                    Icon(
-                        Icons.Rounded.AddCircle,
-                        tint =  MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Add Trip Button",
+                    IconButton(
+                        onClick = {
+                            onNavigateToAddTrip()
+                        },
                         modifier = Modifier.size(64.dp)
-                    )
+                    ) {
+                        Icon(
+                            Icons.Rounded.AddCircle,
+                            tint = MaterialTheme.colorScheme.secondary,
+                            contentDescription = "Add Trip Button",
+                            modifier = Modifier.size(64.dp)
+                        )
+                    }
                 }
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    TextButton(onClick = { /* Handle TextButton click here */ }) {
+                        Text(text = "Archived Trips")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ThreeDotMenu() {
+    val context = LocalContext.current
+    val expandedState = remember { mutableStateOf(false) }
+
+    Box(contentAlignment = Alignment.Center) {
+        IconButton(
+            onClick = { expandedState.value = true }
+        ) {
+            Icon(imageVector = Icons.Outlined.MoreVert, contentDescription = "Menu")
+        }
+
+        DropdownMenu(
+            expanded = expandedState.value,
+            onDismissRequest = { expandedState.value = false }
+        ) {
+            DropdownMenuItem(onClick = { /* Handle archive click */ }) {
+                Text("Archive")
+            }
+            DropdownMenuItem(onClick = { /* Handle edit click */ }) {
+                Text("Edit")
+            }
+            DropdownMenuItem(onClick = { /* Handle delete click */ }) {
+                Text("Delete")
             }
         }
     }
