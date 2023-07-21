@@ -173,6 +173,7 @@ fun ModifyTripView(
                                 startDate = tripStartDate.toString(),
                                 endDate = tripEndDate.toString(),
                                 budget = tripBudget.text,
+                                isArchived = trip.isArchived,
                                 participants = trip.participants
                             )
                         )
