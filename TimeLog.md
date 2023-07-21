@@ -51,4 +51,8 @@
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
 | 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
 | 2023/07/21 | -- | 7 | -- | -- | -- | -- | -- | implementation of budgetView page (status card, pie chart) |
-| 2023/07/21 | -- | 3.5 | 1 | -- | -- | 3.5 | -- | D5: Design Patterns Examples |
+| 2023/07/21 | -- | 3.5 | 1 | -- | 1 | 3.5 | -- | D5: Design Patterns Examples |
+| 2023/07/21 | -- | -- | -- | -- | 4 | -- | -- | added archived trips app flow and screens |
+| 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | made queries for archived trips |
+| 2023/07/21 | -- | -- | -- | 2 | 2 | -- | -- | fixed bugs with archived trips |
+| 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
