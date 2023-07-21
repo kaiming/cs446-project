@@ -9,12 +9,16 @@ import com.example.travelbook.trips.models.TripRepository
 import kotlinx.coroutines.flow.Flow
 
 class TripViewModel(
-    repository: TripRepository,
+    private val repository: TripRepository,
 ): ViewModel() {
     private val userId = "user1"
 
     val trips: List<Trip> = repository.getAllTripsByUserID(userId)
     val tripsFlow: Flow<List<Trip>> = repository.getAllTripsByUserIDFlow(userId)
+
+    fun archiveTrip(trip: Trip) {
+        repository.archiveTrip(trip.tripId)
+    }
 }
 
 class TripViewModelFactory(
