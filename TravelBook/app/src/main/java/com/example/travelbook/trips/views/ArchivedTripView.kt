@@ -47,19 +47,17 @@ fun ArchivedTripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = archivedTrips.value, itemContent = { trip ->
-                    if (!trip.isArchived) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextButton(
+                            onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
+                            modifier = Modifier.weight(1f)
                         ) {
-                            TextButton(
-                                onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                TripCard(trip)
-                            }
+                            TripCard(trip)
                         }
                     }
                 })
