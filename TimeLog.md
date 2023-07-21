@@ -56,3 +56,4 @@
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | made queries for archived trips |
 | 2023/07/21 | -- | -- | -- | 2 | 2 | -- | -- | fixed bugs with archived trips |
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
+| 2023/07/20 | -- | -- | 4 | -- | -- | -- | -- | modify and delete trips using dropdown |
