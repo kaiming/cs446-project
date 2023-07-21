@@ -69,7 +69,9 @@ import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
 import com.example.travelbook.signIn.views.SignUpView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
+import com.example.travelbook.trips.views.ArchivedTripView
 import com.example.travelbook.trips.views.TripView
 import com.example.travelbook.ui.theme.Padding
 import kotlinx.coroutines.launch
@@ -81,6 +83,7 @@ fun NavigationView(
     signInViewModel: SignInViewModel,
     mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
+    archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
@@ -139,6 +142,7 @@ fun NavigationView(
             signInViewModel = signInViewModel,
             mapViewModel = mapViewModel,
             tripViewModel = tripViewModel,
+            archivedTripViewModel = archivedTripViewModel,
             addTripViewModel = addTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
@@ -160,6 +164,7 @@ fun NavigationGraph(
     signInViewModel: SignInViewModel,
     mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
+    archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
@@ -183,6 +188,16 @@ fun NavigationGraph(
                 onNavigateToAddTrip = {
                     navController.navigate(NavigationItem.AddTrip.route)
                 },
+                onNavigateToArchivedTrip = {navController.navigate(NavigationItem.ArchivedTrip.route)},
+                onNavigateToEvents = { eventString, eventFloat ->
+                    navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
+                },
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.ArchivedTrip.route) {
+            ArchivedTripView(
+                viewModel = archivedTripViewModel,
                 onNavigateToEvents = { eventString, eventFloat ->
                     navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
                 },
