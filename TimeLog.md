@@ -50,3 +50,4 @@
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
 | 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
 | 2023/07/21 | -- | 7 | -- | -- | -- | -- | -- | implementation of budgetView page (status card, pie chart) |
+| 2023/07/21 | -- | 3.5 | -- | -- | -- | 3.5 | -- | D5: Design Patterns Examples |
