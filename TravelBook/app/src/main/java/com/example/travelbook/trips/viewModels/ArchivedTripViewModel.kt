@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.models.TripRepository
-import com.example.travelbook.trips.viewModels.TripViewModel
 import kotlinx.coroutines.flow.Flow
 
 class ArchivedTripViewModel(
