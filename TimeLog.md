@@ -46,8 +46,9 @@
 | 2023/07/20 | -- | -- | -- | 0.25 | -- | -- | -- | Fixed date input |
 | 2023/07/20 | -- | -- | -- | -- | -- | 3 | -- | added navigation to budget details view |
 | 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | added signout error checking with message popup for UI feedback and other misc changes related to auth and shared preferences |
-| 2023/07/20 | -- | -- | -- | -- | 3 | -- | -- | adding dropdown menu and archive trips button to trips view |
+| 2023/07/20 | -- | -- | 1 | -- | 3 | -- | -- | adding dropdown menu and archive trips button to trips view |
+| 2023/07/20 | -- | -- | 4 | -- | 3 | -- | -- | modify and delete trips |
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
 | 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
 | 2023/07/21 | -- | 7 | -- | -- | -- | -- | -- | implementation of budgetView page (status card, pie chart) |
-| 2023/07/21 | -- | 3.5 | -- | -- | -- | 3.5 | -- | D5: Design Patterns Examples |
+| 2023/07/21 | -- | 3.5 | 1 | -- | -- | 3.5 | -- | D5: Design Patterns Examples |
