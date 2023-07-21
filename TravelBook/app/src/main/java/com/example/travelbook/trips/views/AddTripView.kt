@@ -139,6 +139,7 @@ fun AddTripView(
                     tripBudget = it
                 },
                 label = { Text(text = "Trip Budget") },
+                placeholder = { Text(text = "Budget of the Trip") },
                 shape = RoundedCornerShape(10.dp),
                 singleLine = true,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)

@@ -73,7 +73,7 @@ fun TripView(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             TextButton(
-                                onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
+                                onClick = { onNavigateToEvents(trip.tripId) },
                                 modifier = Modifier.weight(1f)
                             ) {
                                 TripCard(trip)

@@ -44,14 +44,12 @@ import com.google.common.collect.UnmodifiableListIterator
 fun EventView(
     viewModel: EventViewModel,
     tripId: String?,
-    tripBudget: Float?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
-    if (tripBudget !is Float) return
 
     val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
     val events = viewModel.getEventsFlowByTripId(tripId)
@@ -90,7 +88,7 @@ fun EventView(
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
                     )
                     Text(
-                        text = tripBudget.toString(),
+                        text = trip.budget,
                         fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -98,47 +96,44 @@ fun EventView(
                 }
             }
 
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = tripBudget)
-            TextButton(onClick = { onNavigateToAddEvent(tripId) }) {
-                TextButton(onClick = { onNavigateToModifyTrip(tripId) }) {
-                    TripCard(trip)
-                }
-                LazyColumn(Modifier.weight(6f)) {
-                    items(items = events.value, itemContent = { event ->
-                        EventCard(event) {
-                            onNavigateToModifyEvent(tripId, event.eventId)
-                        }
-                    })
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize()
-                        .padding(Padding.PaddingMedium.size)
-                        .background(
-                            color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
-                        ),
-                    contentAlignment = Alignment.BottomEnd,
-                ) {
-                    IconButton(
-                        onClick = {
-                            onNavigateToAddEvent(tripId)
-                        },
-                        modifier = Modifier.size(64.dp)
-                    ) {
-                        Icon(
-                            Icons.Rounded.AddCircle,
-                            tint = MaterialTheme.colorScheme.secondary,
-                            contentDescription = "Add Event Button",
-                            modifier = Modifier.size(64.dp)
-                        )
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
+            TextButton(onClick = { onNavigateToModifyTrip(tripId) }) {
+                TripCard(trip)
+            }
+            LazyColumn(Modifier.weight(6f)) {
+                items(items = events.value, itemContent = { event ->
+                    EventCard(event) {
+                        onNavigateToModifyEvent(tripId, event.eventId)
                     }
+                })
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize()
+                    .padding(Padding.PaddingMedium.size)
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                    ),
+                contentAlignment = Alignment.BottomEnd,
+            ) {
+                IconButton(
+                    onClick = {
+                        onNavigateToAddEvent(tripId)
+                    },
+                    modifier = Modifier.size(64.dp)
+                ) {
+                    Icon(
+                        Icons.Rounded.AddCircle,
+                        tint = MaterialTheme.colorScheme.secondary,
+                        contentDescription = "Add Event Button",
+                        modifier = Modifier.size(64.dp)
+                    )
                 }
             }
         }
     }
 }
-
 
 @Composable
 private fun EventCard(

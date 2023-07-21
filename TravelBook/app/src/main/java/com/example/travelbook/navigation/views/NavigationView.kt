@@ -240,20 +240,16 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${NavigationItem.Event.route}/{trip_id}/{trip_budget}",
+            route = "${NavigationItem.Event.route}/{trip_id}",
             arguments = listOf(
                 navArgument("trip_id") {
                     type = NavType.StringType
-                },
-                navArgument("trip_budget") {
-                    type = NavType.FloatType
                 }
             )
         ) {
             EventView(
                 viewModel = eventViewModel,
                 tripId = it.arguments?.getString("trip_id"),
-                tripBudget = it.arguments?.getFloat("trip_budget"),
                 onNavigateToAddEvent = {
                     navController.navigate("${NavigationItem.AddEvent.route}/$it")
                 },

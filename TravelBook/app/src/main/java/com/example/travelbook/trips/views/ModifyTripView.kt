@@ -78,6 +78,7 @@ fun ModifyTripView(
     var tripEndDate by remember { mutableStateOf(
         LocalDate.parse(trip.endDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
+    var tripBudget by remember { mutableStateOf(TextFieldValue(trip.budget)) }
 
     val startDatePicker = DatePickerDialog(
         context,
@@ -133,6 +134,17 @@ fun ModifyTripView(
             TextButton(onClick = { endDatePicker.show() }) {
                 Text(tripEndDate.toString())
             }
+            TextField(
+                value = tripBudget,
+                onValueChange = {
+                    tripBudget = it
+                },
+                label = { Text(text = "Trip Budget") },
+                placeholder = { Text(text = "Budget of the Trip") },
+                shape = RoundedCornerShape(10.dp),
+                singleLine = true,
+                modifier = Modifier.padding(Padding.PaddingSmall.size)
+            )
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
@@ -160,7 +172,7 @@ fun ModifyTripView(
                                 tripName = tripName.text,
                                 startDate = tripStartDate.toString(),
                                 endDate = tripEndDate.toString(),
-                                budget = trip.budget,
+                                budget = tripBudget.text,
                                 participants = trip.participants
                             )
                         )
