@@ -21,7 +21,7 @@
 | 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
 | 2023/07/14 | -- | -- | 2 | 2 | -- | -- | -- | upcoming maps feature designing and planning |
-| 2023/07/16 | 3 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
+| 2023/07/16 | 4 | -- | -- | -- | -- | -- | -- | Add user to trip in the UI |
 | 2023/07/16 | -- | -- | 2 | -- | -- | -- | -- | modifiable events debugging |
 | 2023/07/17 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | 2.5 | Group meeting, task planning and allocation |
 | 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
@@ -29,6 +29,7 @@
 | 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
 | 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
 | 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
+| 2023/07/18 | 2 | -- | -- | -- | -- | -- | -- | Export feature design |
 | 2023/07/18 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
 | 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
 | 2023/07/19 | -- | -- | 2 | -- | -- | -- | -- | Add trip details to itinerary page |
@@ -57,3 +58,4 @@
 | 2023/07/21 | -- | -- | -- | 2 | 2 | -- | -- | fixed bugs with archived trips |
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
 | 2023/07/20 | -- | -- | 4 | -- | -- | -- | -- | modify and delete trips using dropdown |
+| 2023/07/23 | 8 | -- | -- | -- | -- | -- | -- | integrate unique user in app, create email-user mapping in firebase, testing multiple users, discovered issue with userSource and initializing flows |
