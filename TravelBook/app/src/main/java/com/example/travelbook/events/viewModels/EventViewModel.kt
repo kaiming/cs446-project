@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.travelbook.UserDataSource
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class EventViewModel(
     private val eventRepository: EventRepository,
-    private val tripRepository: TripRepository
+    private val tripRepository: TripRepository,
+    private val userDataSource: UserDataSource
 ): ViewModel() {
     fun getEventsFlowByTripId(tripId: String): Flow<List<EventItem>> {
         return eventRepository.getAllEventsByTripIdFlow(tripId)
@@ -27,11 +29,12 @@ class EventViewModel(
 
 class EventViewModelFactory(
         private val eventRepository: EventRepository,
-        private val tripRepository: TripRepository
+        private val tripRepository: TripRepository,
+        private val userDataSource: UserDataSource
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
-            return EventViewModel(eventRepository, tripRepository) as T
+            return EventViewModel(eventRepository, tripRepository, userDataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

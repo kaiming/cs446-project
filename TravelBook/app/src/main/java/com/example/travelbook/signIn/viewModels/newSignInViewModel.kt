@@ -1,6 +1,7 @@
 package com.example.travelbook.signIn.viewModels
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
@@ -31,7 +32,9 @@ class NewSignInViewModel(
                 name = firebaseUser?.displayName,
                 email = firebaseUser?.email
             )
+            Log.d("NewSignInViewModel", "User: $user")
             userDataSource.saveUser(user)
+            repository.saveUserInFirebase(user)
             navigationController.navigate(NavigationItem.Map.route)
         } else {
             // User is null, handle the failure

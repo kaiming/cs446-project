@@ -156,7 +156,8 @@ fun AddTripView(
                                 tripEndDate.toString(),
                                 tripBudget.text,
                                 false,
-                                listOf("user1","user2"))
+                                emptyList()
+                            )
                         )
                         onNavigateToTrip()
                     }

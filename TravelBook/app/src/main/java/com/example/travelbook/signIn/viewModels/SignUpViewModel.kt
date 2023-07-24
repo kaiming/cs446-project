@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.util.Log
 
 class SignUpViewModel(
     private val navigationController: NavHostController, private val repository: AuthRepo
@@ -38,6 +39,7 @@ class SignUpViewModel(
     }
 
     fun signUp() {
+        Log.d("SignUpViewModel", "Sign-up called!!!!!!!!!!!!!!!!!!!!!")
         val email = _email.value.trim()
         val password = _password.value
 
@@ -49,15 +51,22 @@ class SignUpViewModel(
         viewModelScope.launch {
             try {
                 val result = repository.signUpWithEmailAndPassword(email, password)
-                handleSignUpResult(result)
+                handleSignUpResult(result, email)
             } catch (e: Exception) {
                 _errorMessage.value = "Sign-up failed: ${e.message}"
             }
         }
     }
 
-    private fun handleSignUpResult(result: Task<AuthResult>) {
+    private fun handleSignUpResult(result: Task<AuthResult>, email: String) {
         // Handle successful sign-up here
+        // if (result.isSuccessful) {
+        // val authResult = result.result
+        // val user = authResult?.user
+        // val uuid = user?.uid
+        // repository.saveUserIDToEmailMapping(uuid!!, email)
+        // }
+        Log.d("SignUpViewModel", "Sign-up successful!!!!!!!!!!!!!!!!!!!!!")
         navigationController.navigate(NavigationItem.SignIn.route)
     }
 }

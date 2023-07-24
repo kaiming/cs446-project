@@ -34,6 +34,7 @@ class TripRepository {
     }
 
     fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
+        Log.d(TAG, "getAllTripsByUserIDFlow: $userId")
         val querySnapshot = database
             .collection("trips")
             .whereArrayContains("participants", userId)
@@ -46,6 +47,7 @@ class TripRepository {
     }
 
     fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
+        Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: $userId")
         val querySnapshot = database
             .collection("trips")
             .whereArrayContains("participants", userId)
@@ -59,6 +61,7 @@ class TripRepository {
     }
 
     fun getTripByIdFlow(tripId: String): Flow<Trip?> = callbackFlow {
+        Log.d(TAG, "getTripByIdFlow: $tripId")
         val documentRef = database.collection("trips")
             .document(tripId)
 
@@ -81,6 +84,7 @@ class TripRepository {
 
     // Get trips based on user id, participants contains a list of user ids
     fun getAllTripsByUserID(userId: String): List<Trip> {
+        Log.d(TAG, "getAllTripsByUserID: $userId")
         val trips = mutableListOf<Trip>()
         database.collection("trips")
             .whereArrayContains("participants", userId)
@@ -96,6 +100,7 @@ class TripRepository {
 
     // Get trip based on trip id
     fun getTripByTripID(tripId: String): Trip {
+        Log.d(TAG, "getTripByTripID: $tripId")
         var trip = Trip()
         database.collection("trips")
             .document(tripId)
