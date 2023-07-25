@@ -1,5 +1,9 @@
 package com.example.travelbook.events.views
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,12 +16,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,8 +44,10 @@ import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.trips.views.TripCard
 import com.example.travelbook.ui.theme.Padding
-import com.google.common.collect.UnmodifiableListIterator
-
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun EventView(
     viewModel: EventViewModel,
@@ -59,6 +67,18 @@ fun EventView(
         totalCosts += event.cost.toFloat()
     }
 
+    val pickImagesLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            // Handle the returned Uri, e.g., upload to Firebase Storage
+            viewModel.handleImageUpload(uri, tripId)
+        }
+    }
+
+    // photos permission state
+    val photosPermissionState = rememberPermissionState(
+        android.Manifest.permission.READ_MEDIA_IMAGES
+    )
+
     Box(modifier = modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,6 +90,7 @@ fun EventView(
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,23 +135,50 @@ fun EventView(
                     ),
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                IconButton(
-                    onClick = {
-                        onNavigateToAddEvent(tripId)
-                    },
-                    modifier = Modifier.size(64.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        Icons.Rounded.AddCircle,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Add Event Button",
+                    // "Add Photos" Button
+                    Button(
+                        onClick = {
+                            if (photosPermissionState.status.isGranted) {
+                                Log.d("DEBUG", "Permissions granted!")
+                                pickImagesLauncher.launch("image/*")
+                            } else {
+                                Log.d("DEBUG", "Permissions not granted!")
+                                photosPermissionState.launchPermissionRequest()
+                            }
+                        },
+                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                    ) {
+                        Text("Add Photos")
+                    }
+
+                    // Spacer to provide some separation
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    // Existing IconButton for "Add Event"
+                    IconButton(
+                        onClick = {
+                            onNavigateToAddEvent(tripId)
+                        },
                         modifier = Modifier.size(64.dp)
-                    )
+                    ) {
+                        Icon(
+                            Icons.Rounded.AddCircle,
+                            tint = MaterialTheme.colorScheme.secondary,
+                            contentDescription = "Add Event Button",
+                            modifier = Modifier.size(64.dp)
+                        )
+                    }
                 }
             }
         }
     }
 }
+
 
 @Composable
 private fun EventCard(
