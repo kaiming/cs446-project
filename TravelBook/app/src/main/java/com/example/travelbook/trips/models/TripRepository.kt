@@ -1,5 +1,7 @@
 package com.example.travelbook.trips.models
 
+import UtilityFunctions.getTripWithParticipantEmails
+import UtilityFunctions.getTripsWithParticipantEmails
 import android.content.ContentValues
 import android.util.Log
 import com.example.travelbook.events.models.EventItem
@@ -40,7 +42,8 @@ class TripRepository {
         val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
             documentSnapshot.toObject<Trip>()
         }
-        emit(trips)
+        val tripsWithEmails = getTripsWithParticipantEmails(trips)
+        emit(tripsWithEmails)
     }
 
     fun getAllTripsByUserIDFlow(userId: String? = null): Flow<List<Trip>> = flow {
@@ -55,7 +58,8 @@ class TripRepository {
             val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
                 documentSnapshot.toObject<Trip>()
             }
-            emit(trips)
+            val tripsWithEmails = getTripsWithParticipantEmails(trips)
+            emit(tripsWithEmails)
         } else {
             Log.d(TAG, "getAllTripsByUserIDFlow: userId is null")
             emit(emptyList())
@@ -76,7 +80,8 @@ class TripRepository {
         val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
             documentSnapshot.toObject<Trip>()
         }
-        emit(trips)
+        val tripsWithEmails = getTripsWithParticipantEmails(trips)
+        emit(tripsWithEmails)
         } else {
             Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is null")
             emit(emptyList())

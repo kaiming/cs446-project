@@ -2,6 +2,7 @@ package com.example.travelbook.map.views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -33,7 +34,9 @@ fun MapView(
             zoomControlsEnabled = false
         )
     ) }
-
+    LaunchedEffect(Unit) {
+        viewModel.loadTrips()
+    }
     val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
 
     Box(
