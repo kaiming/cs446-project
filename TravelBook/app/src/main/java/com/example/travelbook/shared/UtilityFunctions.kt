@@ -17,7 +17,12 @@ object UtilityFunctions {
             .whereEqualTo("id", userId)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                callback(querySnapshot.documents[0].id)
+                if (querySnapshot.documents.size > 0) {
+                    val email = querySnapshot.documents[0].get("email") as String
+                    callback(email)
+                } else {
+                    callback(null)
+                }
             }
             .addOnFailureListener { exception ->
                 callback(null)
@@ -29,25 +34,19 @@ object UtilityFunctions {
         val tripWithParticipantEmails = trip
         val participantEmails = mutableListOf<String>()
         trip.participants.forEach { participant ->
-            getEmailByUserId(participant) { userId ->
-                if (userId != null) {
-                    firestore.collection("users")
-                        .document(userId)
-                        .get()
-                        .addOnSuccessListener { documentSnapshot ->
-                            val email = documentSnapshot.get("email") as String
-                            participantEmails.add(email)
-                            if (participantEmails.size == trip.participants.size) {
-                                tripWithParticipantEmails.participants = participantEmails
-                            }
-                        }
+            getEmailByUserId(participant) { email ->
+                if (email != null) {
+                    participantEmails.add(email)
+                    if (participantEmails.size == trip.participants.size) {
+                        tripWithParticipantEmails.participants = participantEmails
+                    }
                 }
             }
         }
         return tripWithParticipantEmails
     }
 
-    // Replace list of trip objects to contain emails 
+    // Replace list of trip objects to contain emails
     fun getTripsWithParticipantEmails(trips: List<Trip>): List<Trip> {
         val tripsWithParticipantEmails = mutableListOf<Trip>()
         trips.forEach { trip ->
