@@ -33,11 +33,8 @@ class TripRepository {
             }
     }
 
-    fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
-        Log.d(TAG, "getAllTripsByUserIDFlow: $userId")
-        val querySnapshot = database
-            .collection("trips")
-            .whereArrayContains("participants", userId)
+    fun getAllTripsFlow(): Flow<List<Trip>> = flow {
+        val querySnapshot = database.collection("trips")
             .get()
             .await()
         val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
@@ -46,9 +43,31 @@ class TripRepository {
         emit(trips)
     }
 
-    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
+    fun getAllTripsByUserIDFlow(userId: String? = null): Flow<List<Trip>> = flow {
+        Log.d(TAG, "getAllTripsByUserIDFlow: $userId")
+        if (userId != null) {
+            Log.d(TAG, "getAllTripsByUserIDFlow: userId is not null")
+            val querySnapshot = database
+                .collection("trips")
+                .whereArrayContains("participants", userId)
+                .get()
+                .await()
+            val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
+                documentSnapshot.toObject<Trip>()
+            }
+            emit(trips)
+        } else {
+            Log.d(TAG, "getAllTripsByUserIDFlow: userId is null")
+            emit(emptyList())
+        }
+
+    }
+
+    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String? = null): Flow<List<Trip>> = flow {
         Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: $userId")
-        val querySnapshot = database
+        if (userId != null) {
+            Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is not null")
+            val querySnapshot = database
             .collection("trips")
             .whereArrayContains("participants", userId)
             .whereEqualTo("archived", true)
@@ -58,6 +77,10 @@ class TripRepository {
             documentSnapshot.toObject<Trip>()
         }
         emit(trips)
+        } else {
+            Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is null")
+            emit(emptyList())
+        }
     }
 
     fun getTripByIdFlow(tripId: String): Flow<Trip?> = callbackFlow {
