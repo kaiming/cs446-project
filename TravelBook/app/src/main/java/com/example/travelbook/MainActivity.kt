@@ -34,6 +34,10 @@ import com.example.travelbook.signIn.viewModels.NewSignInViewModelFactory
 import com.example.travelbook.signIn.viewModels.SignUpViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModelFactory
+import com.example.travelbook.trips.viewModels.ModifyTripViewModel
+import com.example.travelbook.trips.viewModels.ModifyTripViewModelFactory
 import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
@@ -86,12 +90,20 @@ class MainActivity : ComponentActivity() {
                 TripViewModelFactory(TripRepository())
             }
 
+            val archivedTripViewModel: ArchivedTripViewModel by viewModels {
+                ArchivedTripViewModelFactory(TripRepository())
+            }
+
             val addTripViewModel: AddTripViewModel by viewModels {
                 AddTripViewModelFactory(TripRepository())
             }
 
+            val modifyTripViewModel: ModifyTripViewModel by viewModels {
+                ModifyTripViewModelFactory(TripRepository())
+            }
+
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository())
+                EventViewModelFactory(EventRepository(), TripRepository())
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
@@ -117,7 +129,9 @@ class MainActivity : ComponentActivity() {
                         signInViewModel = signInViewModel,
                         mapViewModel = mapViewModel,
                         tripViewModel = tripViewModel,
+                        archivedTripViewModel = archivedTripViewModel,
                         addTripViewModel = addTripViewModel,
+                        modifyTripViewModel = modifyTripViewModel,
                         eventViewModel = eventViewModel,
                         addEventViewModel = addEventViewModel,
                         modifyEventViewModel = modifyEventViewModel,

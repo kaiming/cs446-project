@@ -285,7 +285,7 @@ fun ModifyEventView(
                             tripId,
                             eventId,
                             EventItem(
-                                eventId =  UUID.randomUUID().toString(),
+                                eventId = event.eventId,
                                 name = eventName.text,
                                 location = eventLocation.text,
                                 locationCoordinates = eventLocationCoordinates,

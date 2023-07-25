@@ -46,8 +46,10 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun TripView(
     viewModel: TripViewModel,
-    onNavigateToEvents: (String, Float) -> Unit,
+    onNavigateToEvents: (String) -> Unit,
+    onNavigateToArchivedTrip: () -> Unit,
     onNavigateToAddTrip: () -> Unit,
+    onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -64,22 +66,29 @@ fun TripView(
             )
             LazyColumn(Modifier.weight(6f)) {
                 items(items = trips.value, itemContent = { trip ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextButton(
-                            onClick = { onNavigateToEvents(trip.tripId, trip.budget.substringAfter("text='").substringBefore("'").toFloat()) },
-                            modifier = Modifier.weight(1f)
-                        ) { // TODO: check why this is being so janky
-                            TripCard(trip)
+                    if (!trip.isArchived) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TextButton(
+                                onClick = { onNavigateToEvents(trip.tripId) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                TripCard(trip)
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            ThreeDotMenu(
+                                viewModel,
+                                { viewModel.archiveTrip(trip.tripId) },
+                                { onNavigateToModifyTrip(trip.tripId) },
+                                { viewModel.deleteTrip(trip.tripId) }
+                            )
                         }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        ThreeDotMenu()
                     }
                 })
             }
@@ -113,7 +122,7 @@ fun TripView(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomStart
                 ) {
-                    TextButton(onClick = { /* Handle TextButton click here */ }) {
+                    TextButton(onClick = { onNavigateToArchivedTrip() }) {
                         Text(text = "Archived Trips")
                     }
                 }
@@ -123,7 +132,12 @@ fun TripView(
 }
 
 @Composable
-fun ThreeDotMenu() {
+fun ThreeDotMenu(
+    viewModel: TripViewModel,
+    onArchiveClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
     val context = LocalContext.current
     val expandedState = remember { mutableStateOf(false) }
 
@@ -138,13 +152,16 @@ fun ThreeDotMenu() {
             expanded = expandedState.value,
             onDismissRequest = { expandedState.value = false }
         ) {
-            DropdownMenuItem(onClick = { /* Handle archive click */ }) {
+            DropdownMenuItem(onClick = {
+                onArchiveClick()
+                expandedState.value = false
+            }) {
                 Text("Archive")
             }
-            DropdownMenuItem(onClick = { /* Handle edit click */ }) {
+            DropdownMenuItem(onClick = { onEditClick() }) {
                 Text("Edit")
             }
-            DropdownMenuItem(onClick = { /* Handle delete click */ }) {
+            DropdownMenuItem(onClick = { onDeleteClick() }) {
                 Text("Delete")
             }
         }
@@ -152,7 +169,7 @@ fun ThreeDotMenu() {
 }
 
 @Composable
-private fun TripCard(
+fun TripCard(
     trip: Trip
 ) {
     Card(

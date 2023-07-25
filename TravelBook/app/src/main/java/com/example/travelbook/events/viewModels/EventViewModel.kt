@@ -10,6 +10,8 @@ import androidx.navigation.NavHostController
 import com.example.travelbook.navigation.models.NavigationItem
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
+import com.example.travelbook.trips.models.Trip
+import com.example.travelbook.trips.models.TripRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageMetadata
@@ -20,17 +22,22 @@ import java.util.Date
 import java.util.Locale
 
 class EventViewModel(
-    private val repository: EventRepository
+    private val eventRepository: EventRepository,
+    private val tripRepository: TripRepository
 ): ViewModel() {
     fun getEventsFlowByTripId(tripId: String): Flow<List<EventItem>> {
-        return repository.getAllEventsByTripIdFlow(tripId)
+        return eventRepository.getAllEventsByTripIdFlow(tripId)
+    }
+
+    fun getTripByTripId(tripId: String): Flow<Trip?> {
+        return tripRepository.getTripByIdFlow(tripId)
     }
 
     fun handleImageUpload(uri: Uri, tripId: String) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = formatter.format(Date())
         try {
-            repository.uploadImageToFirebase(uri, date, tripId)
+            eventRepository.uploadImageToFirebase(uri, date, tripId)
         } catch (e: Exception) {
             Log.d("UPLOAD_ERROR", "Failed to upload image.")
         }
@@ -38,11 +45,12 @@ class EventViewModel(
 }
 
 class EventViewModelFactory(
-        private val repository: EventRepository
+        private val eventRepository: EventRepository,
+        private val tripRepository: TripRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
-            return EventViewModel(repository) as T
+            return EventViewModel(eventRepository, tripRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
