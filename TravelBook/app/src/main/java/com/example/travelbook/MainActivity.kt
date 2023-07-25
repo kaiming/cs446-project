@@ -42,19 +42,24 @@ import com.example.travelbook.trips.viewModels.TripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModelFactory
 import com.example.travelbook.ui.theme.TravelBookTheme
 import com.google.android.libraries.places.api.Places
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.ktx.firestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TEMP MODEL TESTING
         val tripRepo = TripRepository()
-        // val eventRepo = EventRepository()
-        // Add trip
-        // tripRepo.addTrip(trip)
-        // Add event
-        // eventRepo.addEvent("wyj79g8Ye5ILpHVuqr7i", EventItem("Event 1", "2021-10-01", "2021-10-02", "123 f u. . st"))
-        // tripRepo.addUserToTrip("wyj79g8Ye5ILpHVuqr7i", "user2")
+
+        // // Disable caching and offline persistence
+        // val firestoreSettings = FirebaseFirestoreSettings.Builder()
+        //     .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED) // Disable caching
+        //     .setPersistenceEnabled(false) // Disable offline persistence
+        //     .build()
+
+        // val firestore = Firebase.firestore
+        // firestore.firestoreSettings = firestoreSettings
 
         setContent {
 
@@ -75,7 +80,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val mapViewModel: MapViewModel by viewModels {
-                MapViewModelFactory(TripRepository(), EventRepository())
+                MapViewModelFactory(TripRepository(), EventRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val newSignInViewModel: NewSignInViewModel by viewModels {
@@ -87,31 +92,31 @@ class MainActivity : ComponentActivity() {
             }
 
             val tripViewModel: TripViewModel by viewModels {
-                TripViewModelFactory(TripRepository())
+                TripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val archivedTripViewModel: ArchivedTripViewModel by viewModels {
-                ArchivedTripViewModelFactory(TripRepository())
+                ArchivedTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val addTripViewModel: AddTripViewModel by viewModels {
-                AddTripViewModelFactory(TripRepository())
+                AddTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val modifyTripViewModel: ModifyTripViewModel by viewModels {
-                ModifyTripViewModelFactory(TripRepository())
+                ModifyTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), TripRepository())
+                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository(), GooglePredictionRepository())
+                AddEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val modifyEventViewModel: ModifyEventViewModel by viewModels {
-                ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository())
+                ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val userDataSource = SharedPreferencesUserDataSource(this)

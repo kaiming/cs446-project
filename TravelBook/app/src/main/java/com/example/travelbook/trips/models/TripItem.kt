@@ -10,7 +10,7 @@ data class Trip(
     val endDate: String,
     val budget: String,
     var isArchived: Boolean,
-    val participants: List<String> = emptyList()
+    var participants: List<String> = emptyList()
 ) {
     constructor() : this("", "", "","", "", false)
 }

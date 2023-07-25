@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +33,9 @@ fun ArchivedTripView(
     onNavigateToEvents: (String, Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.loadTrips()
+    }
     val archivedTrips = viewModel.archivedTripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     Log.d("archived trips", "Total: ${archivedTrips.value}") // TEST
 

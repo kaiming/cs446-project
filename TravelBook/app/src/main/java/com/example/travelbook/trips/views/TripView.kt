@@ -28,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,6 +53,9 @@ fun TripView(
     onNavigateToModifyTrip: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.loadTrips()
+    }
     val trips = viewModel.tripsFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     Box(modifier = modifier) {
         Column(

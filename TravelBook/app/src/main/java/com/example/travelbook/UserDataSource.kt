@@ -1,6 +1,7 @@
 package com.example.travelbook
 
 import android.content.Context
+import android.util.Log
 
 data class User(
     val id: String,
@@ -12,6 +13,9 @@ interface UserDataSource {
     fun saveUser(user: User)
     fun getUser(): User?
     fun deleteUser()
+    fun getUserId(): String?
+    fun getUserName(): String?
+    fun getUserEmail(): String?
 }
 
 class SharedPreferencesUserDataSource(private val context: Context) : UserDataSource {
@@ -19,6 +23,7 @@ class SharedPreferencesUserDataSource(private val context: Context) : UserDataSo
     private val sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
 
     override fun saveUser(user: User) {
+        Log.d("SharedPreferencesUserDataSource", "Saving user: $user")
         val editor = sharedPreferences.edit()
         editor.putString("USER_ID", user.id)
         editor.putString("USER_NAME", user.name)
@@ -31,6 +36,18 @@ class SharedPreferencesUserDataSource(private val context: Context) : UserDataSo
         val userName = sharedPreferences.getString("USER_NAME", null)
         val userEmail = sharedPreferences.getString("USER_EMAIL", null)
         return User(userId, userName, userEmail)
+    }
+
+    override fun getUserId(): String? {
+        return sharedPreferences.getString("USER_ID", null)
+    }
+
+    override fun getUserName(): String? {
+        return sharedPreferences.getString("USER_NAME", null)
+    }
+
+    override fun getUserEmail(): String? {
+        return sharedPreferences.getString("USER_EMAIL", null)
     }
 
     override fun deleteUser() {
