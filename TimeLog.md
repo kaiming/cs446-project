@@ -34,7 +34,7 @@
 | 2023/07/18 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
 | 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
 | 2023/07/19 | -- | -- | 2 | -- | -- | -- | -- | Add trip details to itinerary page |
-| 2023/07/19 | 0.5 | -- | -- | -- | 3 | 3 | -- | D5: Design Patterns Examples |
+| 2023/07/19 | 0.5 | -- | -- | -- | 3 | 3 | 2 | D5: Design Patterns Examples |
 | 2023/07/19 | -- | 1 | -- | 1 | 1 | 1 | -- | discussion on budget feature design |
 | 2023/07/19 | -- | -- | -- | -- | 2 | -- | -- | learn jetpack compose |
 | 2023/07/19 | -- | -- | -- | -- | 7 | 7 | -- | implementing budgeting feature on trip and event views |
@@ -59,7 +59,9 @@
 | 2023/07/21 | -- | -- | -- | 2 | 2 | -- | -- | fixed bugs with archived trips |
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
 | 2023/07/20 | -- | -- | 4 | -- | -- | -- | -- | modify and delete trips using dropdown |
+| 2023/07/20 | -- | -- | -- | -- | -- | -- | 3 | sign in page revamp |
 | 2023/07/23 | 8 | -- | -- | -- | -- | -- | -- | integrate unique user in app, create email-user mapping in firebase, testing multiple users, discovered issue with userSource and initializing flows |
 | 2023/07/23 | -- | -- | -- | -- | -- | -- | 4 | sign in flow refactoring |
 | 2023/07/23 | 2 | -- | -- | -- | -- | -- | -- | created utility function for converting emails to user ids, changes to authrepo and userdatasource |
+| 2023/07/25 | -- | -- | -- | -- | -- | -- | 2 | adding text to sign in page |
 | 2023/07/25 | -- | -- | -- | -- | -- | -- | 6 | implemented photo sharing |
