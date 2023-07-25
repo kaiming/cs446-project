@@ -1,6 +1,6 @@
 | Date | Alex | Brayden | Cole | Jameson | Kaiming | Kian | Toluwa | Task|
 | --- | --- | --- |---| --- | --- | --- | --- | --- |
-| 2023/05/15 | -- | -- | -- | 8 | -- | -- | -- | Learning Kotlin / Jetpack Compose |
+| 2023/05/15 | -- | -- | -- | 8 | -- | -- | 8 | Learning Kotlin / Jetpack Compose |
 | 2023/05/26 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | Project brainstorming meeting |
 | 2023/05/28 | 0.75 | 1.5 | 2 | 2 | 1 | 1 | 1 | Project proposal presentation |
 | 2023/06/02 | 1 | 2 | 2 | 1 | 1 | 1 | 1 | Project proposal document |
@@ -27,6 +27,7 @@
 | 2023/07/17 | -- | -- | -- | -- | -- | -- | 3 | working on saving authentication state |
 | 2023/07/17 | -- | -- | 6 | 4 | -- | -- | -- | modifiable events debugging |
 | 2023/07/18 | -- | -- | 2 | 6 | -- | -- | -- | get latlng from location |
+| 2023/07/18 | -- | -- | -- | -- | -- | -- | 6 | configuring email and google authentication |
 | 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
 | 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
 | 2023/07/18 | 2 | -- | -- | -- | -- | -- | -- | Export feature design |
@@ -52,11 +53,13 @@
 | 2023/07/20 | -- | -- | -- | -- | 0.5 | -- | -- | refactored trips view layout |
 | 2023/07/20 | -- | -- | -- | -- | 2 | -- | -- | refactored trips view layout |
 | 2023/07/21 | -- | 7 | -- | -- | -- | -- | -- | implementation of budgetView page (status card, pie chart) |
-| 2023/07/21 | -- | 3.5 | 1 | -- | 1 | 3.5 | -- | D5: Design Patterns Examples |
+| 2023/07/21 | -- | 3.5 | 1 | -- | 1 | 3.5 | 1 | D5: Design Patterns Examples |
 | 2023/07/21 | -- | -- | -- | -- | 4 | -- | -- | added archived trips app flow and screens |
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | made queries for archived trips |
 | 2023/07/21 | -- | -- | -- | 2 | 2 | -- | -- | fixed bugs with archived trips |
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
 | 2023/07/20 | -- | -- | 4 | -- | -- | -- | -- | modify and delete trips using dropdown |
 | 2023/07/23 | 8 | -- | -- | -- | -- | -- | -- | integrate unique user in app, create email-user mapping in firebase, testing multiple users, discovered issue with userSource and initializing flows |
+| 2023/07/23 | -- | -- | -- | -- | -- | -- | 4 | sign in flow refactoring |
 | 2023/07/23 | 2 | -- | -- | -- | -- | -- | -- | created utility function for converting emails to user ids, changes to authrepo and userdatasource |
+| 2023/07/25 | -- | -- | -- | -- | -- | -- | 6 | implemented photo sharing |
