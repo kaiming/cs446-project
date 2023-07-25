@@ -77,6 +77,9 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
 
+    // perms
+    implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
+
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth-ktx")
@@ -87,6 +90,7 @@ dependencies {
 
     // async
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
 
     val room_version = "2.5.1"
     implementation("androidx.room:room-common:$room_version")
