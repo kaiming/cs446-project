@@ -1,5 +1,6 @@
 package com.example.travelbook.trips.models
 
+import UtilityFunctions.getTripsWithParticipantEmails
 import android.content.ContentValues
 import android.util.Log
 import com.example.travelbook.events.models.EventItem
@@ -40,20 +41,7 @@ class TripRepository {
         val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
             documentSnapshot.toObject<Trip>()
         }
-        val tripsWithEmails = trips
-        for (trip in tripsWithEmails) {
-            val participantEmails = mutableListOf<String>()
-            for (participant in trip.participants) {
-                val email = database.collection("users")
-                    .whereEqualTo("id", participant)
-                    .get()
-                    .await()
-                if (email.documents.size > 0) {
-                    participantEmails.add(email.documents[0].get("email") as String)
-                }
-            }
-            trip.participants = participantEmails
-        }
+        val tripsWithEmails = getTripsWithParticipantEmails(trips)
         emit(tripsWithEmails)
     }
 
@@ -69,20 +57,7 @@ class TripRepository {
             val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
                 documentSnapshot.toObject<Trip>()
             }
-            val tripsWithEmails = trips
-            for (trip in tripsWithEmails) {
-                val participantEmails = mutableListOf<String>()
-                for (participant in trip.participants) {
-                    val email = database.collection("users")
-                        .whereEqualTo("id", participant)
-                        .get()
-                        .await()
-                    if (email.documents.size > 0) {
-                        participantEmails.add(email.documents[0].get("email") as String)
-                    }
-                }
-                trip.participants = participantEmails
-            }
+            val tripsWithEmails = getTripsWithParticipantEmails(trips)
             emit(tripsWithEmails)
         } else {
             Log.d(TAG, "getAllTripsByUserIDFlow: userId is null")
@@ -104,20 +79,7 @@ class TripRepository {
             val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
                 documentSnapshot.toObject<Trip>()
             }
-            val tripsWithEmails = trips
-            for (trip in tripsWithEmails) {
-                val participantEmails = mutableListOf<String>()
-                for (participant in trip.participants) {
-                    val email = database.collection("users")
-                        .whereEqualTo("id", participant)
-                        .get()
-                        .await()
-                    if (email.documents.size > 0) {
-                        participantEmails.add(email.documents[0].get("email") as String)
-                    }
-                }
-                trip.participants = participantEmails
-            }
+            val tripsWithEmails = getTripsWithParticipantEmails(trips)
             emit(tripsWithEmails)
             } else {
                 Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is null")
