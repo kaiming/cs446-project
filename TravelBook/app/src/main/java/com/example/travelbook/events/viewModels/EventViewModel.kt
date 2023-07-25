@@ -2,6 +2,7 @@ package com.example.travelbook.events.viewModels
 
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,11 @@ class EventViewModel(
     fun handleImageUpload(uri: Uri, tripId: String) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = formatter.format(Date())
-        repository.uploadImageToFirebase(uri, date, tripId)
+        try {
+            repository.uploadImageToFirebase(uri, date, tripId)
+        } catch (e: Exception) {
+            Log.d("UPLOAD_ERROR", "Failed to upload image.")
+        }
     }
 }
 
