@@ -1,6 +1,8 @@
 package com.example.travelbook.trips.models
 
+import android.content.ContentValues
 import android.util.Log
+import com.example.travelbook.events.models.EventItem
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -19,6 +21,18 @@ class TripRepository {
 
     private val database = Firebase.firestore
 
+    fun archiveTrip(tripId: String) {
+        database.collection("trips")
+            .document(tripId)
+            .update("archived", true) // don't know why its saving as "archived" even though it's called "isArchived" in the model
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "Trip successfully archived")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error achiving trip", e)
+            }
+    }
+
     fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
         val querySnapshot = database
             .collection("trips")
@@ -29,6 +43,40 @@ class TripRepository {
             documentSnapshot.toObject<Trip>()
         }
         emit(trips)
+    }
+
+    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
+        val querySnapshot = database
+            .collection("trips")
+            .whereArrayContains("participants", userId)
+            .whereEqualTo("archived", true)
+            .get()
+            .await()
+        val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
+            documentSnapshot.toObject<Trip>()
+        }
+        emit(trips)
+    }
+
+    fun getTripByIdFlow(tripId: String): Flow<Trip?> = callbackFlow {
+        val documentRef = database.collection("trips")
+            .document(tripId)
+
+        val tripDocument = documentRef.addSnapshotListener { documentSnapshot, exception ->
+            if (exception != null) {
+                close(exception)
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val trip = documentSnapshot.toObject<Trip>()
+                trySend(trip).isSuccess
+            } else {
+                trySend(null).isSuccess
+            }
+        }
+
+        awaitClose { tripDocument.remove() }
     }
 
     // Get trips based on user id, participants contains a list of user ids
@@ -78,6 +126,30 @@ class TripRepository {
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding trip", e)
+            }
+    }
+
+    fun deleteTrip(tripId: String) {
+        database.collection("trips")
+            .document(tripId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error deleting document", e)
+            }
+    }
+
+    fun editTrip(tripId: String, trip: Trip) {
+        database.collection("trips")
+            .document(tripId)
+            .set(trip)
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error updating document", e)
             }
     }
 

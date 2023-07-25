@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+          "client_id": "107211359371-s2k4hkbcpcfq28a3ep3jb43gl0601dao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs446.travelbook",
+            "certificate_hash": "38d1fc0a17ebd0c1c18a2ab3729a6b4cdb2ca1e0"
+          }
+        },
+        {
+          "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+              "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -44,7 +52,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+          "client_id": "107211359371-f27g6rc4p5l3mvjg9m8acr649mcprcre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.travelbook",
+            "certificate_hash": "38d1fc0a17ebd0c1c18a2ab3729a6b4cdb2ca1e0"
+          }
+        },
+        {
+          "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -57,7 +73,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "107211359371-b4hjtqh6koee1emka388kqijvgd35a6i.apps.googleusercontent.com",
+              "client_id": "107211359371-7t4roto677es6gt4b4fr1eolcka734m1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

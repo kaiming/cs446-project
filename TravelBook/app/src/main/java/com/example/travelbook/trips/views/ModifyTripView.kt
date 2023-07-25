@@ -1,6 +1,8 @@
-package com.example.travelbook.events.views
+package com.example.travelbook.trips.views
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,61 +11,73 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.travelbook.navigation.models.NavigationItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.travelbook.trips.models.Trip
-import com.example.travelbook.trips.viewModels.AddTripViewModel
+import com.example.travelbook.trips.viewModels.ModifyTripViewModel
+import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
+import com.example.travelbook.googlePrediction.models.emptyGooglePredictionResponse
 import com.example.travelbook.ui.theme.Padding
+import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTripView(
-    viewModel: AddTripViewModel,
-    onNavigateToTrip: () -> Unit,
+fun ModifyTripView(
+    viewModel: ModifyTripViewModel,
+    tripId: String?,
+    onNavigateToEvents: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (tripId == null) return
+
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
+    val trip = viewModel.getTripById(tripId).collectAsState(null).value ?: return
 
-    var tripName by remember { mutableStateOf(TextFieldValue("")) }
+    var tripName by remember { mutableStateOf(TextFieldValue(trip.tripName)) }
     var tripStartDate by remember { mutableStateOf(
-        LocalDate.of(
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH] + 1,
-            calendar[Calendar.DAY_OF_MONTH]
-        )
+        LocalDate.parse(trip.startDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
     var tripEndDate by remember { mutableStateOf(
-        LocalDate.of(
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH] + 1,
-            calendar[Calendar.DAY_OF_MONTH]
-        )
+        LocalDate.parse(trip.endDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
+    var tripBudget by remember { mutableStateOf(TextFieldValue(trip.budget)) }
 
     val startDatePicker = DatePickerDialog(
         context,
@@ -87,8 +101,6 @@ fun AddTripView(
     )
     endDatePicker.datePicker.minDate = tripStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-    var tripBudget by remember { mutableStateOf(TextFieldValue("")) }
-
     Box(
         modifier = modifier
     ) {
@@ -97,7 +109,7 @@ fun AddTripView(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Add Trip",
+                text = "Modify Trip",
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -113,25 +125,13 @@ fun AddTripView(
                 singleLine = true,
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Starts")
-                TextButton(onClick = { startDatePicker.show() }) {
-                    Text(tripStartDate.toString())
-                }
+            Text("Starts")
+            TextButton(onClick = { startDatePicker.show() }) {
+                Text(tripStartDate.toString())
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Ends")
-                TextButton(onClick = { endDatePicker.show() }) {
-                    Text(tripEndDate.toString())
-                }
+            Text("Ends")
+            TextButton(onClick = { endDatePicker.show() }) {
+                Text(tripEndDate.toString())
             }
             TextField(
                 value = tripBudget,
@@ -147,21 +147,22 @@ fun AddTripView(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
-                    if(tripName.text.isNotBlank() && tripName.text.isNotBlank()) {
-                        viewModel.addTripItem(
+                    if(tripName.text.isNotBlank()) {
+                        viewModel.modifyTripItem(
+                            tripId,
                             Trip(
-                                UUID.randomUUID().toString(),
-                                tripName.text,
-                                tripStartDate.toString(),
-                                tripEndDate.toString(),
-                                tripBudget.text,
-                                false,
-                                listOf("user1","user2"))
+                                tripId =  trip.tripId,
+                                tripName = tripName.text,
+                                startDate = tripStartDate.toString(),
+                                endDate = tripEndDate.toString(),
+                                budget = tripBudget.text,
+                                isArchived = trip.isArchived,
+                                participants = trip.participants
+                            )
                         )
-                        onNavigateToTrip()
-                    }
-                    else {
-                        // TODO: Show error
+                        onNavigateToEvents()
+                    } else {
+                        // TODO: ERROR modal
                     }
                 },
                 modifier = Modifier.padding(Padding.PaddingMedium.size)
@@ -176,3 +177,4 @@ fun AddTripView(
         }
     }
 }
+

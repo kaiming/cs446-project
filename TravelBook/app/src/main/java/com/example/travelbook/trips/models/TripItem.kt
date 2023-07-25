@@ -9,9 +9,10 @@ data class Trip(
     val startDate: String,
     val endDate: String,
     val budget: String,
+    var isArchived: Boolean,
     val participants: List<String> = emptyList()
 ) {
-    constructor() : this("", "", "","", "")
+    constructor() : this("", "", "","", "", false)
 }
 
 fun createTrip(
@@ -19,6 +20,7 @@ fun createTrip(
     startDate: String,
     endDate: String,
     budget: String,
+    isArchived: Boolean,
     participants: List<String> = emptyList()
 ): Trip {
     return Trip(
@@ -27,6 +29,7 @@ fun createTrip(
         startDate = startDate,
         endDate = endDate,
         budget = budget,
+        isArchived = isArchived,
         participants = participants
     )
 }

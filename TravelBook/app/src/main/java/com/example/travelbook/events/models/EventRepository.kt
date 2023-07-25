@@ -1,23 +1,45 @@
 package com.example.travelbook.events.models
 
 import android.content.ContentValues.TAG
+import android.net.Uri
 import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageMetadata
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 
 class EventRepository {
 
     private val database = Firebase.firestore
+    private val storageReference = Firebase.storage.reference
+
+    fun uploadImageToFirebase(uri: Uri, date: String, tripId: String): Task<UploadTask.TaskSnapshot> {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userId = currentUser?.uid ?: throw IllegalStateException("No user logged in")
+        val imageReference = storageReference.child("images/$userId/${uri.lastPathSegment}")
+        val metadata = StorageMetadata.Builder()
+            .setContentType("image/jpg")
+            .setCustomMetadata("date", date)
+            .setCustomMetadata("userId", userId)
+            .setCustomMetadata("tripId", tripId)
+            .build()
+
+        return imageReference.putFile(uri, metadata)
+    }
 
     fun getAllEventsByTripIdFlow(tripId: String): Flow<List<EventItem>> = flow {
         val querySnapshot = database.collection("trips")

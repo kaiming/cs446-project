@@ -58,8 +58,11 @@ import com.example.travelbook.events.views.AddEventView
 import com.example.travelbook.events.views.AddTripView
 import com.example.travelbook.events.views.EventView
 import com.example.travelbook.events.views.ModifyEventView
+import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.profile.viewModels.ProfileViewModel
+import com.example.travelbook.profile.views.ProfileView
 import com.example.travelbook.shared.UIText
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModel
@@ -68,7 +71,11 @@ import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
 import com.example.travelbook.signIn.views.SignUpView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
+import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
+import com.example.travelbook.trips.views.ArchivedTripView
+import com.example.travelbook.trips.viewModels.ModifyTripViewModel
+import com.example.travelbook.trips.views.ModifyTripView
 import com.example.travelbook.trips.views.TripView
 import com.example.travelbook.ui.theme.Padding
 import kotlinx.coroutines.launch
@@ -78,11 +85,15 @@ import kotlinx.coroutines.launch
 fun NavigationView(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
+    archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
+    modifyTripViewModel: ModifyTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     isLoggedIn: Boolean,
@@ -135,11 +146,15 @@ fun NavigationView(
         NavigationGraph(
             navController = navController,
             signInViewModel = signInViewModel,
+            mapViewModel = mapViewModel,
             tripViewModel = tripViewModel,
+            archivedTripViewModel = archivedTripViewModel,
             addTripViewModel = addTripViewModel,
+            modifyTripViewModel = modifyTripViewModel,
             eventViewModel = eventViewModel,
             addEventViewModel = addEventViewModel,
             modifyEventViewModel = modifyEventViewModel,
+            profileViewModel = profileViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
             startDestination = startDestination,
@@ -154,11 +169,15 @@ fun NavigationView(
 fun NavigationGraph(
     navController: NavHostController,
     signInViewModel: SignInViewModel,
+    mapViewModel: MapViewModel,
     tripViewModel: TripViewModel,
+    archivedTripViewModel: ArchivedTripViewModel,
     addTripViewModel: AddTripViewModel,
+    modifyTripViewModel: ModifyTripViewModel,
     eventViewModel: EventViewModel,
     addEventViewModel: AddEventViewModel,
     modifyEventViewModel: ModifyEventViewModel,
+    profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     startDestination: String,
@@ -167,6 +186,7 @@ fun NavigationGraph(
     NavHost(navController, startDestination = startDestination) {
         composable(NavigationItem.Map.route) {
             MapView(
+                viewModel = mapViewModel,
                 modifier = modifier
             )
         }
@@ -176,6 +196,10 @@ fun NavigationGraph(
                 onNavigateToAddTrip = {
                     navController.navigate(NavigationItem.AddTrip.route)
                 },
+                onNavigateToModifyTrip = {
+                    navController.navigate("${NavigationItem.ModifyTrip.route}/$it")
+                },
+                onNavigateToArchivedTrip = {navController.navigate(NavigationItem.ArchivedTrip.route)},
                 onNavigateToEvents = {
                     navController.navigate("${NavigationItem.Event.route}/$it")
                 },
@@ -185,6 +209,16 @@ fun NavigationGraph(
         composable(NavigationItem.Budgeting.route) {
             BudgetingView(
 //                viewModel = BudgetingViewModel,
+              modifier = modifier
+            )
+        }
+        composable(NavigationItem.ArchivedTrip.route) {
+            ArchivedTripView(
+                viewModel = archivedTripViewModel,
+                onNavigateToEvents = { eventString, eventFloat ->
+                    navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
+                },
+
                 modifier = modifier
             )
         }
@@ -192,6 +226,23 @@ fun NavigationGraph(
             AddTripView(
                 viewModel = addTripViewModel,
                 onNavigateToTrip = {
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.ModifyTrip.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ModifyTripView(
+                viewModel = modifyTripViewModel,
+                tripId = it.arguments?.getString("trip_id"),
+                onNavigateToEvents = {
                     navController.popBackStack()
                 },
                 modifier = modifier
@@ -259,9 +310,7 @@ fun NavigationGraph(
             )
         }
         composable(NavigationItem.Profile.route) {
-            MapView(
-                modifier = modifier
-            )
+            ProfileView(profileViewModel)
         }
         composable(NavigationItem.SignIn.route) {
             NewSignInView(newSignInViewModel)
