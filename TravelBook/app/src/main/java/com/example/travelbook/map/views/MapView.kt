@@ -42,7 +42,7 @@ fun MapView(
         GoogleMap(
             uiSettings = uiSettings.value
         ) {
-            trips.value.forEach { trip ->
+            trips.value.filter { !it.isArchived }.forEach { trip ->
                 val events = viewModel.getEventsFlowByTripId(trip.tripId).collectAsStateWithLifecycle(initialValue = emptyList())
                 val tripColor =  Color(
                     Random(seed = trip.tripId.hashCode()).nextInt(255),
