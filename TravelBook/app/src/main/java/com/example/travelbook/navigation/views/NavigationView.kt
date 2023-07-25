@@ -206,8 +206,8 @@ fun NavigationGraph(
         composable(NavigationItem.ArchivedTrip.route) {
             ArchivedTripView(
                 viewModel = archivedTripViewModel,
-                onNavigateToEvents = { eventString, eventFloat ->
-                    navController.navigate("${NavigationItem.Event.route}/$eventString/$eventFloat")
+                onNavigateToEvents = { eventString ->
+                    navController.navigate("${NavigationItem.Event.route}/$eventString")
                 },
                 modifier = modifier
             )

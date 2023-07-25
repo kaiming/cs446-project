@@ -30,7 +30,7 @@ import com.example.travelbook.ui.theme.Padding
 @Composable
 fun ArchivedTripView(
     viewModel: ArchivedTripViewModel,
-    onNavigateToEvents: (String, Float) -> Unit,
+    onNavigateToEvents: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
@@ -59,7 +59,7 @@ fun ArchivedTripView(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextButton(
-                            onClick = { onNavigateToEvents(trip.tripId, trip.budget.toFloat()) },
+                            onClick = { onNavigateToEvents(trip.tripId) },
                             modifier = Modifier.weight(1f)
                         ) {
                             TripCard(trip)
