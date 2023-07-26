@@ -22,6 +22,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
 import java.util.*
 
 
@@ -44,8 +45,8 @@ fun PieChartView(
 
 
     val pieChartdata = listOf(
-        PieChartData("Used", utilizedPercentage),
-        PieChartData("Remaining", remainingPercentage),
+        PieChartData("Used", utilizedTripBudget),
+        PieChartData("Remaining", totalTripBudget - utilizedTripBudget),
     )
 
     // Referenced GeeksForGeeks for documentation on this pie chart

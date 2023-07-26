@@ -22,6 +22,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.travelbook.R
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -48,6 +49,7 @@ fun BudgetCard(
     utilizedTripBudget : Float,
 ) {
     val overBudget = utilizedTripBudget >= totalTripBudget;
+    val percentUsed = ((utilizedTripBudget / totalTripBudget) * 100).roundToInt()
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
@@ -92,7 +94,7 @@ fun BudgetCard(
             }
 
             Text(
-                text = "You have used $$utilizedTripBudget out of your total budget of $$totalTripBudget.",
+                text = "You have used $$utilizedTripBudget out of your total budget of ~$$totalTripBudget. That's $percentUsed % of your budget used so far.",
                 color = Color.Black
             )
 
