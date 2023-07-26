@@ -125,6 +125,15 @@ class TripRepository {
         return trips
     }
 
+    fun getTripByTripIDFlow(tripId: String): Flow<Trip?> = flow {
+        val documentSnapshot = database.collection("trips")
+            .document(tripId)
+            .get()
+            .await()
+        var trip = documentSnapshot.toObject<Trip>()
+        emit(trip)
+    }
+
     // Get trip based on trip id
     fun getTripByTripID(tripId: String): Trip {
         Log.d(TAG, "getTripByTripID: $tripId")

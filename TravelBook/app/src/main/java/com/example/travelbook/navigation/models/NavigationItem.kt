@@ -1,5 +1,6 @@
 package com.example.travelbook.navigation.models
 
+import androidx.navigation.Navigation
 import com.example.travelbook.R
 
 sealed class NavigationItem(

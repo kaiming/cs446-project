@@ -142,4 +142,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofit_version")
     implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
+
+    // charts and things
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
