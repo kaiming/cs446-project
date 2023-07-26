@@ -125,7 +125,11 @@ class TripRepository {
         return trips
     }
 
-    fun getTripByTripIDFlow(tripId: String): Flow<Trip?> = flow {
+    fun getTripByTripIDFlow(tripId: String?): Flow<Trip?> = flow {
+        if (tripId == null) {
+            throw Exception();
+        }
+
         val documentSnapshot = database.collection("trips")
             .document(tripId)
             .get()
