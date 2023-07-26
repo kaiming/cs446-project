@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
 import UtilityFunctions.getUserIdByEmail
+import android.widget.Toast
+import androidx.compose.ui.platform.ComposeView
 
 class EventViewModel(
     private val eventRepository: EventRepository,
@@ -55,6 +57,17 @@ class EventViewModel(
             return false
         }
     }
+    // // Takes screenshot of EventView/Itinerary page and saves it local photo gallery
+    // fun exportTrip(view: ComposeView) {
+    //     // Capture the Composable view to a Bitmap
+    //     val bitmap = view.captureToImage()
+
+    //     val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
+    //     val filename = "TravelBook-Itinerary-$timestamp.png"
+    //     val screenshotUri = saveBitmapToMediaStore(view.context, bitmap, filename, "image/png")
+
+    //     Toast.makeText(view.context, "Saved screenshot to $screenshotUri", Toast.LENGTH_LONG).show()
+    // }
 }
 
 class EventViewModelFactory(

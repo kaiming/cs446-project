@@ -1,7 +1,16 @@
 package com.example.travelbook.events.views
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,12 +56,19 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.applyCanvas
+import androidx.core.view.drawToBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
@@ -62,7 +78,12 @@ import com.example.travelbook.ui.theme.Padding
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalPermissionsApi::class)
 
@@ -140,13 +161,16 @@ fun EventView(
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
             TripCard(trip)
-            LazyColumn(Modifier.weight(6f)) {
+            val lazyCol = LazyColumn(
+                modifier = Modifier.weight(6f)
+            ) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
                         onNavigateToModifyEvent(tripId, event.eventId)
                     }
                 })
             }
+            lazyCol
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -195,7 +219,18 @@ fun EventView(
                             modifier = Modifier.size(64.dp)
                         )
                     }
-
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     // Add user to trip button
                     Button(
                         onClick = { showAddUserPopup.value = true },
@@ -203,6 +238,25 @@ fun EventView(
                     ) {
                         Text(text = "Add User")
                     }
+
+                    // Export trip button for lazy column
+                    val view = LocalView.current
+                    val context = LocalContext.current
+                    Button(
+                        onClick = {
+                            viewModel.viewModelScope.launch {
+                                val bmp = withContext(Dispatchers.Default) {
+                                    composeViewToBitmap(view)
+                                }
+                                saveBitmapAsImage(context, bmp)   
+                                Toast.makeText(context, "Trip exported successfully!", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                    ) {
+                        Text(text = "Export Trip")
+                    }
+
                 }
             }
             if (showAddUserPopup.value) {
@@ -343,4 +397,47 @@ private fun AddUserPopup(
             }
         }
     )
+}
+
+suspend private fun composeViewToBitmap(view: View): Bitmap {
+    return view.let { v ->
+        if (v is ComposeView) {
+            Log.d("DEBUG", "Capturing ComposeView as bitmap...")
+            // Use drawToBitmap extension function to capture the view as a bitmap
+            v.drawToBitmap().asImageBitmap().asAndroidBitmap()
+        } else {
+            Log.d("DEBUG", "Capturing View as bitmap...")
+            val bitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            withContext(Dispatchers.Main) {
+                v.draw(canvas)
+            }
+            bitmap
+        }
+    }
+}
+
+private fun saveBitmapAsImage(context: Context, bitmap: Bitmap) {
+    // Save in downloads folder
+    val folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    val timestamp = System.currentTimeMillis()
+    val filename = "TravelBook-Itinerary-$timestamp.png"
+    val file = File(folder, filename)
+
+    Log.d("DEBUG", "Saving screenshot to $file")
+
+    try {
+        val stream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 85, stream)
+        stream.flush()
+        stream.close()
+        Log.d("DEBUG", "Screenshot saved successfully!")
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.type = "image/png"
+//        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+//        context.startActivity(Intent.createChooser(intent, "Share"))
+    } catch (e: Exception) {
+        e.printStackTrace()
+        Log.d("DEBUG", "Failed to save screenshot!")
+    }
 }
