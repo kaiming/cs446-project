@@ -16,7 +16,7 @@ class TravelAdvisoryRepository : TravelAdvisoryAPIClientHelper {
                     Log.d("Travel Advisory", "getTravelAdvisories request successful for $countryCode")
                     val body = response.body()
                     body?.data?.get(countryCode)?.let { countryAdvisory ->
-                        emit(mapOf(countryCode to countryAdvisory.advisory))
+                        emit(mapOf(countryAdvisory.name to countryAdvisory.advisory))
                     }
                 } else {
                     Log.d("Travel Advisory", "getTravelAdvisories request error for $countryCode")
