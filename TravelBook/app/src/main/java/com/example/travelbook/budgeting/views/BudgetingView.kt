@@ -2,7 +2,6 @@ package com.example.travelbook.budgeting.views
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-
 import android.content.Context
 import android.os.Bundle
 import androidx.compose.foundation.Image
@@ -34,10 +33,15 @@ fun BudgetingView(
     modifier: Modifier = Modifier
 ) {
     if (tripId == null) return
-    
+
     viewModel.loadBudgets(tripId)
     val totalTripBudget = viewModel.totalTripBudget.toFloatOrNull() ?: 0f
     val utilizedTripBudget = viewModel.totalEventBudgets.toFloatOrNull() ?: 0f
+
+    if (totalTripBudget == 0f) {
+        CircularProgressIndicator()
+        return
+    }
 
     PieChartView(totalTripBudget, utilizedTripBudget)
 
@@ -106,10 +110,6 @@ fun BudgetCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = "Edit your expenses below.",
-                color = Color.Gray
-            )
         }
     }
 }
