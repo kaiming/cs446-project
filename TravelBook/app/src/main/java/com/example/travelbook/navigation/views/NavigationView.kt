@@ -61,6 +61,8 @@ import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.photos.viewModels.PhotosViewModel
+import com.example.travelbook.photos.views.PhotosView
 import com.example.travelbook.profile.viewModels.ProfileViewModel
 import com.example.travelbook.profile.views.ProfileView
 import com.example.travelbook.shared.UIText
@@ -70,6 +72,8 @@ import com.example.travelbook.signIn.viewModels.SignUpViewModel
 import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
 import com.example.travelbook.signIn.views.SignUpView
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModel
+import com.example.travelbook.travelAdvisory.views.TravelAdvisoryView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
@@ -97,6 +101,8 @@ fun NavigationView(
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     budgetingViewModel: BudgetingViewModel,
+    photosViewModel: PhotosViewModel,
+    travelAdvisoryViewModel: TravelAdvisoryViewModel,
     isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -158,6 +164,8 @@ fun NavigationView(
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
             budgetingViewModel = budgetingViewModel,
+            photosViewModel = photosViewModel,
+            travelAdvisoryViewmodel = travelAdvisoryViewModel,
             startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
@@ -182,6 +190,8 @@ fun NavigationGraph(
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     budgetingViewModel: BudgetingViewModel,
+    photosViewModel: PhotosViewModel,
+    travelAdvisoryViewmodel: TravelAdvisoryViewModel,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {
@@ -215,6 +225,15 @@ fun NavigationGraph(
                     navController.navigate("${NavigationItem.Event.route}/$eventString")
                 },
 
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.Photos.route) {
+            PhotosView(
+                viewModel = photosViewModel,
+                onNavigateToPhotos = {
+                    navController.navigate("${NavigationItem.Photos.route}/$it")
+                                     },
                 modifier = modifier
             )
         }
@@ -262,7 +281,10 @@ fun NavigationGraph(
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
                 onNavigateToBudgetDetails = {
-                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+                navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+                },
+                onNavigateToTravelAdvisory = {
+                    navController.navigate("${NavigationItem.TravelAdvisory.route}/$it")
                 },
                 modifier = modifier
             )
@@ -319,6 +341,20 @@ fun NavigationGraph(
                 onNavigateToBudgetDetails = {
                     navController.popBackStack()
                 },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.TravelAdvisory.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            TravelAdvisoryView(
+                viewModel = travelAdvisoryViewmodel,
+                tripId = it.arguments?.getString("trip_id"),
                 modifier = modifier
             )
         }

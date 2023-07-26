@@ -28,12 +28,18 @@ import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.viewModels.MapViewModelFactory
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.photos.models.PhotosRepository
+import com.example.travelbook.photos.viewModels.PhotosViewModel
+import com.example.travelbook.photos.viewModels.PhotosViewModelFactory
 import com.example.travelbook.profile.viewModels.ProfileViewModel
 import com.example.travelbook.profile.viewModels.ProfileViewModelFactory
 import com.example.travelbook.signIn.AuthRepo
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.NewSignInViewModelFactory
 import com.example.travelbook.signIn.viewModels.SignUpViewModel
+import com.example.travelbook.travelAdvisory.models.TravelAdvisoryRepository
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModel
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
@@ -110,7 +116,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this))
+                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this), navigationController)
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
@@ -123,6 +129,14 @@ class MainActivity : ComponentActivity() {
 
             val budgetingViewModel: BudgetingViewModel by viewModels {
                 BudgetingViewModelFactory(TripRepository(), EventRepository());
+            }
+
+            val photosViewModel: PhotosViewModel by viewModels {
+                PhotosViewModelFactory(PhotosRepository(), SharedPreferencesUserDataSource(this))
+            }
+
+            val travelAdvisoryViewModel: TravelAdvisoryViewModel by viewModels {
+                TravelAdvisoryViewModelFactory(EventRepository(), TravelAdvisoryRepository())
             }
 
             val userDataSource = SharedPreferencesUserDataSource(this)
@@ -150,6 +164,8 @@ class MainActivity : ComponentActivity() {
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
                         budgetingViewModel = budgetingViewModel,
+                        photosViewModel = photosViewModel,
+                        travelAdvisoryViewModel = travelAdvisoryViewModel,
                         isLoggedIn = isLoggedIn
                     )
                 }

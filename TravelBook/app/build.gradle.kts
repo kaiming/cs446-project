@@ -80,6 +80,9 @@ dependencies {
     // perms
     implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
 
+    // image loading
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth-ktx")

@@ -19,6 +19,9 @@ sealed class NavigationItem(
     object SignUp : NavigationItem("Sign Up", R.drawable.logo, "signUp")
     object ModifyEvent : NavigationItem("Modify Event", R.drawable.logo, "modifyEvent")
     object ArchivedTrip : NavigationItem("Archived Trip", R.drawable.logo, "archivedTrip")
+    object TravelAdvisory: NavigationItem("Travel Advisory", R.drawable.logo, "travelAdvisory")
+
+    object Photos : NavigationItem("Photos", R.drawable.logo, "photos")
     // TODO: Add other nav paths here
     object BudgetDetail : NavigationItem("Budget Detail", R.drawable.logo, "budgetDetail")
 

@@ -2,7 +2,6 @@ package com.example.travelbook.events.views
 
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -26,7 +25,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -35,26 +33,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.trips.views.TripCard
@@ -62,12 +58,8 @@ import com.example.travelbook.ui.theme.Padding
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
-
-// State variables for popup
-
 @Composable
 fun EventView(
     viewModel: EventViewModel,
@@ -75,10 +67,11 @@ fun EventView(
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     onNavigateToBudgetDetails: (String) -> Unit,
+    onNavigateToTravelAdvisory: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
-    val context = LocalContext.current
+
     val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
     val events = viewModel.getEventsFlowByTripId(tripId)
         .collectAsStateWithLifecycle(initialValue = emptyList())
@@ -99,8 +92,6 @@ fun EventView(
     val photosPermissionState = rememberPermissionState(
         android.Manifest.permission.READ_MEDIA_IMAGES
     )
-
-    val showAddUserPopup = remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
         Column(
@@ -139,6 +130,13 @@ fun EventView(
                 }
             }
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat(), onClick = { onNavigateToBudgetDetails(tripId) })
+            Button(
+                onClick = {
+                    onNavigateToTravelAdvisory(tripId)
+                }
+            ) {
+                Text("View Travel Advisory")
+            }
             TripCard(trip)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
@@ -162,6 +160,19 @@ fun EventView(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+
+                    // "View Photos" Button
+                    Button(
+                        onClick = {
+                            viewModel.navigateToPhotos()
+                        },
+                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                    ) {
+                        Text("View Photos")
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
                     // "Add Photos" Button
                     Button(
                         onClick = {
@@ -195,41 +206,12 @@ fun EventView(
                             modifier = Modifier.size(64.dp)
                         )
                     }
-
-                    // Add user to trip button
-                    Button(
-                        onClick = { showAddUserPopup.value = true },
-                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
-                    ) {
-                        Text(text = "Add User")
-                    }
                 }
-            }
-            if (showAddUserPopup.value) {
-                AddUserPopup(
-                    onClosePopup = { showAddUserPopup.value = false },
-                    onAddUser = { email ->
-                        viewModel.viewModelScope.launch {
-                            try {
-                                val ret = viewModel.addUserToTrip(tripId, email)
-                                if (ret) {
-                                    Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
-                                }
-                            } catch (e: Exception) {
-                                // Handle exceptions if needed
-                                Toast.makeText(context, "Failed to add user: ${e.message}", Toast.LENGTH_SHORT).show()
-                            } finally {
-                                showAddUserPopup.value = false
-                            }
-                        }
-                    }
-                )
             }
         }
     }
 }
+
 
 @Composable
 private fun EventCard(
@@ -267,7 +249,6 @@ private fun EventCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit ) {
     val progress = (currentBudget / totalBudget)
