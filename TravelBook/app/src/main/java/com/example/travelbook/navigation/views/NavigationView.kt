@@ -49,6 +49,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.travelbook.R
+import com.example.travelbook.budgeting.viewModels.BudgetingViewModel
+import com.example.travelbook.budgeting.views.BudgetingView
 import com.example.travelbook.events.viewModels.AddEventViewModel
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.events.viewModels.ModifyEventViewModel
@@ -102,6 +104,7 @@ fun NavigationView(
     val navigationItems = listOf(
         NavigationItem.Map,
         NavigationItem.Trip,
+        NavigationItem.Budgeting,
         NavigationItem.Profile
     )
     val selectedItem = remember { mutableStateOf(navigationItems[0]) }
@@ -203,12 +206,19 @@ fun NavigationGraph(
                 modifier = modifier
             )
         }
+        composable(NavigationItem.Budgeting.route) {
+            BudgetingView(
+//                viewModel = BudgetingViewModel,
+              modifier = modifier
+            )
+        }
         composable(NavigationItem.ArchivedTrip.route) {
             ArchivedTripView(
                 viewModel = archivedTripViewModel,
                 onNavigateToEvents = { eventString ->
                     navController.navigate("${NavigationItem.Event.route}/$eventString")
                 },
+
                 modifier = modifier
             )
         }
@@ -255,6 +265,9 @@ fun NavigationGraph(
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
+//                onNavigateToBudgetDetails = {
+//                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+//                },
                 modifier = modifier
             )
         }
