@@ -223,8 +223,9 @@ fun NavigationGraph(
         composable(NavigationItem.Photos.route) {
             PhotosView(
                 viewModel = photosViewModel,
-                onNavigateToPhotos = {
-                    navController.navigate("${NavigationItem.Photos.route}/$it")
+                tripId = it.arguments?.getString("trip_id"),
+                onNavigateToPhotos = { tripId ->
+                    navController.navigate("${NavigationItem.Photos.route}/$tripId")
                                      },
                 modifier = modifier
             )

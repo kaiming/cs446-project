@@ -10,24 +10,23 @@ class PhotosRepository {
 
     private val database = Firebase.firestore
 
-    fun fetchPhotosForUser(
+    fun fetchPhotosForTrip(
+        tripId: String?,
         onComplete: (List<Photo>) -> Unit,
         onError: (Exception) -> Unit
     ) {
-        // Get a reference to the Firebase Storage
-        val storageReference = Firebase.storage.reference
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            onComplete(emptyList())
+
+        if (tripId == null) {
             return
         }
-        val userId = currentUser.uid
+        // Get a reference to the Firebase Storage
+        val storageReference = Firebase.storage.reference
 
-        // Create a reference to the user's images folder in Firebase Storage
-        val userImagesReference = storageReference.child("images").child(userId)
+        // Create a reference to the images folder for the specific tripId
+        val tripImagesReference = storageReference.child("images").child(tripId)
 
-        // Fetch the list of image URLs from the user's images folder
-        userImagesReference.listAll()
+        // Fetch the list of image URLs from the trip's images folder
+        tripImagesReference.listAll()
             .addOnSuccessListener { listResult ->
                 val photosList = mutableListOf<Photo>()
 
@@ -36,11 +35,11 @@ class PhotosRepository {
                     // Get the download URL for each image
                     item.downloadUrl
                         .addOnSuccessListener { downloadUrl ->
-                            // Get custom metadata for the image (date and tripId)
+                            // Get custom metadata for the image (date and userId)
                             item.metadata
                                 .addOnSuccessListener { metadata ->
                                     val date = metadata.getCustomMetadata("date") ?: ""
-                                    val tripId = metadata.getCustomMetadata("tripId") ?: ""
+                                    val userId = metadata.getCustomMetadata("userId") ?: ""
 
                                     // Create a Photo object and add it to the list
                                     val photo = Photo(downloadUrl.toString(), date, userId, tripId)
@@ -60,5 +59,6 @@ class PhotosRepository {
                 onError(exception)
             }
     }
+
 
 }

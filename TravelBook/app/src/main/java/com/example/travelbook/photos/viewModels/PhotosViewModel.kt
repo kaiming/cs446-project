@@ -11,10 +11,11 @@ class PhotosViewModel(private val repository: PhotosRepository
                       , private val userDataSource: UserDataSource): ViewModel() {
 
     fun fetchPhotosForUser(
+        tripId: String?,
         onComplete: (List<Photo>) -> Unit,
         onError: (Exception) -> Unit
     ) {
-        repository.fetchPhotosForUser(onComplete, onError)
+        repository.fetchPhotosForTrip(tripId, onComplete, onError)
     }
 }
 

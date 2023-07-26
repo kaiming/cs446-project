@@ -166,7 +166,7 @@ fun EventView(
                     // "View Photos" Button
                     Button(
                         onClick = {
-                            viewModel.navigateToPhotos()
+                            viewModel.navigateToPhotos(tripId)
                         },
                         modifier = Modifier.padding(end = Padding.PaddingMedium.size)
                     ) {
