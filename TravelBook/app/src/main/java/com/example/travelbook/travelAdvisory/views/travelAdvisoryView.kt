@@ -46,6 +46,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -97,12 +100,12 @@ private fun TravelAdvisories(
     events: List<EventItem>
 ) {
     val colors: List<Color> = listOf(
-        Color(0x5500FF00),  // Green
-        Color(0x5577FF00),  // Grellow
-        Color(0x55FFFF00),  // Yellow
-        Color(0x55FF7700),  // Orange
-        Color(0x55FF0000),  // Red
-        Color(0x55FF0000)   // Red
+        Color(0xFFCBFCCC),  // Green
+        Color(0xFFE3FCCC),  // Grellow
+        Color(0xFFFEFCCC),  // Yellow
+        Color(0xFFFEE1CC),  // Orange
+        Color(0xFFFEC9CC),  // Red
+        Color(0xFFFEC9CC)   // Red
     )
     val countriesWithAdvisories = events.map { it.locationCountry }.distinct()
     val travelAdvisories = viewModel.getTravelAdvisories(countriesWithAdvisories)
@@ -113,23 +116,41 @@ private fun TravelAdvisories(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(travelAdvisories) { countryAdvisory ->
-                Card(
-                    shape = RoundedCornerShape(15.dp),
-                    colors = CardDefaults.cardColors(containerColor = colors[countryAdvisory.advisory.score.toInt()]),
-                    modifier = Modifier.padding(Padding.PaddingMedium.size)
-                ) {
-                    Text(
-                        text = countryAdvisory.advisory.message,
-                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                    )
-                    Text(
-                        text = "For more information: ${countryAdvisory.advisory.source}",
-                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                    )
-                }
+                TravelAdvisoryCard(advisory = countryAdvisory.advisory, color = colors[countryAdvisory.advisory.score.toInt()])
             }
         }
     }
 }
 
-
+@Composable
+private fun TravelAdvisoryCard(
+    advisory: Advisory,
+    color: Color
+) {
+    Card(
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = color),
+        modifier = Modifier
+            .padding(Padding.PaddingMedium.size)
+    ) {
+        Column(modifier = Modifier.padding(Padding.PaddingSmall.size)) {
+            Text(
+                text = advisory.message,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                ),
+            )
+            Text(
+                text = "For more information: ${advisory.source}",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.DarkGray,
+                    fontStyle = FontStyle.Italic
+                ),
+            )
+        }
+    }
+}
