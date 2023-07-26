@@ -74,6 +74,7 @@ fun ModifyEventView(
     var eventName by remember { mutableStateOf(TextFieldValue(event.name)) }
     var eventLocation by remember { mutableStateOf(TextFieldValue(event.location)) }
     var eventLocationCoordinates by remember { mutableStateOf(event.locationCoordinates) }
+    var eventLocationCountry by remember { mutableStateOf(event.locationCountry) }
     var eventStartDate by remember { mutableStateOf(
         LocalDate.parse(event.startDate, DateTimeFormatter.ISO_LOCAL_DATE)
     ) }
@@ -205,6 +206,21 @@ fun ModifyEventView(
                                         .addOnSuccessListener { response: FetchPlaceResponse ->
                                             eventLocationCoordinates =
                                                 "${response.place.latLng?.latitude},${response.place.latLng?.longitude}"
+
+                                            val addressComponents = response.place.addressComponents?.asList()
+                                            if (addressComponents != null) {
+                                                val countryComponent = addressComponents.find { component ->
+                                                    component.types.contains("country")
+                                                }
+                                                if (countryComponent != null) {
+                                                    eventLocationCountry = countryComponent.shortName ?: "xx"
+                                                } else {
+                                                    eventLocationCountry = "yy"
+                                                }
+                                            } else {
+                                                eventLocationCountry = "zz"
+                                            }
+
                                             Log.d(
                                                 "AddEventView",
                                                 "Event location $eventLocationCoordinates"
@@ -289,6 +305,7 @@ fun ModifyEventView(
                                 name = eventName.text,
                                 location = eventLocation.text,
                                 locationCoordinates = eventLocationCoordinates,
+                                locationCountry = eventLocationCountry,
                                 startDate = eventStartDate.toString(),
                                 endDate = eventEndDate.toString(),
                                 startTime = eventStartTime.toString(),
