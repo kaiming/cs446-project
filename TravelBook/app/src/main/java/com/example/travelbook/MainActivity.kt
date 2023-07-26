@@ -26,6 +26,9 @@ import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.viewModels.MapViewModelFactory
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.photos.models.PhotosRepository
+import com.example.travelbook.photos.viewModels.PhotosViewModel
+import com.example.travelbook.photos.viewModels.PhotosViewModelFactory
 import com.example.travelbook.profile.viewModels.ProfileViewModel
 import com.example.travelbook.profile.viewModels.ProfileViewModelFactory
 import com.example.travelbook.signIn.AuthRepo
@@ -108,7 +111,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this))
+                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this), navigationController)
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
@@ -117,6 +120,10 @@ class MainActivity : ComponentActivity() {
 
             val modifyEventViewModel: ModifyEventViewModel by viewModels {
                 ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
+            }
+
+            val photosViewModel: PhotosViewModel by viewModels {
+                PhotosViewModelFactory(PhotosRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val userDataSource = SharedPreferencesUserDataSource(this)
@@ -143,6 +150,7 @@ class MainActivity : ComponentActivity() {
                         profileViewModel = profileViewModel,
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
+                        photosViewModel = photosViewModel,
                         isLoggedIn = isLoggedIn
                     )
                 }
