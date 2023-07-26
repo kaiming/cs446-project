@@ -29,6 +29,26 @@ object UtilityFunctions {
         return null
     }
 
+    // Retrieve a user's id from their email
+    suspend fun getUserIdByEmail(email: String): String? {
+
+        // i9lRjx0PyJatIo3oJP21
+        Log.d(TAG, "UtilityFunctions:getUserIdByEmail: $email")
+        try {
+            val querySnapshot = firestore.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .await()
+
+            if (!querySnapshot.isEmpty) {
+                return querySnapshot.documents[0].get("id") as? String
+            }
+        } catch (exception: Exception) {
+            Log.w(TAG, "Error getting documents: ", exception)
+        }
+        return null
+    }
+
     // Ammend trip object to contain emails of participants instead of user ids
     suspend fun getTripWithParticipantEmails(trip: Trip): Trip {
         val tripWithParticipantEmails = trip
@@ -54,4 +74,6 @@ object UtilityFunctions {
         }
         return tripsWithParticipantEmails
     }
+
+
 }
