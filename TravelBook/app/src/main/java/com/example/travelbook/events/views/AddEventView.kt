@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +70,8 @@ fun AddEventView(
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
+
+    val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -114,7 +117,8 @@ fun AddEventView(
         calendar[Calendar.MONTH],
         calendar[Calendar.DAY_OF_MONTH]
     )
-    startDatePicker.datePicker.minDate = calendar.timeInMillis
+    startDatePicker.datePicker.minDate = LocalDate.parse(trip.startDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    startDatePicker.datePicker.maxDate = LocalDate.parse(trip.endDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     val endDatePicker = DatePickerDialog(
         context,
@@ -126,6 +130,7 @@ fun AddEventView(
         calendar[Calendar.DAY_OF_MONTH]
     )
     endDatePicker.datePicker.minDate = eventStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    endDatePicker.datePicker.maxDate = LocalDate.parse(trip.endDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     val startTimePicker = TimePickerDialog(
         context,

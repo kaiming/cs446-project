@@ -67,6 +67,8 @@ fun ModifyEventView(
 ) {
     if (tripId == null || eventId == null) return
 
+    val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
+
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val event = viewModel.getEventById(tripId, eventId).collectAsState(null).value ?: return
@@ -98,7 +100,8 @@ fun ModifyEventView(
         calendar[Calendar.MONTH],
         calendar[Calendar.DAY_OF_MONTH]
     )
-    startDatePicker.datePicker.minDate = calendar.timeInMillis
+    startDatePicker.datePicker.minDate = LocalDate.parse(trip.startDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    startDatePicker.datePicker.maxDate = LocalDate.parse(trip.endDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     val endDatePicker = DatePickerDialog(
         context,
@@ -110,6 +113,7 @@ fun ModifyEventView(
         calendar[Calendar.DAY_OF_MONTH]
     )
     endDatePicker.datePicker.minDate = eventStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    endDatePicker.datePicker.maxDate = LocalDate.parse(trip.endDate).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     val startTimePicker = TimePickerDialog(
         context,
