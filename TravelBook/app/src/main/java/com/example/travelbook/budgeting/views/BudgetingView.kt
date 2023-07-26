@@ -27,11 +27,14 @@ import kotlin.math.roundToInt
 
 @Composable
 fun BudgetingView(
-//    viewModel: BudgetingViewModel,
+    viewModel: BudgetingViewModel,
+    tripId: String,
+    onNavigateToBudgetDetails: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val totalTripBudget = 4000.toFloat();
-    val utilizedTripBudget = 1000.toFloat();
+    viewModel.loadBudgets(tripId)
+    val totalTripBudget = viewModel.totalTripBudget.toFloatOrNull() ?: 0f
+    val utilizedTripBudget = viewModel.totalEventBudgets.toFloatOrNull() ?: 0f
 
     PieChartView(totalTripBudget, utilizedTripBudget)
 

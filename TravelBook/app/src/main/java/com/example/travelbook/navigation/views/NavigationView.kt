@@ -310,10 +310,10 @@ fun NavigationGraph(
                 }
             )
         ) {
-            AddEventView( // Replace with BudgetingView
-                viewModel = addEventViewModel, // Replace with BudgetingViewModel
+            BudgetingView(
+                viewModel = BudgetingViewModel,
                 tripId = it.arguments?.getString("trip_id"),
-                onNavigateToEvents = { // Replace with onNavigateToBudgetDetails (or whatever naming used)
+                onNavigateToBudgetDetails = {
                     navController.popBackStack()
                 },
                 modifier = modifier
