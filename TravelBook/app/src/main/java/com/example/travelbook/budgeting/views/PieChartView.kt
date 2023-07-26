@@ -25,8 +25,6 @@ import com.github.mikephil.charting.data.PieEntry
 import java.util.*
 
 
-// on below line we are creating a
-// pie chart function on below line.
 @Composable
 fun PieChartView(
     totalTripBudget: Float,
@@ -50,18 +48,19 @@ fun PieChartView(
         PieChartData("Remaining", remainingPercentage),
     )
 
-    // on below line we are creating a column
-    // and specifying a modifier as max size.
+    // Referenced GeeksForGeeks for documentation on this pie chart
+    // Column with modifier
+    // as max size
     Column(modifier = Modifier.fillMaxSize()) {
-        // on below line we are again creating a column
-        // with modifier and horizontal and vertical arrangement
+        // Column
+        // vertical alignment
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // on below line we are creating a simple text
-            // and specifying a text as Web browser usage share
+            // Text
+            // Font family styling
             Text(
                 text = "Budget Breakdown",
 
@@ -78,9 +77,9 @@ fun PieChartView(
                 fontSize = 20.sp
             )
 
-            // on below line we are creating a column and
-            // specifying the horizontal and vertical arrangement
-            // and specifying padding from all sides.
+            // Column
+            // Horizontal & Vertical alignment
+            // Padding on all sides
             Column(
                 modifier = Modifier
                     .padding(18.dp)
@@ -88,15 +87,15 @@ fun PieChartView(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // on below line we are creating a cross fade and
-                // specifying target state as pie chart data the
-                // method we have created in Pie chart data class.
+                // Cross fade
+                // Target state is the pie chart
+                // method within "PieChartData"
                 Crossfade(targetState = pieChartdata) { pieChartData ->
-                    // on below line we are creating an
-                    // android view for pie chart.
+                    // Android View
+                    // for the pie chart.
                     AndroidView(factory = { context ->
-                        // on below line we are creating a pie chart
-                        // and specifying layout params.
+                        // Pie Chart
+                        // Match to use parent layout
                         PieChart(context).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 // on below line we are specifying layout
@@ -104,32 +103,34 @@ fun PieChartView(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                             )
-                            // on below line we are setting description
-                            // enables for our pie chart.
+                            // Enable description
+                            // to pie chart
                             this.description.isEnabled = false
 
-                            // on below line we are setting draw hole
-                            // to false not to draw hole in pie chart
+                            // Draw hole false
+                            // as we don't need it on our pie chart
                             this.isDrawHoleEnabled = false
 
-                            // on below line we are enabling legend.
+                            // Legend enabled
+                            // on pie chart
                             this.legend.isEnabled = true
 
-                            // on below line we are specifying
-                            // text size for our legend.
+                            // Text styling
+                            // for the legend
                             this.legend.textSize = 14F
 
-                            // on below line we are specifying
-                            // alignment for our legend.
+                            // Specifying alignment styling
+                            // for the legend
                             this.legend.horizontalAlignment =
                                 Legend.LegendHorizontalAlignment.CENTER
 
-                            // on below line we are specifying entry label color as white.
+                            // Specifying entry color
+                            // as white
                             this.setEntryLabelColor(Color.White.toArgb())
                         }
                     },
-                        // on below line we are specifying modifier
-                        // for it and specifying padding to it.
+                        // Specifying modifier
+                        // Padding
                         modifier = Modifier
                             .wrapContentSize()
                             .padding(5.dp), update = {
@@ -143,68 +144,78 @@ fun PieChartView(
     }
 }
 
-// on below line we are creating a update pie
-// chart function to update data in pie chart.
+/*
+updatePeChartWithData
+Given a reference to a pie chart,
+as well as a list of pie chart data objects,
+this function will update the pie chart using that data.
+this functions uses the styling specified for our budgeting
+page.
+ */
 fun updatePieChartWithData(
-    // on below line we are creating a variable
-    // for pie chart and data for our list of data.
+    // Pie Chart and list of PieChartData
+    // parameters
     chart: PieChart,
     data: List<PieChartData>
 ) {
 
-    // on below line we are adding different colors.
+    // adding colours that are specific to the
+    // budgeting page style (red/green)
     val redColor = Color(0xFFF44336)
     val greenColor = Color(0xFF0F9D58)
-    // on below line we are creating
-    // array list for the entries.
+    // creating an array list
+    // for the pie Entry objects
     val entries = ArrayList<PieEntry>()
 
-    // on below line we are running for loop for
-    // passing data from list into entries list.
+    // converting inputted data into the data
+    // type (entries) that we can feed to the chart
     for (i in data.indices) {
         val item = data[i]
         entries.add(PieEntry(item.value ?: 0.toFloat(), item.name ?: ""))
     }
 
-    // on below line we are creating
-    // a variable for pie data set.
+    // passing the entries array
+    // to the variable ds
     val ds = PieDataSet(entries, "")
 
-    // on below line we are specifying color
-    // int the array list from colors.
+    // specify
+    // color
     ds.colors = arrayListOf(
         redColor.toArgb(),
         greenColor.toArgb(),
     )
-    // on below line we are specifying position for value
+    // specifying position
+    // for value
     ds.yValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
 
-    // on below line we are specifying position for value inside the slice.
+    // specifying position
+    // for value withi nthe slice
     ds.xValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
 
-    // on below line we are specifying
-    // slice space between two slices.
+    // specifying slice
+    // space
     ds.sliceSpace = 2f
 
-    // on below line we are specifying text color
+    // specifying text color
     ds.valueTextColor = Color.White.toArgb()
 
-    // on below line we are specifying
-    // text size for value.
+    // specifying the text size
+    // within the values
     ds.valueTextSize = 18f
 
-    // on below line we are specifying type face as bold.
+    // specifying the type face
+    // as bold
     ds.valueTypeface = Typeface.DEFAULT_BOLD
 
-    // on below line we are creating
-    // a variable for pie data
+    // create the pie data object to be
+    // passed to the chart
     val d = PieData(ds)
 
-    // on below line we are setting this
-    // pie data in chart data.
+    // set data on passed chart to our new
+    // data object
     chart.data = d
 
-    // on below line we are
-    // calling invalidate in chart.
+    // invalidate the previous chart
+    // to ensure updated data
     chart.invalidate()
 }
