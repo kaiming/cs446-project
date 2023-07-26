@@ -26,7 +26,8 @@ import UtilityFunctions.getUserIdByEmail
 class EventViewModel(
     private val eventRepository: EventRepository,
     private val tripRepository: TripRepository,
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
+    private val navigationController: NavHostController
 ): ViewModel() {
     fun getEventsFlowByTripId(tripId: String): Flow<List<EventItem>> {
         return eventRepository.getAllEventsByTripIdFlow(tripId)
@@ -55,16 +56,20 @@ class EventViewModel(
             return false
         }
     }
+    fun navigateToPhotos() {
+        navigationController.navigate(NavigationItem.Photos.route)
+    }
 }
 
 class EventViewModelFactory(
         private val eventRepository: EventRepository,
         private val tripRepository: TripRepository,
-        private val userDataSource: UserDataSource
+        private val userDataSource: UserDataSource,
+        private val navigationController: NavHostController,
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
-            return EventViewModel(eventRepository, tripRepository, userDataSource) as T
+            return EventViewModel(eventRepository, tripRepository, userDataSource, navigationController) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

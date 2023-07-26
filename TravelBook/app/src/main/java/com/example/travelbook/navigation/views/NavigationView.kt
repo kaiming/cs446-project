@@ -61,6 +61,8 @@ import com.example.travelbook.events.views.ModifyEventView
 import com.example.travelbook.map.viewModels.MapViewModel
 import com.example.travelbook.map.views.MapView
 import com.example.travelbook.navigation.models.NavigationItem
+import com.example.travelbook.photos.viewModels.PhotosViewModel
+import com.example.travelbook.photos.views.PhotosView
 import com.example.travelbook.profile.viewModels.ProfileViewModel
 import com.example.travelbook.profile.views.ProfileView
 import com.example.travelbook.shared.UIText
@@ -96,6 +98,7 @@ fun NavigationView(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    photosViewModel: PhotosViewModel,
     isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -156,6 +159,7 @@ fun NavigationView(
             profileViewModel = profileViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
+            photosViewModel = photosViewModel,
             startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
@@ -179,6 +183,7 @@ fun NavigationGraph(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    photosViewModel: PhotosViewModel,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {
@@ -212,6 +217,15 @@ fun NavigationGraph(
                     navController.navigate("${NavigationItem.Event.route}/$eventString")
                 },
 
+                modifier = modifier
+            )
+        }
+        composable(NavigationItem.Photos.route) {
+            PhotosView(
+                viewModel = photosViewModel,
+                onNavigateToPhotos = {
+                    navController.navigate("${NavigationItem.Photos.route}/$it")
+                                     },
                 modifier = modifier
             )
         }
