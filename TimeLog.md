@@ -30,7 +30,7 @@
 | 2023/07/18 | -- | -- | -- | -- | -- | -- | 6 | configuring email and google authentication |
 | 2023/07/18 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | Group meeting, deliverable task planning |
 | 2023/07/18 | -- | 1 | -- | -- | 1 | 1 | -- | Budget feature designing |
-| 2023/07/18 | 2 | -- | -- | -- | -- | -- | -- | Export feature design |
+| 2023/07/18 | 3.5 | -- | -- | -- | -- | -- | -- | Export feature design |
 | 2023/07/18 | -- | -- | 4 | 2 | -- | -- | -- | modify and delete events fixes |
 | 2023/07/19 | -- | -- | 4 | 4 | -- | -- | -- | finish add delete events |
 | 2023/07/19 | -- | -- | 2 | -- | -- | -- | -- | Add trip details to itinerary page |
@@ -79,4 +79,5 @@
 | 2023/07/26 | -- | -- | -- | -- | -- | 3 | -- | budget page pie chart |
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
 | 2023/07/26 | 2 | -- | -- | -- | -- | -- | -- | Fix adding back add to user button (was overwritten by bad merge), moved button location |
+| 2023/07/26 | 6 | -- | -- | -- | -- | -- | -- | Export as image broke somehow (could not resolve), added export as text as a secondary backup option |
 
