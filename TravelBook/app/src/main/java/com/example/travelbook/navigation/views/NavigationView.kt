@@ -104,7 +104,6 @@ fun NavigationView(
     val navigationItems = listOf(
         NavigationItem.Map,
         NavigationItem.Trip,
-        NavigationItem.Budgeting,
         NavigationItem.Profile
     )
     val selectedItem = remember { mutableStateOf(navigationItems[0]) }
@@ -204,12 +203,6 @@ fun NavigationGraph(
                     navController.navigate("${NavigationItem.Event.route}/$it")
                 },
                 modifier = modifier
-            )
-        }
-        composable(NavigationItem.Budgeting.route) {
-            BudgetingView(
-//                viewModel = BudgetingViewModel,
-              modifier = modifier
             )
         }
         composable(NavigationItem.ArchivedTrip.route) {
