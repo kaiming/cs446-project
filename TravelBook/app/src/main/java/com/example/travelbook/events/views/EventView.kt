@@ -1,7 +1,14 @@
 package com.example.travelbook.events.views
 
+import UtilityFunctions.getTripAsText
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,7 +34,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -47,7 +56,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -57,16 +70,24 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
+import androidx.core.view.drawToBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
+import com.example.travelbook.trips.models.Trip
 import com.example.travelbook.trips.views.TripCard
 import com.example.travelbook.ui.theme.Padding
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -167,13 +188,14 @@ fun EventView(
                     ) {
                         Text("View Travel Advisory")
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     // Add user to trip button
                     Button(
                         onClick = { showAddUserPopup.value = true },
                     ) {
                         Text(text = "Add User")
                     }
+
                     if (showAddUserPopup.value) {
                         AddUserPopup(
                             onClosePopup = { showAddUserPopup.value = false },
@@ -196,6 +218,52 @@ fun EventView(
                             }
                         )
                     }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    // Export trip button
+                    val view = LocalView.current
+                    val context = LocalContext.current
+                    IconButton(
+                        onClick = {  
+                            val bmp = composeViewToBitmap(view)
+                            val uri = saveBitmapAsImage(context, bmp)
+                            Log.d("DEBUG", "URI: $uri")
+                            uri?.let {
+                                val shareIntent = Intent(Intent.ACTION_SEND)
+                                shareIntent.type = "image/*"
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, it)
+                                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                                val chooserIntent = Intent.createChooser(shareIntent, "Share Image")
+                                context.startActivity(chooserIntent)
+                            } ?: run {
+                                // Handle case when the image was not saved properly
+                                Toast.makeText(context, "Failed to save and share image", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Share Itinerary Button",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                    // Export trip button
+                    IconButton(
+                        onClick = { shareAsText(trip, events.value, context) },
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "Share Itinerary Button",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
                 }
             }
             LazyColumn(Modifier.weight(5.8f)) {
@@ -410,4 +478,58 @@ private fun AddUserPopup(
             }
         }
     )
+}
+
+
+private fun composeViewToBitmap(view: View): Bitmap {
+    return view.let { v ->
+        if (v is ComposeView) {
+            Log.d("DEBUG", "Capturing ComposeView as bitmap...")
+            // Use drawToBitmap extension function to capture the view as a bitmap
+            v.drawToBitmap().asImageBitmap().asAndroidBitmap()
+        } else {
+            Log.d("DEBUG", "Capturing View as bitmap...")
+            val bitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            v.draw(canvas)
+            bitmap
+        }
+    }
+}
+
+fun saveBitmapAsImage(context: Context, bitmap: Bitmap): Uri? {
+    val directory = context.filesDir // Get the app's internal storage directory
+    val timestamp = System.currentTimeMillis()
+    val filename = "TravelBook-Itinerary-$timestamp.png"
+    val file = File(directory, filename)
+
+    Log.d("DEBUG", "Saving screenshot to ${file.absolutePath}")
+
+    try {
+        val stream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 85, stream)
+        stream.flush()
+        stream.close()
+        Log.d("DEBUG", "Screenshot saved successfully!")
+
+        // Get the content URI using FileProvider
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+
+        return uri
+    } catch (e: Exception) {
+        e.printStackTrace()
+        Log.d("DEBUG", "Failed to save screenshot!")
+        return null
+    }
+}
+
+
+private fun shareAsText(trip: Trip, events: List<EventItem>, context: Context) {
+    val text = getTripAsText(trip, events)
+    val intent = Intent()
+    intent.action = Intent.ACTION_SEND
+    intent.type = "text/plain"
+    intent.putExtra(Intent.EXTRA_TEXT, text)
+    val chooserIntent = Intent.createChooser(intent, "Share with:")
+    context.startActivity(chooserIntent)
 }
