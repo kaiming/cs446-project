@@ -5,12 +5,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.travelbook.profile.viewModels.ProfileViewModel
@@ -21,19 +29,29 @@ fun ProfileView(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val context = LocalContext.current
-
         viewModel.getUser()?.name?.let {
             Text(
-                text = "Hi $it",
-                fontSize = 20.sp
+                text = "Welcome, $it!",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
             )
         }
+
+        Icon(Icons.Filled.AccountCircle, contentDescription = "Account Icon", modifier = Modifier.size(64.dp))
+
+        viewModel.getUser()?.email?.let {
+            Text(
+                text = "$it",
+                fontSize = 18.sp,
+                color = Color.Gray
+            )
+        }
+
         Button(
             onClick = {
                 val isSuccessful = viewModel.onSignOutClicked()
