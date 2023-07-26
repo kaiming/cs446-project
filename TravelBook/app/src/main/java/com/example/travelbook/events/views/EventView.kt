@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -140,7 +141,7 @@ fun EventView(
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
 
-            LazyColumn(Modifier.weight(6f)) {
+            LazyColumn(Modifier.weight(5.8f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
                         onNavigateToModifyEvent(tripId, event.eventId)
@@ -150,15 +151,17 @@ fun EventView(
 
             Box(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.2f)
                     .fillMaxSize()
-                    .padding(Padding.PaddingMedium.size)
+                    .padding(bottom = Padding.PaddingMedium.size)
                     .background(
                         color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
                     ),
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                Column() {
+                Column(
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -175,7 +178,7 @@ fun EventView(
                                     photosPermissionState.launchPermissionRequest()
                                 }
                             },
-                            modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                            modifier = Modifier.padding(end = Padding.PaddingMedium.size, start = Padding.PaddingMedium.size)
                         ) {
                             Text("Add Photos")
                         }
@@ -183,7 +186,7 @@ fun EventView(
                         // Add user to trip button
                         Button(
                             onClick = { showAddUserPopup.value = true },
-                            modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                            modifier = Modifier.padding(end = Padding.PaddingMedium.size, start = Padding.PaddingMedium.size)
                         ) {
                             Text(text = "Add Users")
                         }
@@ -191,7 +194,7 @@ fun EventView(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxSize()
                     ) {
                         // Existing IconButton for "Add Event"
                         IconButton(
