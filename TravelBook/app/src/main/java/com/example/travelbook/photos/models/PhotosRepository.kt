@@ -22,8 +22,17 @@ class PhotosRepository {
         // Get a reference to the Firebase Storage
         val storageReference = Firebase.storage.reference
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            onComplete(emptyList())
+            return
+        }
+        val userId = currentUser.uid
+        var count = 0
+
+
         // Create a reference to the images folder for the specific tripId
-        val tripImagesReference = storageReference.child("images").child(tripId)
+        val tripImagesReference = storageReference.child("images").child(userId)
 
         // Fetch the list of image URLs from the trip's images folder
         tripImagesReference.listAll()
@@ -40,16 +49,25 @@ class PhotosRepository {
                                 .addOnSuccessListener { metadata ->
                                     val date = metadata.getCustomMetadata("date") ?: ""
                                     val userId = metadata.getCustomMetadata("userId") ?: ""
+                                    val _tripId = metadata.getCustomMetadata("tripId") ?: ""
 
-                                    // Create a Photo object and add it to the list
-                                    val photo = Photo(downloadUrl.toString(), date, userId, tripId)
-                                    photosList.add(photo)
+                                    if (_tripId == tripId) {
+                                        // Create a Photo object and add it to the list
+                                        val photo = Photo(downloadUrl.toString(), date, userId, tripId)
+                                        photosList.add(photo)
+                                    }
+                                    count += 1
 
+
+
+                                    Log.d("PHOTOS_", "${photosList.size}")
                                     // Check if all images have been processed
-                                    if (photosList.size == listResult.items.size) {
+                                    if (count == listResult.items.size) {
                                         // Call the onComplete callback with the list of photos
                                         Log.d("PHOTOS", "${photosList.size}")
                                         onComplete(photosList)
+                                    } else {
+                                        Log.d("PHOTO_SIZE", "${photosList.size}")
                                     }
                                 }
                         }

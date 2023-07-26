@@ -1,5 +1,6 @@
 package com.example.travelbook.photos.views
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth
 fun PhotosView(
     viewModel: PhotosViewModel,
     tripId: String?,
-    onNavigateToPhotos: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -39,6 +39,7 @@ fun PhotosView(
 
     // Fetch photos for the user when the composable is first composed
     LaunchedEffect(Unit) {
+        Log.d("TRIP_ID", "$tripId")
         viewModel.fetchPhotosForUser(
             tripId,
             onComplete = { photos ->

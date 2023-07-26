@@ -225,13 +225,22 @@ fun NavigationGraph(
                 modifier = modifier
             )
         }
-        composable(NavigationItem.Photos.route) {
+        composable(
+            route = "${NavigationItem.Photos.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )) {
             PhotosView(
                 viewModel = photosViewModel,
                 tripId = it.arguments?.getString("trip_id"),
-                onNavigateToPhotos = { tripId ->
-                    navController.navigate("${NavigationItem.Photos.route}/$tripId")
-                                     },
+//                onNavigateToPhotos = { tripId ->
+//                    navController.navigate("${NavigationItem.Photos.route}/$tripId")
+//                                     },
+//                onNavigateToPhotos = {
+//                    navController.popBackStack()
+//                },
                 modifier = modifier
             )
         }
@@ -283,6 +292,9 @@ fun NavigationGraph(
 //                },
                 onNavigateToTravelAdvisory = {
                     navController.navigate("${NavigationItem.TravelAdvisory.route}/$it")
+                },
+                onNavigateToPhotos = {
+                    navController.navigate("${NavigationItem.Photos.route}/$it")
                 },
                 modifier = modifier
             )

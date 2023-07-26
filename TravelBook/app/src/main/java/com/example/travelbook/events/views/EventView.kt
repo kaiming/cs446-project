@@ -67,6 +67,7 @@ fun EventView(
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
     onNavigateToTravelAdvisory: (String) -> Unit,
+    onNavigateToPhotos: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (tripId !is String) return
@@ -164,7 +165,8 @@ fun EventView(
                     // "View Photos" Button
                     Button(
                         onClick = {
-                            viewModel.navigateToPhotos(tripId)
+                            onNavigateToPhotos(tripId)
+//                            viewModel.navigateToPhotos(tripId)
                         },
                         modifier = Modifier.padding(end = Padding.PaddingMedium.size)
                     ) {
