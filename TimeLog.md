@@ -67,4 +67,8 @@
 | 2023/07/24 | 8 | -- | 2 | -- | -- | -- | -- | fixed query before login errors, show emails instead of user ids in the UI, refactor utility functions, testing and bug fixes |
 | 2023/07/25 | -- | -- | -- | -- | -- | -- | 2 | adding text to sign in page |
 | 2023/07/25 | -- | -- | 0.5 | -- | 1 | -- | 6 | implemented photo sharing |
+| 2023/07/25 | -- | -- | -- | -- | -- | 5 | -- | fixed navigation to budget page |
 | 2023/07/25 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | Feature sync with teams and group, final assignment of tasks |
+| 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
+| 2023/07/26 | -- | -- | 8 | -- | -- | -- | -- | Travel advisories |
+| 2023/07/26 | -- | -- | -- | -- | -- | 3 | -- | budget page pie chart |

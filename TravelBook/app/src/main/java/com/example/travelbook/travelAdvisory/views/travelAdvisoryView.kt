@@ -28,6 +28,7 @@ import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -94,35 +96,40 @@ private fun TravelAdvisories(
     viewModel: TravelAdvisoryViewModel,
     events: List<EventItem>
 ) {
+    val colors: List<Color> = listOf(
+        Color(0x5500FF00),  // Green
+        Color(0x5577FF00),  // Grellow
+        Color(0x55FFFF00),  // Yellow
+        Color(0x55FF7700),  // Orange
+        Color(0x55FF0000),  // Red
+        Color(0x55FF0000)   // Red
+    )
     val countriesWithAdvisories = events.map { it.locationCountry }.distinct()
     val travelAdvisories = viewModel.getTravelAdvisories(countriesWithAdvisories)
-        .collectAsState(initial = emptyMap()).value
+        .collectAsState(initial = emptyList()).value
 
     if (travelAdvisories.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.error)
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            travelAdvisories.forEach { (country, advisory) ->
-                Text(
-                    text = "$country: ${advisory.message}",
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                )
+            items(travelAdvisories) { countryAdvisory ->
+                Card(
+                    shape = RoundedCornerShape(15.dp),
+                    colors = CardDefaults.cardColors(containerColor = colors[countryAdvisory.advisory.score.toInt()]),
+                    modifier = Modifier.padding(Padding.PaddingMedium.size)
+                ) {
+                    Text(
+                        text = countryAdvisory.advisory.message,
+                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                    )
+                    Text(
+                        text = "For more information: ${countryAdvisory.advisory.source}",
+                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                    )
+                }
             }
         }
-    } else if (countriesWithAdvisories.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.error)
-        ) {
-            countriesWithAdvisories.forEach { country ->
-                Text(
-                    text = "$country: nothing to display",
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                )
-            }
-        }
-    } else {
-        Text("nothing to display here")
     }
 }
+
+

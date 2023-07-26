@@ -62,7 +62,11 @@ fun ArchivedTripView(
                             onClick = { onNavigateToEvents(trip.tripId) },
                             modifier = Modifier.weight(1f)
                         ) {
-                            TripCard(trip)
+                            TripCard(
+                                trip,
+                                null,
+                                null,
+                                null)
                         }
                     }
                 })

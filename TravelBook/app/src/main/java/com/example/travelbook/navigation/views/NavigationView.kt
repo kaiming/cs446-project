@@ -100,6 +100,7 @@ fun NavigationView(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    budgetingViewModel: BudgetingViewModel,
     photosViewModel: PhotosViewModel,
     travelAdvisoryViewModel: TravelAdvisoryViewModel,
     isLoggedIn: Boolean,
@@ -162,6 +163,7 @@ fun NavigationView(
             profileViewModel = profileViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
+            budgetingViewModel = budgetingViewModel,
             photosViewModel = photosViewModel,
             travelAdvisoryViewmodel = travelAdvisoryViewModel,
             startDestination = startDestination,
@@ -187,6 +189,7 @@ fun NavigationGraph(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    budgetingViewModel: BudgetingViewModel,
     photosViewModel: PhotosViewModel,
     travelAdvisoryViewmodel: TravelAdvisoryViewModel,
     startDestination: String,
@@ -287,9 +290,9 @@ fun NavigationGraph(
                 onNavigateToModifyEvent = { tripId, eventId ->
                     navController.navigate("${NavigationItem.ModifyEvent.route}/$tripId/$eventId")
                 },
-//                onNavigateToBudgetDetails = {
-//                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
-//                },
+                onNavigateToBudgetDetails = {
+                navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
+                },
                 onNavigateToTravelAdvisory = {
                     navController.navigate("${NavigationItem.TravelAdvisory.route}/$it")
                 },
@@ -332,6 +335,23 @@ fun NavigationGraph(
                 tripId = it.arguments?.getString("trip_id"),
                 eventId = it.arguments?.getString("event_id"),
                 onNavigateToEvents = {
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.BudgetDetail.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            BudgetingView(
+                viewModel = budgetingViewModel,
+                tripId = it.arguments?.getString("trip_id"),
+                onNavigateToBudgetDetails = {
                     navController.popBackStack()
                 },
                 modifier = modifier

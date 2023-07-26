@@ -23,5 +23,6 @@ sealed class NavigationItem(
 
     object Photos : NavigationItem("Photos", R.drawable.logo, "photos")
     // TODO: Add other nav paths here
+    object BudgetDetail : NavigationItem("Budget Detail", R.drawable.logo, "budgetDetail")
 
 }

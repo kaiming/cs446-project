@@ -42,7 +42,11 @@ class EventRepository {
         return imageReference.putFile(uri, metadata)
     }
 
-    fun getAllEventsByTripIdFlow(tripId: String): Flow<List<EventItem>> = flow {
+    fun getAllEventsByTripIdFlow(tripId: String?): Flow<List<EventItem>> = flow {
+        if (tripId == null) {
+            throw Exception();
+        }
+
         val querySnapshot = database.collection("trips")
                 .document(tripId)
                 .collection("events")

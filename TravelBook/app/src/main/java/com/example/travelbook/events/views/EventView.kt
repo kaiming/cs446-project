@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -66,6 +67,7 @@ fun EventView(
     tripId: String?,
     onNavigateToAddEvent: (String) -> Unit,
     onNavigateToModifyEvent: (String, String) -> Unit,
+    onNavigateToBudgetDetails: (String) -> Unit,
     onNavigateToTravelAdvisory: (String) -> Unit,
     onNavigateToPhotos: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -122,15 +124,14 @@ fun EventView(
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
                     )
                     Text(
-                        text = trip.budget,
+                        text = "$ " + trip.budget,
                         fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
                     )
                 }
             }
-
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
+            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat(), onClick = { onNavigateToBudgetDetails(tripId) })
             Button(
                 onClick = {
                     onNavigateToTravelAdvisory(tripId)
@@ -138,30 +139,28 @@ fun EventView(
             ) {
                 Text("View Travel Advisory")
             }
-            TripCard(trip)
-            LazyColumn(Modifier.weight(6f)) {
+//            TripCard(trip)
+            LazyColumn(Modifier.weight(5.8f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
                         onNavigateToModifyEvent(tripId, event.eventId)
                     }
                 })
             }
+
             Box(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.2f)
                     .fillMaxSize()
-                    .padding(Padding.PaddingMedium.size)
+                    .padding(bottom = Padding.PaddingMedium.size)
                     .background(
                         color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
                     ),
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier.fillMaxHeight()
                 ) {
-
                     // "View Photos" Button
                     Button(
                         onClick = {
@@ -188,25 +187,42 @@ fun EventView(
                         },
                         modifier = Modifier.padding(end = Padding.PaddingMedium.size)
                     ) {
-                        Text("Add Photos")
+                        // "Add Photos" Button
+                        Button(
+                            onClick = {
+                                if (photosPermissionState.status.isGranted) {
+                                    Log.d("DEBUG", "Permissions granted!")
+                                    pickImagesLauncher.launch("image/*")
+                                } else {
+                                    Log.d("DEBUG", "Permissions not granted!")
+                                    photosPermissionState.launchPermissionRequest()
+                                }
+                            },
+                            modifier = Modifier.padding(end = Padding.PaddingMedium.size, start = Padding.PaddingMedium.size)
+                        ) {
+                            Text("Add Photos")
+                        }
+
                     }
-
-                    // Spacer to provide some separation
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    // Existing IconButton for "Add Event"
-                    IconButton(
-                        onClick = {
-                            onNavigateToAddEvent(tripId)
-                        },
-                        modifier = Modifier.size(64.dp)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Icon(
-                            Icons.Rounded.AddCircle,
-                            tint = MaterialTheme.colorScheme.secondary,
-                            contentDescription = "Add Event Button",
+                        // Existing IconButton for "Add Event"
+                        IconButton(
+                            onClick = {
+                                onNavigateToAddEvent(tripId)
+                            },
                             modifier = Modifier.size(64.dp)
-                        )
+                        ) {
+                            Icon(
+                                Icons.Rounded.AddCircle,
+                                tint = MaterialTheme.colorScheme.secondary,
+                                contentDescription = "Add Event Button",
+                                modifier = Modifier.size(64.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -252,7 +268,7 @@ private fun EventCard(
 }
 
 @Composable
-fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
+fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit ) {
     val progress = (currentBudget / totalBudget)
     val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
     // Calculate the progress percentage
@@ -262,6 +278,7 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp) // Add horizontal padding
+            .clickable { onClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -274,7 +291,10 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                     percentageUsed > 100 -> Color.Red
                     else -> Color.Black
                 },
-                modifier = Modifier.weight(1f).height(8.dp).padding(end = 4.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(8.dp)
+                    .padding(end = 4.dp)
             )
 
             Text(

@@ -60,7 +60,6 @@ fun NewSignInView(viewModel: NewSignInViewModel) {
         AuthUI.IdpConfig.EmailBuilder().build(), // Email authentication
         AuthUI.IdpConfig.GoogleBuilder().build() // Google authentication
     )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
