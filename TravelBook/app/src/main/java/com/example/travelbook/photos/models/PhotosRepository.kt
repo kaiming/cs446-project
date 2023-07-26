@@ -32,7 +32,7 @@ class PhotosRepository {
 
 
         // Create a reference to the images folder for the specific tripId
-        val tripImagesReference = storageReference.child("images").child(userId)
+        val tripImagesReference = storageReference.child("images")
 
         // Fetch the list of image URLs from the trip's images folder
         tripImagesReference.listAll()
