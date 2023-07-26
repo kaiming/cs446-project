@@ -8,11 +8,14 @@ import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
 import com.example.travelbook.googlePrediction.models.GooglePredictionRepository
 import com.example.travelbook.googlePrediction.models.GooglePredictionResponse
+import com.example.travelbook.trips.models.Trip
+import com.example.travelbook.trips.models.TripRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class ModifyEventViewModel(
     private val repository: EventRepository,
+    private val tripRepository: TripRepository,
     private val googlePredictionRepository: GooglePredictionRepository,
     private val userDataSource: UserDataSource
 ) : ViewModel() {
@@ -33,16 +36,21 @@ class ModifyEventViewModel(
     ): Flow<GooglePredictionResponse> {
         return googlePredictionRepository.getPredictions(input)
     }
+
+    fun getTripByTripId(tripId: String): Flow<Trip?> {
+        return tripRepository.getTripByIdFlow(tripId)
+    }
 }
 
 class ModifyEventViewModelFactory(
     private val repository: EventRepository,
+    private val tripRepository: TripRepository,
     private val googlePredictionRepository: GooglePredictionRepository,
     private val userDataSource: UserDataSource
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ModifyEventViewModel::class.java)) {
-            return ModifyEventViewModel(repository, googlePredictionRepository, userDataSource) as T
+            return ModifyEventViewModel(repository, tripRepository, googlePredictionRepository, userDataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

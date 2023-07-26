@@ -120,11 +120,11 @@ class MainActivity : ComponentActivity() {
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
+                AddEventViewModelFactory(EventRepository(), TripRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val modifyEventViewModel: ModifyEventViewModel by viewModels {
-                ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
+                ModifyEventViewModelFactory(EventRepository(), TripRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
             }
 
             val budgetingViewModel: BudgetingViewModel by viewModels {
