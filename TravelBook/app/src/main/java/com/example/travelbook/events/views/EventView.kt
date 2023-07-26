@@ -122,7 +122,7 @@ fun EventView(
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
                     )
                     Text(
-                        text = trip.budget,
+                        text = "$ " + trip.budget,
                         fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(Padding.PaddingSmall.size)
@@ -202,13 +202,6 @@ fun EventView(
                             Text("Add Photos")
                         }
 
-                        // Add user to trip button
-                        Button(
-                            onClick = { showAddUserPopup.value = true },
-                            modifier = Modifier.padding(end = Padding.PaddingMedium.size, start = Padding.PaddingMedium.size)
-                        ) {
-                            Text(text = "Add Users")
-                        }
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
