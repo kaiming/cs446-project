@@ -117,6 +117,7 @@ fun EventView(
             }
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
+            TravelAdvisories(events.value)
             TripCard(trip)
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
@@ -252,6 +253,32 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                 textAlign = TextAlign.End,
                 modifier = Modifier.padding(start = 4.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun TravelAdvisories(events: List<EventItem>) {
+    val countriesWithAdvisories = events.map { it.location }.distinct()
+    val travelAdvisories = getTravelAdvisories(countriesWithAdvisories)
+
+    if (travelAdvisories.isNotEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.error)
+        ) {
+            Text(
+                text = "Travel Advisories",
+                fontSize = 20.sp,
+                color = Color.White,
+                modifier = Modifier.padding(16.dp)
+            )
+            travelAdvisories.forEach { (country, advisory) ->
+                Text(
+                    text = "$country: $advisory",
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                )
+            }
         }
     }
 }
