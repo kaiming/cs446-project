@@ -139,7 +139,7 @@ fun EventView(
             }
 
             BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat())
-            TripCard(trip)
+
             LazyColumn(Modifier.weight(6f)) {
                 items(items = events.value, itemContent = { event ->
                     EventCard(event) {
@@ -147,6 +147,7 @@ fun EventView(
                     }
                 })
             }
+
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -157,51 +158,55 @@ fun EventView(
                     ),
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    // "Add Photos" Button
-                    Button(
-                        onClick = {
-                            if (photosPermissionState.status.isGranted) {
-                                Log.d("DEBUG", "Permissions granted!")
-                                pickImagesLauncher.launch("image/*")
-                            } else {
-                                Log.d("DEBUG", "Permissions not granted!")
-                                photosPermissionState.launchPermissionRequest()
-                            }
-                        },
-                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                Column() {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Add Photos")
+                        // "Add Photos" Button
+                        Button(
+                            onClick = {
+                                if (photosPermissionState.status.isGranted) {
+                                    Log.d("DEBUG", "Permissions granted!")
+                                    pickImagesLauncher.launch("image/*")
+                                } else {
+                                    Log.d("DEBUG", "Permissions not granted!")
+                                    photosPermissionState.launchPermissionRequest()
+                                }
+                            },
+                            modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                        ) {
+                            Text("Add Photos")
+                        }
+
+                        // Add user to trip button
+                        Button(
+                            onClick = { showAddUserPopup.value = true },
+                            modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                        ) {
+                            Text(text = "Add Users")
+                        }
                     }
-
-                    // Spacer to provide some separation
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    // Existing IconButton for "Add Event"
-                    IconButton(
-                        onClick = {
-                            onNavigateToAddEvent(tripId)
-                        },
-                        modifier = Modifier.size(64.dp)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(
-                            Icons.Rounded.AddCircle,
-                            tint = MaterialTheme.colorScheme.secondary,
-                            contentDescription = "Add Event Button",
+                        // Existing IconButton for "Add Event"
+                        IconButton(
+                            onClick = {
+                                onNavigateToAddEvent(tripId)
+                            },
                             modifier = Modifier.size(64.dp)
-                        )
-                    }
-
-                    // Add user to trip button
-                    Button(
-                        onClick = { showAddUserPopup.value = true },
-                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
-                    ) {
-                        Text(text = "Add User")
+                        ) {
+                            Icon(
+                                Icons.Rounded.AddCircle,
+                                tint = MaterialTheme.colorScheme.secondary,
+                                contentDescription = "Add Event Button",
+                                modifier = Modifier.size(64.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -291,7 +296,10 @@ fun BudgetProgressBar(currentBudget: Float, totalBudget: Float) {
                     percentageUsed > 100 -> Color.Red
                     else -> Color.Black
                 },
-                modifier = Modifier.weight(1f).height(8.dp).padding(end = 4.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(8.dp)
+                    .padding(end = 4.dp)
             )
 
             Text(
