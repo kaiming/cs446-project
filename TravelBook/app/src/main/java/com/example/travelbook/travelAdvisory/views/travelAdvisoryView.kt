@@ -96,33 +96,19 @@ private fun TravelAdvisories(
 ) {
     val countriesWithAdvisories = events.map { it.locationCountry }.distinct()
     val travelAdvisories = viewModel.getTravelAdvisories(countriesWithAdvisories)
-        .collectAsState(initial = emptyMap()).value
+        .collectAsState(initial = emptyList()).value
 
     if (travelAdvisories.isNotEmpty()) {
-        Column(
+        LazyColumn(
             modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.error)
         ) {
-            travelAdvisories.forEach { (country, advisory) ->
+            items(travelAdvisories) {
                 Text(
-                    text = "$country: ${advisory.message}",
+                    text = "${it.name}: ${it.advisory.message}",
                     color = Color.White,
                     modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
                 )
             }
         }
-    } else if (countriesWithAdvisories.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.error)
-        ) {
-            countriesWithAdvisories.forEach { country ->
-                Text(
-                    text = "$country: nothing to display",
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                )
-            }
-        }
-    } else {
-        Text("nothing to display here")
     }
 }
