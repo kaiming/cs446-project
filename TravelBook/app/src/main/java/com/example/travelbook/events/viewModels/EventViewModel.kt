@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
+import UtilityFunctions.getUserIdByEmail
 
 class EventViewModel(
     private val eventRepository: EventRepository,
@@ -44,8 +45,15 @@ class EventViewModel(
             Log.d("UPLOAD_ERROR", "Failed to upload image.")
         }
     }
-    fun addUserToTrip(tripId: String, userId: String) {
-        repository.addUserToTrip(tripId, userId)
+    suspend fun addUserToTrip(tripId: String, email: String): Boolean {
+        val userId = getUserIdByEmail(email)
+        if (userId != null) {
+            tripRepository.addUserToTrip(tripId, userId)
+            return true
+        } else {
+            Log.d("ADD_USER_ERROR", "Failed to add user to trip.")
+            return false
+        }
     }
 }
 
