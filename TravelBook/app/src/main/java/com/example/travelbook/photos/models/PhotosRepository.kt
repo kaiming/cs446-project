@@ -15,68 +15,48 @@ class PhotosRepository {
         onComplete: (List<Photo>) -> Unit,
         onError: (Exception) -> Unit
     ) {
-
         if (tripId == null) {
-            return
-        }
-        // Get a reference to the Firebase Storage
-        val storageReference = Firebase.storage.reference
-
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
             onComplete(emptyList())
             return
         }
-        val userId = currentUser.uid
-        var count = 0
 
+        val storageReference = Firebase.storage.reference
+        val tripImagesReference = storageReference.child("images/$tripId")
 
-        // Create a reference to the images folder for the specific tripId
-        val tripImagesReference = storageReference.child("images").child(userId)
-
-        // Fetch the list of image URLs from the trip's images folder
         tripImagesReference.listAll()
             .addOnSuccessListener { listResult ->
                 val photosList = mutableListOf<Photo>()
+                if (listResult.items.isEmpty()) {
+                    onComplete(photosList)
+                    return@addOnSuccessListener
+                }
 
-                // Iterate through the list of items in the folder
                 for (item in listResult.items) {
-                    // Get the download URL for each image
-                    item.downloadUrl
-                        .addOnSuccessListener { downloadUrl ->
-                            // Get custom metadata for the image (date and userId)
-                            item.metadata
-                                .addOnSuccessListener { metadata ->
-                                    val date = metadata.getCustomMetadata("date") ?: ""
-                                    val userId = metadata.getCustomMetadata("userId") ?: ""
-                                    val _tripId = metadata.getCustomMetadata("tripId") ?: ""
+                    item.downloadUrl.addOnSuccessListener { downloadUrl ->
+                        item.metadata.addOnSuccessListener { metadata ->
+                            val date = metadata.getCustomMetadata("date") ?: ""
+                            val userIdFromMeta = metadata.getCustomMetadata("userId") ?: ""
 
-                                    if (_tripId == tripId) {
-                                        // Create a Photo object and add it to the list
-                                        val photo = Photo(downloadUrl.toString(), date, userId, tripId)
-                                        photosList.add(photo)
-                                    }
-                                    count += 1
+                            val photo = Photo(downloadUrl.toString(), date, userIdFromMeta, tripId)
+                            photosList.add(photo)
 
-
-
-                                    Log.d("PHOTOS_", "${photosList.size}")
-                                    // Check if all images have been processed
-                                    if (count == listResult.items.size) {
-                                        // Call the onComplete callback with the list of photos
-                                        Log.d("PHOTOS", "${photosList.size}")
-                                        onComplete(photosList)
-                                    } else {
-                                        Log.d("PHOTO_SIZE", "${photosList.size}")
-                                    }
-                                }
+                            // This condition ensures we call onComplete only once, after processing the last item.
+                            if (item == listResult.items.last()) {
+                                onComplete(photosList)
+                            }
+                        }.addOnFailureListener { exception ->
+                            onError(exception)
                         }
+                    }.addOnFailureListener { exception ->
+                        onError(exception)
+                    }
                 }
             }
             .addOnFailureListener { exception ->
                 onError(exception)
             }
     }
+
 
 
 }
