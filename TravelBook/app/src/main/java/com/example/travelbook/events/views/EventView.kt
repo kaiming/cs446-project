@@ -140,6 +140,19 @@ fun EventView(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+
+                    // "View Photos" Button
+                    Button(
+                        onClick = {
+                            viewModel.navigateToPhotos()
+                        },
+                        modifier = Modifier.padding(end = Padding.PaddingMedium.size)
+                    ) {
+                        Text("View Photos")
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
                     // "Add Photos" Button
                     Button(
                         onClick = {

@@ -22,7 +22,8 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun PhotosView(
     viewModel: PhotosViewModel,
-    onNavigateToPhotos: (String) -> Unit
+    onNavigateToPhotos: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     // State to hold the list of photos
@@ -48,7 +49,9 @@ fun PhotosView(
 }
 
 @Composable
-fun PhotoItem(photo: Photo) {
+fun PhotoItem(
+    photo: Photo,
+) {
     // You can use any image loading library like Coil or Glide to load the image
     Image(
         painter = rememberAsyncImagePainter(photo.imageUrl),

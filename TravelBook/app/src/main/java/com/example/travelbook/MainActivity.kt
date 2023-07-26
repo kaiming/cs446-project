@@ -111,7 +111,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this))
+                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this), navigationController)
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
@@ -150,6 +150,7 @@ class MainActivity : ComponentActivity() {
                         profileViewModel = profileViewModel,
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
+                        photosViewModel = photosViewModel,
                         isLoggedIn = isLoggedIn
                     )
                 }
