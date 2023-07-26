@@ -44,10 +44,18 @@ fun PieChartView(
     }
 
 
-    val pieChartdata = listOf(
-        PieChartData("Used", utilizedTripBudget),
-        PieChartData("Remaining", totalTripBudget - utilizedTripBudget),
-    )
+    val pieChartdata: List<PieChartData>
+
+    if (utilizedTripBudget > totalTripBudget) {
+        pieChartdata = listOf(
+            PieChartData("Over budget", utilizedTripBudget),
+        )
+    } else {
+        pieChartdata = listOf(
+            PieChartData("Used", utilizedTripBudget),
+            PieChartData("Remaining", totalTripBudget - utilizedTripBudget),
+        )
+    }
 
     // Referenced GeeksForGeeks for documentation on this pie chart
     // Column with modifier
@@ -164,6 +172,7 @@ fun updatePieChartWithData(
     // budgeting page style (red/green)
     val redColor = Color(0xFFF44336)
     val greenColor = Color(0xFF0F9D58)
+    val darkRedOverBudgetColor = Color(0xFFD50000)
     // creating an array list
     // for the pie Entry objects
     val entries = ArrayList<PieEntry>()
@@ -181,16 +190,22 @@ fun updatePieChartWithData(
 
     // specify
     // color
-    ds.colors = arrayListOf(
-        redColor.toArgb(),
-        greenColor.toArgb(),
-    )
+    ds.colors = if (data[0].name == "Over budget") {
+        arrayListOf(
+            darkRedOverBudgetColor.toArgb()
+        )
+    } else {
+        arrayListOf(
+            redColor.toArgb(),
+            greenColor.toArgb()
+        )
+    }
     // specifying position
     // for value
     ds.yValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
 
     // specifying position
-    // for value withi nthe slice
+    // for value within the slice
     ds.xValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
 
     // specifying slice
