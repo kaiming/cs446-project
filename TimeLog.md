@@ -72,3 +72,4 @@
 | 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
 | 2023/07/26 | -- | -- | 8 | -- | -- | -- | -- | Travel advisories |
 | 2023/07/26 | -- | -- | -- | -- | -- | 3 | -- | budget page pie chart |
+| 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
