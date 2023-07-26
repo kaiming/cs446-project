@@ -23,6 +23,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.AddCircle
@@ -115,39 +116,52 @@ fun TripView(
             Box(modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(Padding.PaddingMedium.size)
-                        .background(
-                            color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
-                        ),
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    IconButton(
-                        onClick = {
-                            onNavigateToAddTrip()
-                        },
-                        modifier = Modifier.size(64.dp)
-                    ) {
-                        Icon(
-                            Icons.Rounded.AddCircle,
-                            tint = MaterialTheme.colorScheme.secondary,
-                            contentDescription = "Add Trip Button",
-                            modifier = Modifier.size(64.dp)
-                        )
-                    }
-                }
+                FloatingAddButton(
+                    onNavigateToAddTrip = { onNavigateToAddTrip() }
+                )
 
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomStart
                 ) {
-                    TextButton(onClick = { onNavigateToArchivedTrip() }) {
-                        Text(text = "Archived Trips")
-                    }
+                        TextButton(onClick = { onNavigateToArchivedTrip() }) {
+                            Icon(
+                                Icons.Rounded.Lock,
+                                contentDescription = "Archive",
+                            )
+                            Text(text = "Archived Trips")
+                        }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun FloatingAddButton(
+    onNavigateToAddTrip: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Padding.PaddingMedium.size)
+            .background(
+                color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+            ),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        IconButton(
+            onClick = {
+                onNavigateToAddTrip()
+            },
+            modifier = Modifier.size(64.dp)
+        ) {
+            Icon(
+                Icons.Rounded.AddCircle,
+                tint = MaterialTheme.colorScheme.secondary,
+                contentDescription = "Add Trip Button",
+                modifier = Modifier.size(64.dp)
+            )
         }
     }
 }
@@ -197,7 +211,7 @@ fun TripCard(
     onDeleteClick: (() -> Unit)?
 ) {
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
         modifier = Modifier
             .padding(Padding.PaddingExtraSmall.size)
@@ -230,7 +244,8 @@ fun TripCard(
                         Icon(
                             Icons.Rounded.Edit,
                             contentDescription = "Edit",
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier
+                                .size(24.dp)
                                 .clickable { onEditClick() },
                         )
                     }
@@ -239,7 +254,9 @@ fun TripCard(
                         Icon(
                             Icons.Rounded.Lock,
                             contentDescription = "Archive",
-                            modifier = Modifier.size(24.dp).clickable { onArchiveClick() }
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable { onArchiveClick() }
                         )
                     }
 
@@ -247,7 +264,8 @@ fun TripCard(
                         Icon(
                             Icons.Rounded.Close,
                             contentDescription = "Delete",
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier
+                                .size(24.dp)
                                 .clickable { onDeleteClick() }
                         )
                     }
