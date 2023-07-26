@@ -68,3 +68,4 @@
 | 2023/07/25 | -- | -- | -- | -- | -- | -- | 2 | adding text to sign in page |
 | 2023/07/25 | -- | -- | 0.5 | -- | 1 | -- | 6 | implemented photo sharing |
 | 2023/07/25 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | Feature sync with teams and group, final assignment of tasks |
+| 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
