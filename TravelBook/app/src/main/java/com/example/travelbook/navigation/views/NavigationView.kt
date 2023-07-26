@@ -96,6 +96,7 @@ fun NavigationView(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    budgetingViewModel: BudgetingViewModel,
     isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -156,6 +157,7 @@ fun NavigationView(
             profileViewModel = profileViewModel,
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
+            budgetingViewModel = budgetingViewModel,
             startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
@@ -179,6 +181,7 @@ fun NavigationGraph(
     profileViewModel: ProfileViewModel,
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
+    budgetingViewModel: BudgetingViewModel,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {
@@ -311,7 +314,7 @@ fun NavigationGraph(
             )
         ) {
             BudgetingView(
-                viewModel = BudgetingViewModel,
+                viewModel = budgetingViewModel,
                 tripId = it.arguments?.getString("trip_id"),
                 onNavigateToBudgetDetails = {
                     navController.popBackStack()

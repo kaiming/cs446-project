@@ -22,16 +22,19 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.travelbook.R
+import com.example.travelbook.budgeting.viewModels.BudgetingViewModel
 import kotlin.math.roundToInt
 
 
 @Composable
 fun BudgetingView(
     viewModel: BudgetingViewModel,
-    tripId: String,
+    tripId: String?,
     onNavigateToBudgetDetails: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (tripId == null) return
+    
     viewModel.loadBudgets(tripId)
     val totalTripBudget = viewModel.totalTripBudget.toFloatOrNull() ?: 0f
     val utilizedTripBudget = viewModel.totalEventBudgets.toFloatOrNull() ?: 0f

@@ -10,6 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.travelbook.budgeting.viewModels.BudgetingViewModel
+import com.example.travelbook.budgeting.viewModels.BudgetingViewModelFactory
 import com.example.travelbook.navigation.views.NavigationView
 import com.example.travelbook.signIn.viewModels.SignInViewModel
 import com.example.travelbook.signIn.viewModels.SignInViewModelFactory
@@ -119,6 +121,10 @@ class MainActivity : ComponentActivity() {
                 ModifyEventViewModelFactory(EventRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
             }
 
+            val budgetingViewModel: BudgetingViewModel by viewModels {
+                BudgetingViewModelFactory(TripRepository(), EventRepository());
+            }
+
             val userDataSource = SharedPreferencesUserDataSource(this)
             val user = userDataSource.getUser()
             val isLoggedIn = user != null
@@ -143,6 +149,7 @@ class MainActivity : ComponentActivity() {
                         profileViewModel = profileViewModel,
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
+                        budgetingViewModel = budgetingViewModel,
                         isLoggedIn = isLoggedIn
                     )
                 }

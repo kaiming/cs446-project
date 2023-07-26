@@ -19,7 +19,7 @@ class BudgetingViewModel(
     // To keep track of the total budget used in the events
     var totalEventBudgets: String = ""
 
-    fun loadBudgets(tripId: String) = viewModelScope.launch {
+    fun loadBudgets(tripId: String?) = viewModelScope.launch {
         tripRepository.getTripByTripIDFlow(tripId).collect { trip ->
             totalTripBudget = trip?.budget?.toFloatOrNull()?.toString() ?: "0"
         }
