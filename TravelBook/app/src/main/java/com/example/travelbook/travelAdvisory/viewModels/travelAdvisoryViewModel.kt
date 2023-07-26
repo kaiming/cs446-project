@@ -6,6 +6,7 @@ import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.models.EventRepository
 import kotlinx.coroutines.flow.Flow
 import com.example.travelbook.travelAdvisory.models.Advisory
+import com.example.travelbook.travelAdvisory.models.CountryAdvisory
 import com.example.travelbook.travelAdvisory.models.TravelAdvisoryRepository
 
 class TravelAdvisoryViewModel(
@@ -16,7 +17,7 @@ class TravelAdvisoryViewModel(
         return eventRepository.getAllEventsByTripIdFlow(tripId)
     }
 
-    fun getTravelAdvisories(countryCodes: List<String>): Flow<Map<String, Advisory>> {
+    fun getTravelAdvisories(countryCodes: List<String>): Flow<List<CountryAdvisory>> {
         return travelAdvisoryRepository.getTravelAdvisories(countryCodes)
     }
 }

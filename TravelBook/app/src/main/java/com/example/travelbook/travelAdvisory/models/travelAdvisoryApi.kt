@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 interface TravelAdvisoryAPIService {
     @GET("api")
-    fun getAdvisory(@Query("countrycode") countryCode: String): Response<TravelAdvisoryResponse>
+    suspend fun getAdvisory(@Query("countrycode") countryCode: String): Response<TravelAdvisoryResponse>
 
     companion object {
         private const val BASE_URL = "https://www.travel-advisory.info/"
@@ -34,5 +34,5 @@ interface TravelAdvisoryAPIService {
 interface TravelAdvisoryAPIClientHelper {
     fun getTravelAdvisories(
         countryCodes: List<String>
-    ): Flow<Map<String, Advisory>>
+    ): Flow<List<CountryAdvisory>>
 }

@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class TravelAdvisoryRepository : TravelAdvisoryAPIClientHelper {
-    override fun getTravelAdvisories(countryCodes: List<String>): Flow<Map<String, Advisory>> = flow {
+    override fun getTravelAdvisories(countryCodes: List<String>): Flow<List<CountryAdvisory>> = flow {
+        val countryAdvisories = mutableListOf<CountryAdvisory>()
+
         countryCodes.forEach { countryCode ->
             try {
                 val response = TravelAdvisoryAPIService.service.getAdvisory(countryCode)
@@ -16,7 +18,7 @@ class TravelAdvisoryRepository : TravelAdvisoryAPIClientHelper {
                     Log.d("Travel Advisory", "getTravelAdvisories request successful for $countryCode")
                     val body = response.body()
                     body?.data?.get(countryCode)?.let { countryAdvisory ->
-                        emit(mapOf(countryAdvisory.name to countryAdvisory.advisory))
+                        countryAdvisories.add(countryAdvisory)
                     }
                 } else {
                     Log.d("Travel Advisory", "getTravelAdvisories request error for $countryCode")
@@ -27,5 +29,7 @@ class TravelAdvisoryRepository : TravelAdvisoryAPIClientHelper {
                 // TODO: ERROR CASE
             }
         }
+
+        emit(countryAdvisories)
     }
 }

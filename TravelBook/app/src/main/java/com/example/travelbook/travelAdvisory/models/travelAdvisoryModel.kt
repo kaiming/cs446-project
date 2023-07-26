@@ -2,7 +2,8 @@ package com.example.travelbook.travelAdvisory.models
 
 data class Advisory(
     val score: Float,
-    val message: String
+    val message: String,
+    val source: String
 )
 
 data class CountryAdvisory(
