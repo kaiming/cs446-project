@@ -2,6 +2,7 @@ package com.example.travelbook.events.views
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -46,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -56,6 +58,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.trips.views.TripCard
@@ -63,6 +66,7 @@ import com.example.travelbook.ui.theme.Padding
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -78,6 +82,8 @@ fun EventView(
 ) {
     if (tripId !is String) return
 
+    val context = LocalContext.current
+
     val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
     val events = viewModel.getEventsFlowByTripId(tripId)
         .collectAsStateWithLifecycle(initialValue = emptyList())
@@ -87,12 +93,15 @@ fun EventView(
         totalCosts += event.cost.toFloat()
     }
 
-    val pickImagesLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            // Handle the returned Uri, e.g., upload to Firebase Storage
-            viewModel.handleImageUpload(uri, tripId)
+    val showAddUserPopup = remember { mutableStateOf(false) }
+
+    val pickImagesLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                // Handle the returned Uri, e.g., upload to Firebase Storage
+                viewModel.handleImageUpload(uri, tripId)
+            }
         }
-    }
 
     // photos permission state
     val photosPermissionState = rememberPermissionState(
@@ -135,13 +144,59 @@ fun EventView(
                     )
                 }
             }
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat(), onClick = { onNavigateToBudgetDetails(tripId) })
-            Button(
-                onClick = {
-                    onNavigateToTravelAdvisory(tripId)
-                }
+            BudgetProgressBar(
+                currentBudget = totalCosts,
+                totalBudget = trip.budget.toFloat(),
+                onClick = { onNavigateToBudgetDetails(tripId) })
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                    ),
+                contentAlignment = Alignment.BottomEnd,
             ) {
-                Text("View Travel Advisory")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            onNavigateToTravelAdvisory(tripId)
+                        }
+                    ) {
+                        Text("View Travel Advisory")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    // Add user to trip button
+                    Button(
+                        onClick = { showAddUserPopup.value = true },
+                    ) {
+                        Text(text = "Add User")
+                    }
+                    if (showAddUserPopup.value) {
+                        AddUserPopup(
+                            onClosePopup = { showAddUserPopup.value = false },
+                            onAddUser = { email ->
+                                viewModel.viewModelScope.launch {
+                                    try {
+                                        val ret = viewModel.addUserToTrip(tripId, email)
+                                        if (ret) {
+                                            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
+                                        }
+                                    } catch (e: Exception) {
+                                        // Handle exceptions if needed
+                                        Toast.makeText(context, "Failed to add user: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    } finally {
+                                        showAddUserPopup.value = false
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
             }
             LazyColumn(Modifier.weight(5.8f)) {
                 items(items = events.value, itemContent = { event ->
@@ -236,7 +291,11 @@ private fun EventCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = event.name,
-                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black),
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    ),
                 )
                 Text(
                     text = event.location,
@@ -273,47 +332,47 @@ private fun EventCard(
 }
 
 @Composable
-fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit ) {
-    val progress = (currentBudget / totalBudget)
-    val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
-    // Calculate the progress percentage
-    val percentageUsed = (progress * 100).toInt()
+fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit) {
+val progress = (currentBudget / totalBudget)
+val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
+// Calculate the progress percentage
+val percentageUsed = (progress * 100).toInt()
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp) // Add horizontal padding
-            .clickable { onClick() }
+Box(
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp) // Add horizontal padding
+        .clickable { onClick() }
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            LinearProgressIndicator(
-                progress = restrictedProgress,
-                color = when {
-                    percentageUsed > 100 -> Color.Red
-                    else -> Color.Black
-                },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(8.dp)
-                    .padding(end = 4.dp)
-            )
+        LinearProgressIndicator(
+            progress = restrictedProgress,
+            color = when {
+                percentageUsed > 100 -> Color.Red
+                else -> Color.Black
+            },
+            modifier = Modifier
+                .weight(1f)
+                .height(8.dp)
+                .padding(end = 4.dp)
+        )
 
-            Text(
-                text = "$percentageUsed%",
-                color = when {
-                    percentageUsed > 100 -> Color.Red
-                    else -> Color.Black
-                },
-                fontSize = 16.sp,
-                textAlign = TextAlign.End,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
+        Text(
+            text = "$percentageUsed%",
+            color = when {
+                percentageUsed > 100 -> Color.Red
+                else -> Color.Black
+            },
+            fontSize = 16.sp,
+            textAlign = TextAlign.End,
+            modifier = Modifier.padding(start = 4.dp)
+        )
     }
+}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
