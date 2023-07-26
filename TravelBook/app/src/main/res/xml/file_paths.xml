@@ -1,0 +1,7 @@
+<paths>
+    <!-- Files in the app's internal storage directory -->
+    <files-path name="files" path="." />
+
+    <!-- Files in the app's external cache directory -->
+    <external-cache-path name="external_cache" path="." />
+</paths>

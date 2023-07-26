@@ -2,6 +2,7 @@
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.trips.models.Trip
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -75,5 +76,20 @@ object UtilityFunctions {
         return tripsWithParticipantEmails
     }
 
-
+    // Make text from a trip, including all events (NO PARTICIPANTS)
+    fun getTripAsText(trip: Trip, events: List<EventItem>): String {
+        var tripText = "Trip: ${trip.tripName}\n"
+        tripText += "Start Date: ${trip.startDate}\n"
+        tripText += "End Date: ${trip.endDate}\n"
+        tripText += "Budget: ${trip.budget}\n\n"
+        tripText += "Events:\n"
+        events.forEach { event ->
+            tripText += "\t${event.name}\n"
+            tripText += "\t\tLocation: ${event.location}\n"
+            tripText += "\t\tDate: ${event.startDate} at ${event.startTime}\n"
+            tripText += "\t\tDate: ${event.endDate} at ${event.endTime}\n"
+            tripText += "\t\tCost: ${event.cost}\n\n"
+        }
+        return tripText
+    }
 }
