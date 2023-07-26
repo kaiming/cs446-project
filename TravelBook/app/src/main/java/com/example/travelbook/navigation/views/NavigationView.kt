@@ -72,6 +72,8 @@ import com.example.travelbook.signIn.viewModels.SignUpViewModel
 import com.example.travelbook.signIn.views.NewSignInView
 import com.example.travelbook.signIn.views.SignInView
 import com.example.travelbook.signIn.views.SignUpView
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModel
+import com.example.travelbook.travelAdvisory.views.TravelAdvisoryView
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
 import com.example.travelbook.trips.viewModels.TripViewModel
@@ -99,6 +101,7 @@ fun NavigationView(
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     photosViewModel: PhotosViewModel,
+    travelAdvisoryViewModel: TravelAdvisoryViewModel,
     isLoggedIn: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -160,6 +163,7 @@ fun NavigationView(
             newSignInViewModel = newSignInViewModel,
             signUpViewModel = signUpViewModel,
             photosViewModel = photosViewModel,
+            travelAdvisoryViewmodel = travelAdvisoryViewModel,
             startDestination = startDestination,
             modifier = Modifier
                 .fillMaxSize()
@@ -184,6 +188,7 @@ fun NavigationGraph(
     newSignInViewModel: NewSignInViewModel,
     signUpViewModel: SignUpViewModel,
     photosViewModel: PhotosViewModel,
+    travelAdvisoryViewmodel: TravelAdvisoryViewModel,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {
@@ -276,6 +281,9 @@ fun NavigationGraph(
 //                onNavigateToBudgetDetails = {
 //                    navController.navigate("${NavigationItem.BudgetDetail.route}/$it")
 //                },
+                onNavigateToTravelAdvisory = {
+                    navController.navigate("${NavigationItem.TravelAdvisory.route}/$it")
+                },
                 modifier = modifier
             )
         }
@@ -314,6 +322,20 @@ fun NavigationGraph(
                 onNavigateToEvents = {
                     navController.popBackStack()
                 },
+                modifier = modifier
+            )
+        }
+        composable(
+            route = "${NavigationItem.TravelAdvisory.route}/{trip_id}",
+            arguments = listOf(
+                navArgument("trip_id") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            TravelAdvisoryView(
+                viewModel = travelAdvisoryViewmodel,
+                tripId = it.arguments?.getString("trip_id"),
                 modifier = modifier
             )
         }
