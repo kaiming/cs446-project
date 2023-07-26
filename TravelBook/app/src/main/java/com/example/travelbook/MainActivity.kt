@@ -35,6 +35,9 @@ import com.example.travelbook.signIn.AuthRepo
 import com.example.travelbook.signIn.viewModels.NewSignInViewModel
 import com.example.travelbook.signIn.viewModels.NewSignInViewModelFactory
 import com.example.travelbook.signIn.viewModels.SignUpViewModel
+import com.example.travelbook.travelAdvisory.models.TravelAdvisoryRepository
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModel
+import com.example.travelbook.travelAdvisory.viewModels.TravelAdvisoryViewModelFactory
 import com.example.travelbook.trips.viewModels.AddTripViewModel
 import com.example.travelbook.trips.viewModels.AddTripViewModelFactory
 import com.example.travelbook.trips.viewModels.ArchivedTripViewModel
@@ -126,6 +129,10 @@ class MainActivity : ComponentActivity() {
                 PhotosViewModelFactory(PhotosRepository(), SharedPreferencesUserDataSource(this))
             }
 
+            val travelAdvisoryViewModel: TravelAdvisoryViewModel by viewModels {
+                TravelAdvisoryViewModelFactory(EventRepository(), TravelAdvisoryRepository())
+            }
+
             val userDataSource = SharedPreferencesUserDataSource(this)
             val user = userDataSource.getUser()
             val isLoggedIn = user != null
@@ -151,6 +158,7 @@ class MainActivity : ComponentActivity() {
                         newSignInViewModel = newSignInViewModel,
                         signUpViewModel = signUpViewModel,
                         photosViewModel = photosViewModel,
+                        travelAdvisoryViewModel = travelAdvisoryViewModel,
                         isLoggedIn = isLoggedIn
                     )
                 }
