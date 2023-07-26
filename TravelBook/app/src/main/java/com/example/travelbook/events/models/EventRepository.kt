@@ -31,7 +31,7 @@ class EventRepository {
     fun uploadImageToFirebase(uri: Uri, date: String, tripId: String): Task<UploadTask.TaskSnapshot> {
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid ?: throw IllegalStateException("No user logged in")
-        val imageReference = storageReference.child("images/$userId/${uri.lastPathSegment}")
+        val imageReference = storageReference.child("images/$tripId/${uri.lastPathSegment}")
         val metadata = StorageMetadata.Builder()
             .setContentType("image/jpg")
             .setCustomMetadata("date", date)
