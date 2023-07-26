@@ -199,7 +199,7 @@ fun EventView(
                 }
             }
             LazyColumn(Modifier.weight(5.8f)) {
-                items(items = events.value, itemContent = { event ->
+                items(items = events.value.sortedBy { it.startDate }, itemContent = { event ->
                     EventCard(event) {
                         onNavigateToModifyEvent(tripId, event.eventId)
                     }

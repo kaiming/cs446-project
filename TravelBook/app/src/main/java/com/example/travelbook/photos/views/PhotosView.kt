@@ -74,19 +74,23 @@ fun PhotoItem(
     photo: Photo,
 ) {
     // You can use any image loading library like Coil or Glide to load the image
-    Image(
-        painter = rememberAsyncImagePainter(photo.imageUrl),
-        contentDescription = "Photo",
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp) // Adjust the height as needed
-    )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(photo.imageUrl),
+            contentDescription = "Photo",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp) // Adjust the height as needed
+        )
 
-    // Display other information about the photo, e.g., date
-    Text(
-        text = "Date: ${photo.date}",
-        modifier = Modifier.padding(16.dp)
-    )
+        // Display other information about the photo, e.g., date
+        Text(
+            text = "Date: ${photo.date}",
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }
 
 @Composable
