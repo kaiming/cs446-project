@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
@@ -132,5 +133,17 @@ class EventRepository {
             }
         }
         return eventList
+    }
+
+    fun addUserToTrip(tripId: String, userId: String) {
+        database.collection("trips")
+            .document(tripId)
+            .update("participants", FieldValue.arrayUnion(userId))
+            .addOnSuccessListener {
+                Log.d(TAG, "User added to trip")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding user to trip", e)
+            }
     }
 }
