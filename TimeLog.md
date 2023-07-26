@@ -2,7 +2,7 @@
 | --- | --- | --- |---| --- | --- | --- | --- | --- |
 | 2023/05/15 | -- | -- | -- | 8 | -- | -- | 8 | Learning Kotlin / Jetpack Compose |
 | 2023/05/26 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | Project brainstorming meeting |
-| 2023/05/28 | 0.75 | 1.5 | 2 | 2 | 1 | 1 | 1 | Project proposal presentation |
+| 2023/05/28 | 1 | 1.5 | 2 | 2 | 1 | 1 | 1 | Project proposal presentation |
 | 2023/06/02 | 1 | 2 | 2 | 1 | 1 | 1 | 1 | Project proposal document |
 | 2023/06/09 | -- | 1 | 1 | 1.5 | -- | -- | -- | Project Skeleton Creation |
 | 2023/06/12 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | D2: Buddy Proposal Review |
@@ -69,6 +69,10 @@
 | 2023/07/25 | -- | -- | 0.5 | -- | 1 | -- | 6 | implemented photo sharing |
 | 2023/07/25 | -- | -- | -- | -- | -- | 5 | -- | fixed navigation to budget page |
 | 2023/07/25 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | Feature sync with teams and group, final assignment of tasks |
+| 2023/07/25 | 6 | -- | -- | -- | -- | -- | -- | export itinerary as screeenshot feature (wip) |
 | 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
 | 2023/07/26 | -- | -- | 8 | -- | -- | -- | -- | Travel advisories |
 | 2023/07/26 | -- | -- | -- | -- | -- | 3 | -- | budget page pie chart |
+| 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
+| 2023/07/26 | 2 | -- | -- | -- | -- | -- | -- | Fix adding back add to user button (was overwritten by bad merge), moved button location |
+

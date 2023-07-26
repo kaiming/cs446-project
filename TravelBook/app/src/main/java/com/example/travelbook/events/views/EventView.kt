@@ -2,6 +2,7 @@ package com.example.travelbook.events.views
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -23,12 +24,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +47,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -52,6 +58,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import com.example.travelbook.events.models.EventItem
 import com.example.travelbook.events.viewModels.EventViewModel
 import com.example.travelbook.trips.views.TripCard
@@ -59,6 +66,7 @@ import com.example.travelbook.ui.theme.Padding
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -74,6 +82,8 @@ fun EventView(
 ) {
     if (tripId !is String) return
 
+    val context = LocalContext.current
+
     val trip = viewModel.getTripByTripId(tripId).collectAsState(null).value ?: return
     val events = viewModel.getEventsFlowByTripId(tripId)
         .collectAsStateWithLifecycle(initialValue = emptyList())
@@ -83,12 +93,15 @@ fun EventView(
         totalCosts += event.cost.toFloat()
     }
 
-    val pickImagesLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            // Handle the returned Uri, e.g., upload to Firebase Storage
-            viewModel.handleImageUpload(uri, tripId)
+    val showAddUserPopup = remember { mutableStateOf(false) }
+
+    val pickImagesLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                // Handle the returned Uri, e.g., upload to Firebase Storage
+                viewModel.handleImageUpload(uri, tripId)
+            }
         }
-    }
 
     // photos permission state
     val photosPermissionState = rememberPermissionState(
@@ -131,17 +144,62 @@ fun EventView(
                     )
                 }
             }
-            BudgetProgressBar(currentBudget = totalCosts, totalBudget = trip.budget.toFloat(), onClick = { onNavigateToBudgetDetails(tripId) })
-            Button(
-                onClick = {
-                    onNavigateToTravelAdvisory(tripId)
-                }
+            BudgetProgressBar(
+                currentBudget = totalCosts,
+                totalBudget = trip.budget.toFloat(),
+                onClick = { onNavigateToBudgetDetails(tripId) })
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                    ),
+                contentAlignment = Alignment.BottomEnd,
             ) {
-                Text("View Travel Advisory")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            onNavigateToTravelAdvisory(tripId)
+                        }
+                    ) {
+                        Text("View Travel Advisory")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    // Add user to trip button
+                    Button(
+                        onClick = { showAddUserPopup.value = true },
+                    ) {
+                        Text(text = "Add User")
+                    }
+                    if (showAddUserPopup.value) {
+                        AddUserPopup(
+                            onClosePopup = { showAddUserPopup.value = false },
+                            onAddUser = { email ->
+                                viewModel.viewModelScope.launch {
+                                    try {
+                                        val ret = viewModel.addUserToTrip(tripId, email)
+                                        if (ret) {
+                                            Toast.makeText(context, "User added successfully!", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
+                                        }
+                                    } catch (e: Exception) {
+                                        // Handle exceptions if needed
+                                        Toast.makeText(context, "Failed to add user: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    } finally {
+                                        showAddUserPopup.value = false
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
             }
-//            TripCard(trip)
             LazyColumn(Modifier.weight(5.8f)) {
-                items(items = events.value, itemContent = { event ->
+                items(items = events.value.sortedBy { it.startDate }, itemContent = { event ->
                     EventCard(event) {
                         onNavigateToModifyEvent(tripId, event.eventId)
                     }
@@ -150,22 +208,24 @@ fun EventView(
 
             Box(
                 modifier = Modifier
-                    .weight(1.2f)
+                    .weight(1f)
                     .fillMaxSize()
-                    .padding(bottom = Padding.PaddingMedium.size)
+                    .padding(Padding.PaddingMedium.size)
                     .background(
                         color = MaterialTheme.colorScheme.background.copy(alpha = 0f)
                     ),
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                Column(
-                    modifier = Modifier.fillMaxHeight()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
+
                     // "View Photos" Button
                     Button(
                         onClick = {
                             onNavigateToPhotos(tripId)
-//                            viewModel.navigateToPhotos(tripId)
                         },
                         modifier = Modifier.padding(end = Padding.PaddingMedium.size)
                     ) {
@@ -187,42 +247,25 @@ fun EventView(
                         },
                         modifier = Modifier.padding(end = Padding.PaddingMedium.size)
                     ) {
-                        // "Add Photos" Button
-                        Button(
-                            onClick = {
-                                if (photosPermissionState.status.isGranted) {
-                                    Log.d("DEBUG", "Permissions granted!")
-                                    pickImagesLauncher.launch("image/*")
-                                } else {
-                                    Log.d("DEBUG", "Permissions not granted!")
-                                    photosPermissionState.launchPermissionRequest()
-                                }
-                            },
-                            modifier = Modifier.padding(end = Padding.PaddingMedium.size, start = Padding.PaddingMedium.size)
-                        ) {
-                            Text("Add Photos")
-                        }
-
+                        Text("Add Photos")
                     }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
+
+                    // Spacer to provide some separation
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    // Existing IconButton for "Add Event"
+                    IconButton(
+                        onClick = {
+                            onNavigateToAddEvent(tripId)
+                        },
+                        modifier = Modifier.size(64.dp)
                     ) {
-                        // Existing IconButton for "Add Event"
-                        IconButton(
-                            onClick = {
-                                onNavigateToAddEvent(tripId)
-                            },
+                        Icon(
+                            Icons.Rounded.AddCircle,
+                            tint = MaterialTheme.colorScheme.secondary,
+                            contentDescription = "Add Event Button",
                             modifier = Modifier.size(64.dp)
-                        ) {
-                            Icon(
-                                Icons.Rounded.AddCircle,
-                                tint = MaterialTheme.colorScheme.secondary,
-                                contentDescription = "Add Event Button",
-                                modifier = Modifier.size(64.dp)
-                            )
-                        }
+                        )
                     }
                 }
             }
@@ -238,77 +281,97 @@ private fun EventCard(
 ) {
     Card(
         shape = RoundedCornerShape(15.dp),
+        elevation = 4.dp,
         modifier = Modifier
             .padding(Padding.PaddingMedium.size)
             .clickable { onClick() }
     ) {
-        Row(modifier = Modifier.padding(Padding.PaddingExtraLarge.size)) {
+        Row(modifier = Modifier.padding(Padding.PaddingSmall.size)) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = event.name,
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    ),
                 )
                 Text(
                     text = event.location,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        fontStyle = FontStyle.Italic
+                    ),
                 )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Filled.DateRange,
+                        contentDescription = "Start Date",
+                        tint = Color.Gray,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Text(
+                        text = event.startDate + " to " + event.endDate,
+                        maxLines = 1,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            fontStyle = FontStyle.Italic
+                        ),
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
                 Text(
-                    text = "From: ${event.startDate} at ${event.startTime}",
+                    text = "$" + event.cost,
                 )
-                Text(
-                    text = "To: ${event.endDate} at ${event.endTime}",
-                )
-                Text(
-                    text = event.cost,
-                )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                // space for image/event logo... don't think the model supports this yet.
             }
         }
     }
 }
 
 @Composable
-fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit ) {
-    val progress = (currentBudget / totalBudget)
-    val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
-    // Calculate the progress percentage
-    val percentageUsed = (progress * 100).toInt()
+fun BudgetProgressBar(currentBudget: Float, totalBudget: Float, onClick: () -> Unit) {
+val progress = (currentBudget / totalBudget)
+val restrictedProgress = (currentBudget / totalBudget).coerceIn(0f, 1f)
+// Calculate the progress percentage
+val percentageUsed = (progress * 100).toInt()
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp) // Add horizontal padding
-            .clickable { onClick() }
+Box(
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp) // Add horizontal padding
+        .clickable { onClick() }
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            LinearProgressIndicator(
-                progress = restrictedProgress,
-                color = when {
-                    percentageUsed > 100 -> Color.Red
-                    else -> Color.Black
-                },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(8.dp)
-                    .padding(end = 4.dp)
-            )
+        LinearProgressIndicator(
+            progress = restrictedProgress,
+            color = when {
+                percentageUsed > 100 -> Color.Red
+                else -> Color.Black
+            },
+            modifier = Modifier
+                .weight(1f)
+                .height(8.dp)
+                .padding(end = 4.dp)
+        )
 
-            Text(
-                text = "$percentageUsed%",
-                color = when {
-                    percentageUsed > 100 -> Color.Red
-                    else -> Color.Black
-                },
-                fontSize = 16.sp,
-                textAlign = TextAlign.End,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
+        Text(
+            text = "$percentageUsed%",
+            color = when {
+                percentageUsed > 100 -> Color.Red
+                else -> Color.Black
+            },
+            fontSize = 16.sp,
+            textAlign = TextAlign.End,
+            modifier = Modifier.padding(start = 4.dp)
+        )
     }
+}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

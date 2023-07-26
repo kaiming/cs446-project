@@ -88,7 +88,7 @@ fun TripView(
                 modifier = Modifier.padding(Padding.PaddingSmall.size)
             )
             LazyColumn(Modifier.weight(6f)) {
-                items(items = trips.value, itemContent = { trip ->
+                items(items = trips.value.sortedBy { it.startDate }, itemContent = { trip ->
                     if (!trip.isArchived) {
                         Row(
                             modifier = Modifier
