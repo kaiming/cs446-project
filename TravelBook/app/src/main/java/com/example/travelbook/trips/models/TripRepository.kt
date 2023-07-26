@@ -1,5 +1,6 @@
 package com.example.travelbook.trips.models
 
+import UtilityFunctions.getTripsWithParticipantEmails
 import android.content.ContentValues
 import android.util.Log
 import com.example.travelbook.events.models.EventItem
@@ -33,32 +34,61 @@ class TripRepository {
             }
     }
 
-    fun getAllTripsByUserIDFlow(userId: String): Flow<List<Trip>> = flow {
-        val querySnapshot = database
-            .collection("trips")
-            .whereArrayContains("participants", userId)
+    fun getAllTripsFlow(): Flow<List<Trip>> = flow {
+        val querySnapshot = database.collection("trips")
             .get()
             .await()
         val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
             documentSnapshot.toObject<Trip>()
         }
-        emit(trips)
+        val tripsWithEmails = getTripsWithParticipantEmails(trips)
+        emit(tripsWithEmails)
     }
 
-    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String): Flow<List<Trip>> = flow {
-        val querySnapshot = database
-            .collection("trips")
-            .whereArrayContains("participants", userId)
-            .whereEqualTo("archived", true)
-            .get()
-            .await()
-        val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
-            documentSnapshot.toObject<Trip>()
+    fun getAllTripsByUserIDFlow(userId: String? = null): Flow<List<Trip>> = flow {
+        Log.d(TAG, "getAllTripsByUserIDFlow: $userId")
+        if (userId != null) {
+            Log.d(TAG, "getAllTripsByUserIDFlow: userId is not null")
+            val querySnapshot = database
+                .collection("trips")
+                .whereArrayContains("participants", userId)
+                .get()
+                .await()
+            val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
+                documentSnapshot.toObject<Trip>()
+            }
+            val tripsWithEmails = getTripsWithParticipantEmails(trips)
+            emit(tripsWithEmails)
+        } else {
+            Log.d(TAG, "getAllTripsByUserIDFlow: userId is null")
+            emit(emptyList())
         }
-        emit(trips)
+
+    }
+
+    fun getAllTripsByUserIdAndFilterForArchivedFlow(userId: String? = null): Flow<List<Trip>> = flow {
+        Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: $userId")
+        if (userId != null) {
+            Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is not null")
+            val querySnapshot = database
+                .collection("trips")
+                .whereArrayContains("participants", userId)
+                .whereEqualTo("archived", true)
+                .get()
+                .await()
+            val trips = querySnapshot.documents.mapNotNull { documentSnapshot ->
+                documentSnapshot.toObject<Trip>()
+            }
+            val tripsWithEmails = getTripsWithParticipantEmails(trips)
+            emit(tripsWithEmails)
+        } else {
+            Log.d(TAG, "getAllTripsByUserIdAndFilterForArchivedFlow: userId is null")
+            emit(emptyList())
+        }
     }
 
     fun getTripByIdFlow(tripId: String): Flow<Trip?> = callbackFlow {
+        Log.d(TAG, "getTripByIdFlow: $tripId")
         val documentRef = database.collection("trips")
             .document(tripId)
 
@@ -81,6 +111,7 @@ class TripRepository {
 
     // Get trips based on user id, participants contains a list of user ids
     fun getAllTripsByUserID(userId: String): List<Trip> {
+        Log.d(TAG, "getAllTripsByUserID: $userId")
         val trips = mutableListOf<Trip>()
         database.collection("trips")
             .whereArrayContains("participants", userId)
@@ -105,6 +136,7 @@ class TripRepository {
 
     // Get trip based on trip id
     fun getTripByTripID(tripId: String): Trip {
+        Log.d(TAG, "getTripByTripID: $tripId")
         var trip = Trip()
         database.collection("trips")
             .document(tripId)
