@@ -14,18 +14,22 @@ class BudgetingViewModel(
 ): ViewModel() {
 
     // To keep track of the total budget of the trip
-    private var totalTripBudget: String = ""
+    var totalTripBudget: String = ""
 
     // To keep track of the total budget used in the events
-    private var totalEventBudgets: String = ""
+    var totalEventBudgets: String = ""
 
-    fun loadBudgets(tripId: String) = viewModelScope.launch {
+    fun loadBudgets(tripId: String?) = viewModelScope.launch {
         tripRepository.getTripByTripIDFlow(tripId).collect { trip ->
             totalTripBudget = trip?.budget?.toFloatOrNull()?.toString() ?: "0"
         }
 
         eventRepository.getAllEventsByTripIdFlow(tripId).collect { eventList ->
-            totalEventBudgets = eventList.map { it.cost.toFloatOrNull() ?: 0f }.sum().toString()
+            if(eventList != null) {
+                totalEventBudgets = eventList.map { it.cost.toFloatOrNull() ?: 0f }.sum().toString()
+            } else {
+                totalEventBudgets = "0"
+            }
         }
     }
 
