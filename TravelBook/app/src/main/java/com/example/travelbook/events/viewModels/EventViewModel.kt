@@ -56,7 +56,7 @@ class EventViewModel(
             return false
         }
     }
-    fun navigateToPhotos() {
+    fun navigateToPhotos(tripId: String) {
         navigationController.navigate(NavigationItem.Photos.route)
     }
 }
