@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val tripRepo = TripRepository()
+        // val tripRepo = TripRepository()
 
         // // Disable caching and offline persistence
         // val firestoreSettings = FirebaseFirestoreSettings.Builder()
@@ -70,6 +70,10 @@ class MainActivity : ComponentActivity() {
         // firestore.firestoreSettings = firestoreSettings
 
         setContent {
+
+            val userDataSource = SharedPreferencesUserDataSource(this)
+            val tripRepo = TripRepository()
+            val eventRepo = EventRepository()
 
             Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
 
@@ -83,16 +87,16 @@ class MainActivity : ComponentActivity() {
                 ProfileViewModelFactory(
                     navigationController,
                     AuthRepo(),
-                    SharedPreferencesUserDataSource(this)
+                    userDataSource
                 )
             }
 
             val mapViewModel: MapViewModel by viewModels {
-                MapViewModelFactory(TripRepository(), EventRepository(), SharedPreferencesUserDataSource(this))
+                MapViewModelFactory(tripRepo, eventRepo, userDataSource)
             }
 
             val newSignInViewModel: NewSignInViewModel by viewModels {
-                NewSignInViewModelFactory(navigationController, AuthRepo(), SharedPreferencesUserDataSource(this))
+                NewSignInViewModelFactory(navigationController, AuthRepo(), userDataSource)
             }
 
             val signUpViewModel: SignUpViewModel by viewModels {
@@ -100,46 +104,45 @@ class MainActivity : ComponentActivity() {
             }
 
             val tripViewModel: TripViewModel by viewModels {
-                TripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
+                TripViewModelFactory(tripRepo, userDataSource)
             }
 
             val archivedTripViewModel: ArchivedTripViewModel by viewModels {
-                ArchivedTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
+                ArchivedTripViewModelFactory(tripRepo, userDataSource)
             }
 
             val addTripViewModel: AddTripViewModel by viewModels {
-                AddTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
+                AddTripViewModelFactory(tripRepo, userDataSource)
             }
 
             val modifyTripViewModel: ModifyTripViewModel by viewModels {
-                ModifyTripViewModelFactory(TripRepository(), SharedPreferencesUserDataSource(this))
+                ModifyTripViewModelFactory(tripRepo, userDataSource)
             }
 
             val eventViewModel: EventViewModel by viewModels {
-                EventViewModelFactory(EventRepository(), TripRepository(), SharedPreferencesUserDataSource(this), navigationController)
+                EventViewModelFactory(eventRepo, tripRepo, userDataSource, navigationController)
             }
 
             val addEventViewModel: AddEventViewModel by viewModels {
-                AddEventViewModelFactory(EventRepository(), TripRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
+                AddEventViewModelFactory(eventRepo, tripRepo, GooglePredictionRepository(), userDataSource)
             }
 
             val modifyEventViewModel: ModifyEventViewModel by viewModels {
-                ModifyEventViewModelFactory(EventRepository(), TripRepository(), GooglePredictionRepository(), SharedPreferencesUserDataSource(this))
+                ModifyEventViewModelFactory(eventRepo, tripRepo, GooglePredictionRepository(), userDataSource)
             }
 
             val budgetingViewModel: BudgetingViewModel by viewModels {
-                BudgetingViewModelFactory(TripRepository(), EventRepository());
+                BudgetingViewModelFactory(tripRepo, eventRepo);
             }
 
             val photosViewModel: PhotosViewModel by viewModels {
-                PhotosViewModelFactory(PhotosRepository(), SharedPreferencesUserDataSource(this))
+                PhotosViewModelFactory(PhotosRepository(), userDataSource)
             }
 
             val travelAdvisoryViewModel: TravelAdvisoryViewModel by viewModels {
-                TravelAdvisoryViewModelFactory(EventRepository(), TravelAdvisoryRepository())
+                TravelAdvisoryViewModelFactory(eventRepo, TravelAdvisoryRepository())
             }
 
-            val userDataSource = SharedPreferencesUserDataSource(this)
             val user = userDataSource.getUser()
             val isLoggedIn = user != null
 
