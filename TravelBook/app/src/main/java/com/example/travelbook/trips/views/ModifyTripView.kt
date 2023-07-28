@@ -88,7 +88,6 @@ fun ModifyTripView(
         calendar[Calendar.MONTH],
         calendar[Calendar.DAY_OF_MONTH]
     )
-    startDatePicker.datePicker.minDate = calendar.timeInMillis
 
     val endDatePicker = DatePickerDialog(
         context,

@@ -59,19 +59,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // val tripRepo = TripRepository()
         val userDataSource = SharedPreferencesUserDataSource.getInstance(this)
         val tripRepo = TripRepository.getInstance()
         val eventRepo = EventRepository.getInstance()
-
-        // // Disable caching and offline persistence
-        // val firestoreSettings = FirebaseFirestoreSettings.Builder()
-        //     .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED) // Disable caching
-        //     .setPersistenceEnabled(false) // Disable offline persistence
-        //     .build()
-
-        // val firestore = Firebase.firestore
-        // firestore.firestoreSettings = firestoreSettings
 
         setContent {
 
