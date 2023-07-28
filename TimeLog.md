@@ -80,4 +80,5 @@
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
 | 2023/07/26 | 2 | -- | -- | -- | -- | -- | -- | Fix adding back add to user button (was overwritten by bad merge), moved button location |
 | 2023/07/26 | 6 | -- | -- | -- | -- | -- | -- | Export as image broke somehow (could not resolve), added export as text as a secondary backup option |
+| 2023/07/26 | -- | -- | -- | -- | -- | -- | 3 | fixed bug in attributing photos to users instead of trips |
 
