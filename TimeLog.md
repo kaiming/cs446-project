@@ -75,8 +75,8 @@
 | 2023/07/25 | -- | -- | -- | -- | 1 | -- | -- | debug budget null value exception |
 | 2023/07/26 | -- | -- | -- | -- | 2 | -- | -- | debug sign in issues |
 | 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
-| 2023/07/26 | -- | -- | 8 | -- | -- | -- | -- | Travel advisories |
-| 2023/07/26 | -- | -- | -- | -- | -- | 3 | -- | budget page pie chart |
+| 2023/07/26 | -- | -- | 8 | 0.5 | -- | -- | -- | Travel advisories |
+| 2023/07/26 | -- | -- | -- | 1 | -- | 3 | -- | budget page pie chart |
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
 | 2023/07/26 | 2 | -- | -- | -- | -- | -- | -- | Fix adding back add to user button (was overwritten by bad merge), moved button location |
 | 2023/07/26 | 6 | -- | -- | -- | -- | -- | -- | Export as image broke somehow (could not resolve), added export as text as a secondary backup option |
