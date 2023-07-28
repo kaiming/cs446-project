@@ -19,6 +19,21 @@ interface UserDataSource {
 }
 
 class SharedPreferencesUserDataSource(private val context: Context) : UserDataSource {
+    // Singleton
+    companion object {
+        
+        @Volatile
+        private var INSTANCE: SharedPreferencesUserDataSource? = null
+
+        fun getInstance(context: Context): SharedPreferencesUserDataSource {
+            return INSTANCE ?: synchronized(this) {
+                val instance = SharedPreferencesUserDataSource(context)
+                INSTANCE = instance
+                instance
+            }
+        }
+
+    }
 
     private val sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
 

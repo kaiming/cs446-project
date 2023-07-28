@@ -25,6 +25,20 @@ import java.util.Date
 
 class EventRepository {
 
+    // Singleton
+    companion object {
+        @Volatile
+        private var INSTANCE: EventRepository? = null
+
+        fun getInstance(): EventRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = EventRepository()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+
     private val database = Firebase.firestore
     private val storageReference = Firebase.storage.reference
 

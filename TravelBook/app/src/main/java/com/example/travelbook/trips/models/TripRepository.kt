@@ -20,6 +20,20 @@ private const val TAG = "TripRepository"
 
 class TripRepository {
 
+    // Singleton
+    companion object {
+        @Volatile
+        private var INSTANCE: TripRepository? = null
+
+        fun getInstance(): TripRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = TripRepository()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+
     private val database = Firebase.firestore
 
     fun archiveTrip(tripId: String) {

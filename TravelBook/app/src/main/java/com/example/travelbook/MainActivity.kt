@@ -55,10 +55,14 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // val tripRepo = TripRepository()
+        val userDataSource = SharedPreferencesUserDataSource.getInstance(this)
+        val tripRepo = TripRepository.getInstance()
+        val eventRepo = EventRepository.getInstance()
 
         // // Disable caching and offline persistence
         // val firestoreSettings = FirebaseFirestoreSettings.Builder()
@@ -70,10 +74,6 @@ class MainActivity : ComponentActivity() {
         // firestore.firestoreSettings = firestoreSettings
 
         setContent {
-
-            val userDataSource = SharedPreferencesUserDataSource(this)
-            val tripRepo = TripRepository()
-            val eventRepo = EventRepository()
 
             Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
 
