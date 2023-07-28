@@ -1,4 +1,4 @@
-package com.example.newcanaryproject
+package com.example.travelbook.budgeting.models
 
 // on below line we are creating data class for
 // pie chart data and passing variable as browser

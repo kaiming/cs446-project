@@ -16,13 +16,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.newcanaryproject.PieChartData
+import com.example.travelbook.budgeting.models.PieChartData
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
 import java.util.*
 
 
