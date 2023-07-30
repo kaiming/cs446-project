@@ -86,4 +86,5 @@
 | 2023/07/26 | 3 | 6 | 6 | 6 | 6 | 6 | 6 | final touches, demo preparation, script creation, video recording and editing, |
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
 | 2023/07/27 | -- | -- | -- | -- | -- | -- | 3 | D6 architecture document writeup |
+| 2023/07/28 | -- | -- | -- | -- | -- | 3 | -- | D6 architecture document writeup |
 
