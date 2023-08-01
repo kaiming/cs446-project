@@ -10,14 +10,14 @@
 | 2023/06/13 | -- | -- | -- | -- | 2 | 1.5 | 1.5 | D2: Buddy proposal document |
 | 2023/06/14 | -- | 3 | -- | -- | 0.5 | 0.75 | -- | D2: Buddy proposal document |
 | 2023/06/24 | 6 | 6 | 8.5 | 8.5 | 8 | -- | 8.5 | D3: Demo feature work |
-| 2023/06/25 | 2.5 | 2 | 3 | 8 | 3.5 | 4 | -- | D3: Demo feature work |
+| 2023/06/25 | 2.5 | 2 | 3 | 8 | 4.5 | 4 | -- | D3: Demo feature work |
 | 2023/06/25 | -- | -- | -- | 2 | -- | -- | -- | Passing data between views and improving nav |
-| 2023/06/29 | 1 | 4 | 1 | -- | 3 | 3 | 3 | D3: Prototype document work |
+| 2023/06/29 | 1 | 4 | 1 | -- | 3 | 4 | 3 | D3: Prototype document work |
 | 2023/07/03 | -- | -- | -- | 1.5 | -- | -- | -- | Changing input types |
 | 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | working on authentication layer |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
 | 2023/07/13 | -- | -- | 6 | -- | -- | -- | -- | modifiable events |
-| 2023/07/14 | 3 | 3 | -- | 0.5 | 1.5 | 3 | -- | D4: Architectural Styles |
+| 2023/07/14 | 3 | 3 | -- | 0.5 | 1.5 | 5 | -- | D4: Architectural Styles |
 | 2023/07/14 | -- | -- | -- | 5.5 | -- | -- | -- | Adding Places API |
 | 2023/07/14 | -- | -- | -- | 0.5 | -- | -- | -- | Fixing navigation bugs |
 | 2023/07/14 | -- | -- | 2 | 2 | -- | -- | -- | upcoming maps feature designing and planning |
@@ -38,7 +38,7 @@
 | 2023/07/19 | -- | 1 | -- | 1 | 1 | 1 | -- | discussion on budget feature design |
 | 2023/07/19 | -- | -- | -- | -- | 2 | -- | -- | learn jetpack compose |
 | 2023/07/19 | -- | -- | -- | -- | 7 | 7 | -- | implementing budgeting feature on trip and event views |
-| 2023/07/19 | -- | -- | -- | -- | -- | 2.5 | -- | added viewmodel for budget details view |
+| 2023/07/19 | -- | -- | -- | -- | -- | 3.5 | -- | added viewmodel for budget details view |
 | 2023/07/19 | -- | 4 | -- | -- | -- | -- | -- | UI research/design |
 | 2023/07/20 | -- | 1.5 | -- | -- | -- | -- | -- | configuring dummy nav routing for budgetView testing |
 | 2023/07/20 | -- | 5 | -- | -- | -- | -- | -- | integrating jitPack library for chart rendering |
@@ -80,7 +80,7 @@
 | 2023/07/26 | -- | -- | -- | -- | 2 | -- | -- | support budget details view nav and display feature |
 | 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
 | 2023/07/26 | -- | -- | 8 | 0.5 | -- | -- | -- | Travel advisories |
-| 2023/07/26 | -- | -- | -- | 1 | -- | 3 | -- | budget page pie chart |
+| 2023/07/26 | -- | -- | -- | 1 | -- | 4 | -- | budget page pie chart |
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 6 | photo filtering for trips |
 | 2023/07/26 | 2 | -- | -- | -- | -- | -- | -- | Fix adding back add to user button (was overwritten by bad merge), moved button location |
 | 2023/07/26 | 6 | -- | -- | -- | -- | -- | -- | Export as image broke somehow (could not resolve), added export as text as a secondary backup option |
@@ -88,6 +88,6 @@
 | 2023/07/26 | 3 | 6 | 6 | 6 | 6 | 6 | 6 | final touches, demo preparation, script creation, video recording and editing, |
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
 | 2023/07/27 | 2.5 | -- | 2 | -- | 3 | 1 | 3 | D6 architecture document writeup |
-| 2023/07/28 | 1.5 | 2 | 4 | -- | -- | 3 | -- | D6 architecture document writeup |
+| 2023/07/28 | 1.5 | 2 | 4 | -- | -- | 4 | -- | D6 architecture document writeup |
 | 2023/07/31 | 0.5 | -- | -- | -- | 2 | 3 | -- | D7 final status report writeup |
 
