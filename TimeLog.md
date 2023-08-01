@@ -89,5 +89,5 @@
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
 | 2023/07/27 | -- | -- | 2 | -- | 4 | 1 | 3 | D6 architecture document writeup |
 | 2023/07/28 | -- | 2 | 4 | -- | 1 | 3 | -- | D6 architecture document writeup |
-| 2023/07/31 | -- | -- | -- | -- | -- | 3 | -- | D7 final status report writeup |
+| 2023/07/31 | -- | -- | -- | -- | 2 | 3 | -- | D7 final status report writeup |
 
