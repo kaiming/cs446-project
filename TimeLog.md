@@ -74,11 +74,10 @@
 | 2023/07/25 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | Feature sync with teams and group, final assignment of tasks |
 | 2023/07/25 | 6 | -- | -- | -- | -- | -- | -- | export itinerary as screeenshot feature (wip) |
 | 2023/07/25 | -- | -- | -- | -- | 3 | -- | -- | supported dev of photo display and sharing |
-| 2023/07/25 | -- | -- | -- | -- | 3 | -- | -- | supported dev of budget view and budget view nav |
 | 2023/07/25 | -- | -- | -- | -- | 1 | -- | -- | debug budget null value exception |
 | 2023/07/26 | -- | -- | -- | -- | 2 | -- | -- | debug sign in issues |
-| 2023/07/26 | -- | -- | -- | -- | 3 | -- | -- | support photo upload and display feature |
-| 2023/07/26 | -- | -- | -- | -- | 4 | -- | -- | support budget view nav and display feature |
+| 2023/07/26 | -- | -- | -- | -- | 3 | -- | -- | debug photo upload and display feature |
+| 2023/07/26 | -- | -- | -- | -- | 4 | -- | -- | support budget details view nav and display feature |
 | 2023/07/26 | -- | -- | -- | 0.5 | -- | -- | -- | Adding Icon |
 | 2023/07/26 | -- | -- | 8 | 0.5 | -- | -- | -- | Travel advisories |
 | 2023/07/26 | -- | -- | -- | 1 | -- | 3 | -- | budget page pie chart |
