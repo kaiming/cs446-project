@@ -87,7 +87,7 @@
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 3 | fixed bug in attributing photos to users instead of trips |
 | 2023/07/26 | 3 | 6 | 6 | 6 | 6 | 6 | 6 | final touches, demo preparation, script creation, video recording and editing, |
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
-| 2023/07/27 | 2.5 | -- | 2 | -- | 4 | 1 | 3 | D6 architecture document writeup |
-| 2023/07/28 | 1.5 | 2 | 4 | -- | 1 | 3 | -- | D6 architecture document writeup |
+| 2023/07/27 | 2.5 | -- | 2 | -- | 3 | 1 | 3 | D6 architecture document writeup |
+| 2023/07/28 | 1.5 | 2 | 4 | -- | -- | 3 | -- | D6 architecture document writeup |
 | 2023/07/31 | 0.5 | -- | -- | -- | 2 | 3 | -- | D7 final status report writeup |
 
