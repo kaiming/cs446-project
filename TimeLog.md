@@ -60,11 +60,14 @@
 | 2023/07/21 | -- | -- | -- | -- | 1 | -- | -- | cleaned up code for trips and archived trips |
 | 2023/07/20 | -- | -- | 4 | -- | -- | -- | -- | modify and delete trips using dropdown |
 | 2023/07/20 | -- | -- | -- | -- | -- | -- | 3 | sign in page revamp |
+| 2023/07/20 | -- | 4 | -- | -- | -- | -- | -- | integrating budget view and viewModel |
 | 2023/07/23 | 8 | -- | -- | -- | -- | -- | -- | integrate unique user in app, create email-user mapping in firebase, testing multiple users, discovered issue with userSource and initializing flows |
 | 2023/07/23 | -- | -- | -- | -- | -- | -- | 4 | sign in flow refactoring |
 | 2023/07/23 | 2 | -- | -- | -- | -- | -- | -- | created utility function for converting emails to user ids, changes to authrepo and userdatasource |
 | 2023/07/23 | 3 | -- | -- | -- | -- | -- | -- | investigate querying before login error |
 | 2023/07/24 | 8 | -- | 2 | -- | -- | -- | -- | fixed query before login errors, show emails instead of user ids in the UI, refactor utility functions, testing and bug fixes |
+| 2023/07/24 | -- | 6 | -- | -- | -- | -- | -- | UI upgrades research, and start of implementation |
+| 2023/07/24 | -- | 8 | -- | -- | -- | -- | -- | Completing UI Upgrades implementation  |
 | 2023/07/25 | -- | -- | -- | -- | -- | -- | 2 | adding text to sign in page |
 | 2023/07/25 | -- | -- | 0.5 | -- | 1 | -- | 6 | implemented photo sharing |
 | 2023/07/25 | -- | -- | -- | -- | -- | 5 | -- | fixed navigation to budget page |
@@ -86,5 +89,5 @@
 | 2023/07/26 | 3 | 6 | 6 | 6 | 6 | 6 | 6 | final touches, demo preparation, script creation, video recording and editing, |
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
 | 2023/07/27 | -- | -- | 2 | -- | -- | -- | 3 | D6 architecture document writeup |
-| 2023/07/28 | -- | -- | 4 | -- | -- | 3 | -- | D6 architecture document writeup |
+| 2023/07/28 | -- | 2 | 4 | -- | -- | 3 | -- | D6 architecture document writeup |
 
