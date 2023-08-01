@@ -12,7 +12,7 @@
 | 2023/06/24 | 6 | 6 | 8.5 | 8.5 | 8 | -- | 8.5 | D3: Demo feature work |
 | 2023/06/25 | 2.5 | 2 | 3 | 8 | 3.5 | 4 | -- | D3: Demo feature work |
 | 2023/06/25 | -- | -- | -- | 2 | -- | -- | -- | Passing data between views and improving nav |
-| 2023/06/29 | 1 | 4 | -- | -- | 3 | 3 | 3 | D3: Prototype document work |
+| 2023/06/29 | 1 | 4 | 1 | -- | 3 | 3 | 3 | D3: Prototype document work |
 | 2023/07/03 | -- | -- | -- | 1.5 | -- | -- | -- | Changing input types |
 | 2023/07/09 | -- | -- | -- | -- | -- | -- | 3 | working on authentication layer |
 | 2023/07/11 | -- | -- | 3 | -- | -- | -- | -- | modifiable events |
@@ -85,6 +85,6 @@
 | 2023/07/26 | -- | -- | -- | -- | -- | -- | 3 | fixed bug in attributing photos to users instead of trips |
 | 2023/07/26 | 3 | 6 | 6 | 6 | 6 | 6 | 6 | final touches, demo preparation, script creation, video recording and editing, |
 | 2023/07/27 | 2 | -- | -- | -- | -- | -- | 3 | make repositories and userDataSource a singleton |
-| 2023/07/27 | -- | -- | -- | -- | -- | -- | 3 | D6 architecture document writeup |
-| 2023/07/28 | -- | -- | -- | -- | -- | 3 | -- | D6 architecture document writeup |
+| 2023/07/27 | -- | -- | 2 | -- | -- | -- | 3 | D6 architecture document writeup |
+| 2023/07/28 | -- | -- | 4 | -- | -- | 3 | -- | D6 architecture document writeup |
 
